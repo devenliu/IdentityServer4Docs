@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>ASP.NET Core 和 API 访问 &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="添加 JavaScript 客户端" href="4_javascript_client.html" />
+    <link rel="prev" title="使用 ASP.NET Core 的交互式应用程序" href="2_interactive_aspnetcore.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ASP.NET Core 和 API 访问</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">修改客户端配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mvc">修改MVC客户端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">使用访问令牌</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">管理访问令牌</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>ASP.NET Core 和 API 访问</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/quickstarts/3_aspnetcore_and_apis.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="asp-net-core-api">
+<h1>ASP.NET Core 和 API 访问<a class="headerlink" href="#asp-net-core-api" title="永久链接至标题">¶</a></h1>
+<p>在之前的快速入门中，我们探讨了 API 访问和用户身份验证。
+现在我们想把这两个部分放在一起。</p>
+<p>OpenID Connect 和 OAuth 2.0 结合的美妙之处在于，您可以通过单个协议和与令牌服务的单个交换来实现。</p>
+<p>到目前为止，我们只在令牌请求期间请求身份资源，一旦我们开始包括 API 资源，IdentityServer 将返回两个令牌：
+包含身份验证和会话信息的身份令牌，以及代表登录用户访问 API 的访问令牌。</p>
+<div class="section" id="id1">
+<h2>修改客户端配置<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>在 IdentityServer 中更新客户端配置很简单 —— 我们只需要将 <code class="docutils literal notranslate"><span class="pre">api1</span></code> 资源添加到允许的范围列表中。
+此外，我们通过 <code class="docutils literal notranslate"><span class="pre">AllowOfflineAccess</span></code> 属性启用对刷新令牌的支持:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">Client</span>
+<span class="p">{</span>
+    <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mvc&quot;</span><span class="p">,</span>
+    <span class="n">ClientSecrets</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">())</span> <span class="p">},</span>
+
+    <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">Code</span><span class="p">,</span>
+
+    <span class="c1">// 登录后重定向到哪里</span>
+    <span class="n">RedirectUris</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;https://localhost:5002/signin-oidc&quot;</span> <span class="p">},</span>
+
+    <span class="c1">// 注销后重定向到哪里</span>
+    <span class="n">PostLogoutRedirectUris</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;https://localhost:5002/signout-callback-oidc&quot;</span> <span class="p">},</span>
+
+    <span class="n">AllowOfflineAccess</span> <span class="p">=</span> <span class="k">true</span><span class="p">,</span>
+
+    <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">StandardScopes</span><span class="p">.</span><span class="n">OpenId</span><span class="p">,</span>
+        <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">StandardScopes</span><span class="p">.</span><span class="n">Profile</span><span class="p">,</span>
+        <span class="s">&quot;api1&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mvc">
+<h2>修改MVC客户端<a class="headerlink" href="#mvc" title="永久链接至标题">¶</a></h2>
+<p>现在客户端要做的就是通过 scope 参数请求额外的资源。 这是在 OpenID Connect 处理程序配置中完成的:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">DefaultScheme</span> <span class="p">=</span> <span class="s">&quot;Cookies&quot;</span><span class="p">;</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">DefaultChallengeScheme</span> <span class="p">=</span> <span class="s">&quot;oidc&quot;</span><span class="p">;</span>
+<span class="p">})</span>
+    <span class="p">.</span><span class="n">AddCookie</span><span class="p">(</span><span class="s">&quot;Cookies&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;oidc&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="s">&quot;https://localhost:5001&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mvc&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;secret&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ResponseType</span> <span class="p">=</span> <span class="s">&quot;code&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">SaveTokens</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">Scope</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;api1&quot;</span><span class="p">);</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">Scope</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;offline_access&quot;</span><span class="p">);</span>
+    <span class="p">});</span>
+</pre></div>
+</div>
+<p>由于启用了 <code class="docutils literal notranslate"><span class="pre">SaveTokens</span></code>，ASP.NET Core 将自动将结果访问和刷新令牌存储在身份验证会话中。
+您应该能够检查打印出您之前创建的会话内容的页面上的数据。</p>
+</div>
+<div class="section" id="id2">
+<h2>使用访问令牌<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>您可以使用可以在 <code class="docutils literal notranslate"><span class="pre">Microsoft.AspNetCore.Authentication</span></code> 命名空间中找到的标准 ASP.NET Core 扩展方法 来访问会话中的令牌:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">accessToken</span> <span class="p">=</span> <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">GetTokenAsync</span><span class="p">(</span><span class="s">&quot;access_token&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>要使用访问令牌访问 API，您需要做的就是检索令牌，并将其设置在您的 HttpClient 上:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IActionResult</span><span class="p">&gt;</span> <span class="n">CallApi</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">accessToken</span> <span class="p">=</span> <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">GetTokenAsync</span><span class="p">(</span><span class="s">&quot;access_token&quot;</span><span class="p">);</span>
+
+    <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpClient</span><span class="p">();</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">DefaultRequestHeaders</span><span class="p">.</span><span class="n">Authorization</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AuthenticationHeaderValue</span><span class="p">(</span><span class="s">&quot;Bearer&quot;</span><span class="p">,</span> <span class="n">accessToken</span><span class="p">);</span>
+    <span class="kt">var</span> <span class="n">content</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">GetStringAsync</span><span class="p">(</span><span class="s">&quot;https://localhost:6001/identity&quot;</span><span class="p">);</span>
+
+    <span class="n">ViewBag</span><span class="p">.</span><span class="n">Json</span> <span class="p">=</span> <span class="n">JArray</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">content</span><span class="p">).</span><span class="n">ToString</span><span class="p">();</span>
+    <span class="k">return</span> <span class="nf">View</span><span class="p">(</span><span class="s">&quot;json&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>创建一个名为 json.cshtml 的视图，输出如下所示的 json:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="n">pre</span><span class="p">&gt;</span><span class="n">@ViewBag</span><span class="p">.</span><span class="n">Json</span><span class="p">&lt;/</span><span class="n">pre</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>确保 API 正在运行，启动 MVC 客户端并在身份验证后调用 <code class="docutils literal notranslate"><span class="pre">/home/CallApi</span></code> 。</p>
+</div>
+<div class="section" id="id3">
+<h2>管理访问令牌<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>到目前为止，典型客户端最复杂的任务是管理访问令牌。 你通常想要</p>
+<ul class="simple">
+<li><p>在登录时请求访问和刷新令牌</p></li>
+<li><p>缓存这些令牌</p></li>
+<li><p>使用访问令牌调用 API，直到它过期</p></li>
+<li><p>使用刷新令牌获取新的访问令牌</p></li>
+<li><p>重新开始</p></li>
+</ul>
+<p>ASP.NET Core 有许多内置工具可以帮助您完成这些任务（如缓存或 sessions），但仍有很多工作要做。
+随意看看 <a class="reference external" href="https://github.com/IdentityModel/IdentityModel.AspNetCore">这个</a> 库，它可以自动执行许多样板任务。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="4_javascript_client.html" class="btn btn-neutral float-right" title="添加 JavaScript 客户端" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="2_interactive_aspnetcore.html" class="btn btn-neutral float-left" title="使用 ASP.NET Core 的交互式应用程序" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

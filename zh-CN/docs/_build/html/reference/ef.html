@@ -1,0 +1,413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Entity Framework Support &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ASP.NET Identity Support" href="aspnet_identity.html" />
+    <link rel="prev" title="Device Flow Interaction Service" href="deviceflow_interactionservice.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Entity Framework Support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#configuration-store-support-for-clients-resources-and-cors-settings">Configuration Store support for Clients, Resources, and CORS settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configurationstoreoptions">ConfigurationStoreOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#operational-store-support-for-persisted-grants">Operational Store support for persisted grants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#operationalstoreoptions">OperationalStoreOptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#database-creation-and-schema-changes-across-different-versions-of-identityserver">Database creation and schema changes across different versions of IdentityServer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Entity Framework Support</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/ef.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="entity-framework-support">
+<h1>Entity Framework Support<a class="headerlink" href="#entity-framework-support" title="永久链接至标题">¶</a></h1>
+<p>An EntityFramework-based implementation is provided for the configuration and operational data extensibility points in IdentityServer.
+The use of EntityFramework allows any EF-supported database to be used with this library.</p>
+<p>The code for this library is located <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4/tree/main/src/EntityFramework">here</a> (with the underlying storage code <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4/tree/main/src/EntityFramework.Storage">here</a>) and the NuGet package is <a class="reference external" href="https://www.nuget.org/packages/IdentityServer4.EntityFramework">here</a>.</p>
+<p>The features provided by this library are broken down into two main areas: configuration store and operational store support.
+These two different areas can be used independently or together, based upon the needs of the hosting application.</p>
+<div class="section" id="configuration-store-support-for-clients-resources-and-cors-settings">
+<h2>Configuration Store support for Clients, Resources, and CORS settings<a class="headerlink" href="#configuration-store-support-for-clients-resources-and-cors-settings" title="永久链接至标题">¶</a></h2>
+<p>If client, identity resource, API resource, or CORS data is desired to be loaded from a EF-supported database
+(rather than use in-memory configuration), then the configuration store can be used.
+This support provides implementations of the <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code>, <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code>, and the <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code> extensibility points.
+These implementations use a <code class="docutils literal notranslate"><span class="pre">DbContext</span></code>-derived class called <code class="docutils literal notranslate"><span class="pre">ConfigurationDbContext</span></code> to model the tables in the database.</p>
+<p>To use the configuration store support, use the <code class="docutils literal notranslate"><span class="pre">AddConfigurationStore</span></code> extension method after the call to <code class="docutils literal notranslate"><span class="pre">AddIdentityServer</span></code>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="n">IServiceProvider</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">string</span> <span class="n">connectionString</span> <span class="p">=</span> <span class="s">@&quot;Data Source=(LocalDb)\MSSQLLocalDB;database=IdentityServer4.EntityFramework-2.0.0;trusted_connection=yes;&quot;</span><span class="p">;</span>
+    <span class="kt">var</span> <span class="n">migrationsAssembly</span> <span class="p">=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">Startup</span><span class="p">).</span><span class="n">GetTypeInfo</span><span class="p">().</span><span class="n">Assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span><span class="p">;</span>
+
+    <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">()</span>
+        <span class="c1">// this adds the config data from DB (clients, resources, CORS)</span>
+        <span class="p">.</span><span class="n">AddConfigurationStore</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="n">options</span><span class="p">.</span><span class="n">ConfigureDbContext</span> <span class="p">=</span> <span class="n">builder</span> <span class="p">=&gt;</span>
+                <span class="n">builder</span><span class="p">.</span><span class="n">UseSqlServer</span><span class="p">(</span><span class="n">connectionString</span><span class="p">,</span>
+                    <span class="n">sql</span> <span class="p">=&gt;</span> <span class="n">sql</span><span class="p">.</span><span class="n">MigrationsAssembly</span><span class="p">(</span><span class="n">migrationsAssembly</span><span class="p">));</span>
+        <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To configure the configuration store, use the <code class="docutils literal notranslate"><span class="pre">ConfigurationStoreOptions</span></code> options object passed to the configuration callback.</p>
+</div>
+<div class="section" id="configurationstoreoptions">
+<h2>ConfigurationStoreOptions<a class="headerlink" href="#configurationstoreoptions" title="永久链接至标题">¶</a></h2>
+<p>This options class contains properties to control the configuration store and <code class="docutils literal notranslate"><span class="pre">ConfigurationDbContext</span></code>.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">ConfigureDbContext</span></code></dt><dd><p>Delegate of type <code class="docutils literal notranslate"><span class="pre">Action&lt;DbContextOptionsBuilder&gt;</span></code> used as a callback to configure the underlying <code class="docutils literal notranslate"><span class="pre">ConfigurationDbContext</span></code>.
+The delegate can configure the <code class="docutils literal notranslate"><span class="pre">ConfigurationDbContext</span></code> in the same way if EF were being used directly with <code class="docutils literal notranslate"><span class="pre">AddDbContext</span></code>, which allows any EF-supported database to be used.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DefaultSchema</span></code></dt><dd><p>Allows setting the default database schema name for all the tables in the <code class="docutils literal notranslate"><span class="pre">ConfigurationDbContext</span></code></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">options</span><span class="p">.</span><span class="n">DefaultSchema</span> <span class="p">=</span> <span class="s">&quot;myConfigurationSchema&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>If you need to change the schema for the Migration History Table, you can chain another action to the <code class="docutils literal notranslate"><span class="pre">UseSqlServer</span></code>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">options</span><span class="p">.</span><span class="n">ConfigureDbContext</span> <span class="p">=</span> <span class="n">b</span> <span class="p">=&gt;</span>
+    <span class="n">b</span><span class="p">.</span><span class="n">UseSqlServer</span><span class="p">(</span><span class="n">connectionString</span><span class="p">,</span>
+        <span class="n">sql</span> <span class="p">=&gt;</span> <span class="n">sql</span><span class="p">.</span><span class="n">MigrationsAssembly</span><span class="p">(</span><span class="n">migrationsAssembly</span><span class="p">).</span><span class="n">MigrationsHistoryTable</span><span class="p">(</span><span class="s">&quot;MyConfigurationMigrationTable&quot;</span><span class="p">,</span> <span class="s">&quot;myConfigurationSchema&quot;</span><span class="p">));</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operational-store-support-for-persisted-grants">
+<h2>Operational Store support for persisted grants<a class="headerlink" href="#operational-store-support-for-persisted-grants" title="永久链接至标题">¶</a></h2>
+<p>If <a class="reference internal" href="../topics/persisted_grants.html#refpersistedgrants"><span class="std std-ref">persisted grants</span></a> are desired to be loaded from a EF-supported database (rather than the default in-memory database), then the operational store can be used.
+This support provides implementations of the <code class="docutils literal notranslate"><span class="pre">IPersistedGrantStore</span></code> extensibility point.
+The implementation uses a <code class="docutils literal notranslate"><span class="pre">DbContext</span></code>-derived class called <code class="docutils literal notranslate"><span class="pre">PersistedGrantDbContext</span></code> to model the table in the database.</p>
+<p>To use the operational store support, use the <code class="docutils literal notranslate"><span class="pre">AddOperationalStore</span></code> extension method after the call to <code class="docutils literal notranslate"><span class="pre">AddIdentityServer</span></code>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="n">IServiceProvider</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">const</span> <span class="kt">string</span> <span class="n">connectionString</span> <span class="p">=</span> <span class="s">@&quot;Data Source=(LocalDb)\MSSQLLocalDB;database=IdentityServer4.EntityFramework-2.0.0;trusted_connection=yes;&quot;</span><span class="p">;</span>
+    <span class="kt">var</span> <span class="n">migrationsAssembly</span> <span class="p">=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">Startup</span><span class="p">).</span><span class="n">GetTypeInfo</span><span class="p">().</span><span class="n">Assembly</span><span class="p">.</span><span class="n">GetName</span><span class="p">().</span><span class="n">Name</span><span class="p">;</span>
+
+    <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">()</span>
+        <span class="c1">// this adds the operational data from DB (codes, tokens, consents)</span>
+        <span class="p">.</span><span class="n">AddOperationalStore</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="n">options</span><span class="p">.</span><span class="n">ConfigureDbContext</span> <span class="p">=</span> <span class="n">builder</span> <span class="p">=&gt;</span>
+                <span class="n">builder</span><span class="p">.</span><span class="n">UseSqlServer</span><span class="p">(</span><span class="n">connectionString</span><span class="p">,</span>
+                    <span class="n">sql</span> <span class="p">=&gt;</span> <span class="n">sql</span><span class="p">.</span><span class="n">MigrationsAssembly</span><span class="p">(</span><span class="n">migrationsAssembly</span><span class="p">));</span>
+
+            <span class="c1">// this enables automatic token cleanup. this is optional.</span>
+            <span class="n">options</span><span class="p">.</span><span class="n">EnableTokenCleanup</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="n">options</span><span class="p">.</span><span class="n">TokenCleanupInterval</span> <span class="p">=</span> <span class="m">3600</span><span class="p">;</span> <span class="c1">// interval in seconds (default is 3600)</span>
+        <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To configure the operational store, use the <code class="docutils literal notranslate"><span class="pre">OperationalStoreOptions</span></code> options object passed to the configuration callback.</p>
+</div>
+<div class="section" id="operationalstoreoptions">
+<h2>OperationalStoreOptions<a class="headerlink" href="#operationalstoreoptions" title="永久链接至标题">¶</a></h2>
+<p>This options class contains properties to control the operational store and <code class="docutils literal notranslate"><span class="pre">PersistedGrantDbContext</span></code>.</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ConfigureDbContext</span></code></dt><dd><p>Delegate of type <code class="docutils literal notranslate"><span class="pre">Action&lt;DbContextOptionsBuilder&gt;</span></code> used as a callback to configure the underlying <code class="docutils literal notranslate"><span class="pre">PersistedGrantDbContext</span></code>.
+The delegate can configure the <code class="docutils literal notranslate"><span class="pre">PersistedGrantDbContext</span></code> in the same way if EF were being used directly with <code class="docutils literal notranslate"><span class="pre">AddDbContext</span></code>, which allows any EF-supported database to be used.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">DefaultSchema</span></code></dt><dd><p>Allows setting the default database schema name for all the tables in the <code class="docutils literal notranslate"><span class="pre">PersistedGrantDbContext</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">EnableTokenCleanup</span></code></dt><dd><p>Indicates whether expired grants will be automatically cleaned up from the database. The default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">TokenCleanupInterval</span></code></dt><dd><p>The token cleanup interval (in seconds). The default is 3600 (1 hour).</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>The token cleanup feature does <em>not</em> remove persisted grants that are <em>consumed</em> (see <a class="reference internal" href="../topics/persisted_grants.html#refpersistedgrants"><span class="std std-ref">persisted grants</span></a>).</p>
+</div>
+</div>
+<div class="section" id="database-creation-and-schema-changes-across-different-versions-of-identityserver">
+<h2>Database creation and schema changes across different versions of IdentityServer<a class="headerlink" href="#database-creation-and-schema-changes-across-different-versions-of-identityserver" title="永久链接至标题">¶</a></h2>
+<p>It is very likely that across different versions of IdentityServer (and the EF support) that the database schema will change to accommodate new and changing features.</p>
+<p>We do not provide any support for creating your database or migrating your data from one version to another.
+You are expected to manage the database creation, schema changes, and data migration in any way your organization sees fit.</p>
+<p>Using EF migrations is one possible approach to this.
+If you do wish to use migrations, then see the <a class="reference internal" href="../quickstarts/5_entityframework.html#refentityframeworkquickstart"><span class="std std-ref">EF quickstart</span></a> for samples on how to get started, or consult the Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/index">documentation on EF migrations</a>.</p>
+<p>We also publish <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4/tree/main/src/EntityFramework.Storage/migrations/SqlServer/Migrations">sample SQL scripts</a> for the current version of the database schema.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="aspnet_identity.html" class="btn btn-neutral float-right" title="ASP.NET Identity Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deviceflow_interactionservice.html" class="btn btn-neutral float-left" title="Device Flow Interaction Service" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

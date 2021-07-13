@@ -1,0 +1,670 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>使用 ASP.NET Core 的交互式应用程序 &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="ASP.NET Core 和 API 访问" href="3_aspnetcore_and_apis.html" />
+    <link rel="prev" title="使用客户端凭据保护 API" href="1_client_credentials.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">使用 ASP.NET Core 的交互式应用程序</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">添加用户界面</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mvc">创建 MVC 客户端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openid-connect">添加对 OpenID Connect 身份作用域的支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">添加测试用户</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mvc-identityserver">将 MVC 客户端添加到 IdentityServer 配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">测试客户端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">添加注销</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userinfo">从 UserInfo 端点获取声明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">进一步的实验</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">添加对外部身份验证的支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#google">添加 Google 支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id13">进一步的实验</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>使用 ASP.NET Core 的交互式应用程序</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/quickstarts/2_interactive_aspnetcore.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="asp-net-core">
+<h1>使用 ASP.NET Core 的交互式应用程序<a class="headerlink" href="#asp-net-core" title="永久链接至标题">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>对于任何先决条件（例如模板），请先查看 <a class="reference internal" href="0_overview.html#refquickstartoverview"><span class="std std-ref">overview</span></a>。</p>
+</div>
+<p>在本快速入门中，我们希望通过 OpenID Connect 协议向我们在上一章中构建的 IdentityServer 添加对交互式用户身份验证的支持。</p>
+<p>一旦到位，我们将创建一个 MVC 应用程序，该应用程序将使用 IdentityServer 进行身份验证。</p>
+<div class="section" id="id1">
+<h2>添加用户界面<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>OpenID Connect 所需的所有协议支持都已内置到 IdentityServer 中。
+您需要为登录、注销、同意和错误提供必要的 UI 部分。</p>
+<p>虽然每个 IdentityServer 实现的外观和感觉以及确切的工作流程可能总是有所不同，但我们提供了一个基于 MVC 的示例 UI，您可以将其用作起点。</p>
+<p>这个 UI 可以在 <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.Quickstart.UI/tree/main">Quickstart UI 仓库</a> 中找到。
+您可以克隆或下载此存储库并将控制器、视图、模型和 CSS 放入您的 IdentityServer Web 应用程序中。</p>
+<p>或者，您可以使用 .NET CLI（从 <code class="docutils literal notranslate"><span class="pre">src/IdentityServer</span></code> 文件夹中运行）:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">dotnet</span> <span class="k">new</span> <span class="n">is4ui</span>
+</pre></div>
+</div>
+<p>添加 MVC UI 后，您还需要在 DI 系统和管道中启用 MVC。
+当您查看 <code class="docutils literal notranslate"><span class="pre">Startup.cs</span></code> 时，您会发现 <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> 和 <code class="docutils literal notranslate"><span class="pre">Configure</span></code> 方法中的注释告诉您如何启用 MVC。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>还有一个名为 <code class="docutils literal notranslate"><span class="pre">is4inmem</span></code> 的模板，它结合了包括标准 UI 在内的基本 IdentityServer。</p>
+</div>
+<p>运行 IdentityServer 应用程序，您现在应该会看到一个主页。</p>
+<p>花一些时间检查控制器和模型 —— 特别是 <code class="docutils literal notranslate"><span class="pre">AccountController</span></code> ，它是主要的 UI 入口点。
+您对它们理解得越好，将来进行修改就越容易。
+大多数代码使用“功能文件夹”样式位于 &quot;Quickstart&quot; 文件夹中。
+如果这种风格不适合您，请随意以您想要的任何方式组织代码。</p>
+</div>
+<div class="section" id="mvc">
+<h2>创建 MVC 客户端<a class="headerlink" href="#mvc" title="永久链接至标题">¶</a></h2>
+<p>接下来，您将创建一个 MVC 应用程序。
+为此使用 ASP.NET Core “Web 应用程序”（即 MVC）模板。</p>
+<p>从 src 文件夹运行:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span>dotnet new mvc -n MvcClient
+cd ..
+dotnet sln add .\src\MvcClient\MvcClient.csproj
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>我们建议通过 IIS Express 使用自托管选项。 其余文档假设您在端口 5002 上使用自托管。</p>
+</div>
+<p>要向 MVC 应用程序添加对 OpenID Connect 身份验证的支持，您首先需要将包含 OpenID Connect 处理程序的 nuget 包添加到您的项目中，例如:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">dotnet</span> <span class="k">add</span> <span class="n">package</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">AspNetCore</span><span class="p">.</span><span class="n">Authentication</span><span class="p">.</span><span class="n">OpenIdConnect</span>
+</pre></div>
+</div>
+<p>..然后将以下内容添加到 <code class="docutils literal notranslate"><span class="pre">Startup</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">using</span> <span class="nn">System.IdentityModel.Tokens.Jwt</span><span class="p">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="n">JwtSecurityTokenHandler</span><span class="p">.</span><span class="n">DefaultMapInboundClaims</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+
+<span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">DefaultScheme</span> <span class="p">=</span> <span class="s">&quot;Cookies&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">DefaultChallengeScheme</span> <span class="p">=</span> <span class="s">&quot;oidc&quot;</span><span class="p">;</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="n">AddCookie</span><span class="p">(</span><span class="s">&quot;Cookies&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;oidc&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="s">&quot;https://localhost:5001&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mvc&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;secret&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ResponseType</span> <span class="p">=</span> <span class="s">&quot;code&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">SaveTokens</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="p">});</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">AddAuthentication</span></code> 将身份验证服务添加到 DI。</p>
+<p>我们使用 cookie 在本地登录用户（通过 <code class="docutils literal notranslate"><span class="pre">&quot;Cookies&quot;</span></code> 作为 <code class="docutils literal notranslate"><span class="pre">DefaultScheme</span></code>），
+我们将 <code class="docutils literal notranslate"><span class="pre">DefaultChallengeScheme</span></code> 设置为 <code class="docutils literal notranslate"><span class="pre">oidc</span></code>，因为当我们需要 用户登录，我们将使用 OpenID Connect 协议。</p>
+<p>然后我们使用 <code class="docutils literal notranslate"><span class="pre">AddCookie</span></code> 来添加可以处理 cookie 的处理程序。</p>
+<p>最后，<code class="docutils literal notranslate"><span class="pre">AddOpenIdConnect</span></code> 用于配置执行 OpenID Connect 协议的处理程序。
+<code class="docutils literal notranslate"><span class="pre">Authority</span></code> 指示可信令牌服务所在的位置。
+然后我们通过 <code class="docutils literal notranslate"><span class="pre">ClientId</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ClientSecret</span></code> 来识别这个客户端。
+<code class="docutils literal notranslate"><span class="pre">SaveTokens</span></code> 用于将来自 IdentityServer 的令牌持久保存在 cookie 中（因为稍后将需要它们）。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>我们使用所谓的 <code class="docutils literal notranslate"><span class="pre">授权码(authorization</span> <span class="pre">code)</span></code> 流程与 PKCE 连接到 OpenID Connect 提供程序。 有关协议流的更多信息，请参见 <a class="reference internal" href="../topics/grant_types.html#refgranttypes"><span class="std std-ref">这里</span></a>。</p>
+</div>
+<p>然后为了确保在每个请求上执行身份验证服务，将 <code class="docutils literal notranslate"><span class="pre">UseAuthentication</span></code> 添加到 <code class="docutils literal notranslate"><span class="pre">Startup</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">Configure</span></code></p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseStaticFiles</span><span class="p">();</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseRouting</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">UseAuthentication</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">UseAuthorization</span><span class="p">();</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseEndpoints</span><span class="p">(</span><span class="n">endpoints</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">endpoints</span><span class="p">.</span><span class="n">MapDefaultControllerRoute</span><span class="p">()</span>
+        <span class="p">.</span><span class="n">RequireAuthorization</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p><code class="docutils literal notranslate"><span class="pre">RequireAuthorization</span></code> 方法禁用对整个应用程序的匿名访问。</p>
+</div>
+<p>如果您想在每个控制器或操作方法的基础上指定授权，您还可以使用 <code class="docutils literal notranslate"><span class="pre">[Authorize]</span></code> 属性。</p>
+<p>还要修改主页视图以显示用户的声明以及 cookie 属性:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">@using</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">AspNetCore</span><span class="p">.</span><span class="n">Authentication</span>
+
+<span class="p">&lt;</span><span class="n">h2</span><span class="p">&gt;</span><span class="n">Claims</span><span class="p">&lt;/</span><span class="n">h2</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="n">dl</span><span class="p">&gt;</span>
+    <span class="n">@foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">claim</span> <span class="k">in</span> <span class="n">User</span><span class="p">.</span><span class="n">Claims</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">&lt;</span><span class="n">dt</span><span class="p">&gt;</span><span class="n">@claim</span><span class="p">.</span><span class="n">Type</span><span class="p">&lt;/</span><span class="n">dt</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="n">dd</span><span class="p">&gt;</span><span class="n">@claim</span><span class="p">.</span><span class="n">Value</span><span class="p">&lt;/</span><span class="n">dd</span><span class="p">&gt;</span>
+    <span class="p">}</span>
+<span class="p">&lt;/</span><span class="n">dl</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="n">h2</span><span class="p">&gt;</span><span class="n">Properties</span><span class="p">&lt;/</span><span class="n">h2</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="n">dl</span><span class="p">&gt;</span>
+    <span class="n">@foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">prop</span> <span class="k">in</span> <span class="p">(</span><span class="k">await</span> <span class="n">Context</span><span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">()).</span><span class="n">Properties</span><span class="p">.</span><span class="n">Items</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="p">&lt;</span><span class="n">dt</span><span class="p">&gt;</span><span class="n">@prop</span><span class="p">.</span><span class="n">Key</span><span class="p">&lt;/</span><span class="n">dt</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="n">dd</span><span class="p">&gt;</span><span class="n">@prop</span><span class="p">.</span><span class="n">Value</span><span class="p">&lt;/</span><span class="n">dd</span><span class="p">&gt;</span>
+    <span class="p">}</span>
+<span class="p">&lt;/</span><span class="n">dl</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+<p>如果您现在使用浏览器导航到应用程序，则会尝试重定向到 IdentityServer —— 这将导致错误，因为 MVC 客户端尚未注册。</p>
+</div>
+<div class="section" id="openid-connect">
+<h2>添加对 OpenID Connect 身份作用域的支持<a class="headerlink" href="#openid-connect" title="永久链接至标题">¶</a></h2>
+<p>与 OAuth 2.0 类似，OpenID Connect 也使用作用域(scopes)概念。
+同样，作用域代表您想要保护和客户端想要访问的东西。
+与 OAuth 相比，OIDC 中的作用域不代表 API，而是代表用户 ID、姓名或电子邮件地址等身份数据。</p>
+<p>通过修改 <code class="docutils literal notranslate"><span class="pre">Config.cs</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">IdentityResources</span></code> 属性，添加对标准 <code class="docutils literal notranslate"><span class="pre">openid</span></code> （subject id）和 <code class="docutils literal notranslate"><span class="pre">profile</span></code> （名字、姓氏等）作用域的支持:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">IdentityResource</span><span class="p">&gt;</span> <span class="n">IdentityResources</span> <span class="p">=&gt;</span>
+    <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">IdentityResource</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="k">new</span> <span class="n">IdentityResources</span><span class="p">.</span><span class="n">OpenId</span><span class="p">(),</span>
+        <span class="k">new</span> <span class="n">IdentityResources</span><span class="p">.</span><span class="n">Profile</span><span class="p">(),</span>
+    <span class="p">};</span>
+</pre></div>
+</div>
+<p>在 <code class="docutils literal notranslate"><span class="pre">startup.cs</span></code> 中向 IdentityServer 注册身份资源:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddInMemoryIdentityResources</span><span class="p">(</span><span class="n">Config</span><span class="p">.</span><span class="n">IdentityResources</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddInMemoryApiScopes</span><span class="p">(</span><span class="n">Config</span><span class="p">.</span><span class="n">ApiScopes</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddInMemoryClients</span><span class="p">(</span><span class="n">Config</span><span class="p">.</span><span class="n">Clients</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>所有标准作用域及其相应的声明都可以在 OpenID Connect <a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims">规范</a> 中找到。</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>添加测试用户<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>示例 UI 还带有一个内存中的“用户数据库”。 您可以通过添加 <code class="docutils literal notranslate"><span class="pre">AddTestUsers</span></code> 扩展方法在 IdentityServer 中启用此功能:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddInMemoryIdentityResources</span><span class="p">(</span><span class="n">Config</span><span class="p">.</span><span class="n">IdentityResources</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddInMemoryApiScopes</span><span class="p">(</span><span class="n">Config</span><span class="p">.</span><span class="n">ApiScopes</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddInMemoryClients</span><span class="p">(</span><span class="n">Config</span><span class="p">.</span><span class="n">Clients</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddTestUsers</span><span class="p">(</span><span class="n">TestUsers</span><span class="p">.</span><span class="n">Users</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>当您导航到 <code class="docutils literal notranslate"><span class="pre">TestUsers</span></code> 类时，您可以看到定义了两个名为 <code class="docutils literal notranslate"><span class="pre">alice</span></code> 和 <code class="docutils literal notranslate"><span class="pre">bob</span></code> 的用户以及一些身份声明。
+您可以使用这些用户登录。</p>
+</div>
+<div class="section" id="mvc-identityserver">
+<h2>将 MVC 客户端添加到 IdentityServer 配置<a class="headerlink" href="#mvc-identityserver" title="永久链接至标题">¶</a></h2>
+<p>最后一步是将 MVC 客户端的新配置条目添加到 IdentityServer。</p>
+<p>基于 OpenID Connect 的客户端与我们目前添加的 OAuth 2.0 客户端非常相似。
+但由于 OIDC 中的流程始终是交互式的，我们需要在配置中添加一些重定向 URL。</p>
+<p>客户端列表应如下所示:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Client</span><span class="p">&gt;</span> <span class="n">Clients</span> <span class="p">=&gt;</span>
+    <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Client</span><span class="p">&gt;</span>
+    <span class="p">{</span>
+        <span class="c1">// 机器到机器客户端（来自快速入门 1 开始）</span>
+        <span class="k">new</span> <span class="n">Client</span>
+        <span class="p">{</span>
+            <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;client&quot;</span><span class="p">,</span>
+            <span class="n">ClientSecrets</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">())</span> <span class="p">},</span>
+
+            <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">ClientCredentials</span><span class="p">,</span>
+            <span class="c1">// 客户端有权访问的作用域</span>
+            <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;api1&quot;</span> <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="c1">// 交互式 ASP.NET Core MVC 客户端</span>
+        <span class="k">new</span> <span class="n">Client</span>
+        <span class="p">{</span>
+            <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mvc&quot;</span><span class="p">,</span>
+            <span class="n">ClientSecrets</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">())</span> <span class="p">},</span>
+
+            <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">Code</span><span class="p">,</span>
+
+            <span class="c1">// 登录后重定向到哪里</span>
+            <span class="n">RedirectUris</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;https://localhost:5002/signin-oidc&quot;</span> <span class="p">},</span>
+
+            <span class="c1">// 注销后重定向到哪里</span>
+            <span class="n">PostLogoutRedirectUris</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;https://localhost:5002/signout-callback-oidc&quot;</span> <span class="p">},</span>
+
+            <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span>
+            <span class="p">{</span>
+                <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">StandardScopes</span><span class="p">.</span><span class="n">OpenId</span><span class="p">,</span>
+                <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">StandardScopes</span><span class="p">.</span><span class="n">Profile</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>测试客户端<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>现在，新的 MVC 客户端的一切都应该就绪了。</p>
+<p>通过导航到受保护的控制器操作来触发身份验证握手。
+您应该会看到重定向到 IdentityServer 的登录页面。</p>
+<img alt="../_images/3_login.png" src="../_images/3_login.png" />
+<p>之后，IdentityServer 将重定向回 MVC 客户端，在那里 OpenID Connect 身份验证处理程序处理响应，并通过设置 cookie 在本地登录用户。
+最后，MVC 视图将显示 cookie 的内容。</p>
+<img alt="../_images/3_claims.png" src="../_images/3_claims.png" />
+<p>如您所见，cookie 有两部分，用户的声明和一些元数据。 此元数据还包含 IdentityServer 发布的原始令牌。
+随意将此令牌复制到 <a class="reference external" href="https://jwt.ms">jwt.ms</a> 以检查其内容。</p>
+</div>
+<div class="section" id="id5">
+<h2>添加注销<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>最后一步是向 MVC 客户端添加注销。</p>
+<p>使用 IdentityServer 这样的身份验证服务，仅清除本地应用程序 cookie 是不够的。
+此外，您还需要往返 IdentityServer 以清除中央单点登录会话。</p>
+<p>确切的协议步骤在 OpenID Connect 处理程序中实现，
+只需将以下代码添加到某个控制器即可触发注销:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="n">IActionResult</span> <span class="nf">Logout</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nf">SignOut</span><span class="p">(</span><span class="s">&quot;Cookies&quot;</span><span class="p">,</span> <span class="s">&quot;oidc&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>这将清除本地 cookie，然后重定向到 IdentityServer。
+IdentityServer 将清除其 cookie，然后为用户提供一个链接以返回到 MVC 应用程序。</p>
+</div>
+<div class="section" id="userinfo">
+<h2>从 UserInfo 端点获取声明<a class="headerlink" href="#userinfo" title="永久链接至标题">¶</a></h2>
+<p>您可能已经注意到，即使我们已将客户端配置为允许检索 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 身份作用域，与该作用域关联的声明（例如 <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">family_name</span></code>, <code class="docutils literal notranslate"><span class="pre">website</span></code> 等）不会出现在返回的令牌中。
+我们需要告诉客户端应用程序，通过指定需要访问的作用域并设置 <code class="docutils literal notranslate"><span class="pre">GetClaimsFromUserInfoEndpoint</span></code> 选项，来从 <a class="reference external" href="https://identityserver4.readthedocs.io/en/latest/endpoints/userinfo.html">UserInfo</a> 端点中提取剩余声明。
+在以下示例中，我们请求的是 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 作用域，但它可以是客户端有权访问的任何作用域（或多个作用域）:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;oidc&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">Scope</span><span class="p">.</span><span class="n">Add</span><span class="p">(</span><span class="s">&quot;profile&quot;</span><span class="p">);</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">GetClaimsFromUserInfoEndpoint</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="c1">// ...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>重新启动客户端应用程序、注销并重新登录后，您应该会看到与页面上显示的 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 身份作用域关联的其他用户声明。</p>
+<img alt="../_images/3_additional_claims.png" src="../_images/3_additional_claims.png" />
+</div>
+<div class="section" id="id7">
+<h2>进一步的实验<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>随意向测试用户添加更多声明 —— 以及更多身份资源。</p>
+<p>定义身份资源的过程如下:</p>
+<ul>
+<li><p>将新的身份资源添加到列表中 —— 为其命名并指定在请求此资源时应返回哪些声明</p></li>
+<li><p>通过客户端配置上的 <code class="docutils literal notranslate"><span class="pre">AllowedScopes</span></code> 属性让客户端访问资源</p></li>
+<li><p>通过将资源添加到客户端中 OpenID Connect 处理程序配置的 <code class="docutils literal notranslate"><span class="pre">Scopes</span></code> 集合来请求资源</p></li>
+<li><p>（可选）如果身份资源与非标准声明（例如 <code class="docutils literal notranslate"><span class="pre">myclaim1</span></code>）相关联，则在客户端添加 JSON 中出现的声明（从 UserInfo 端点返回）和用户 <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/api/system.security.claims.claim">声明</a> 之间的 <a class="reference external" href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.openidconnect.openidconnectoptions.claimactions?view=aspnetcore-3.0">ClaimAction</a> 映射</p>
+<blockquote>
+<div><p>using Microsoft.AspNetCore.Authentication
+// ...
+.AddOpenIdConnect(&quot;oidc&quot;, options =&gt;
+{</p>
+<blockquote>
+<div><p>// ...
+options.ClaimActions.MapUniqueJsonKey(&quot;myclaim1&quot;, &quot;myclaim1&quot;);
+// ...</p>
+</div></blockquote>
+<p>});</p>
+</div></blockquote>
+</li>
+</ul>
+<p>同样值得注意的是，令牌声明的检索是一个扩展点 —— <code class="docutils literal notranslate"><span class="pre">IProfileService</span></code>。
+由于我们使用的是 <code class="docutils literal notranslate"><span class="pre">AddTestUsers</span></code>，因此默认使用 <code class="docutils literal notranslate"><span class="pre">TestUserProfileService</span></code>。
+您可以在 <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4/blob/main/src/IdentityServer4/src/Test/TestUserProfileService.cs">此处</a> 检查源代码以了解其工作原理。</p>
+</div>
+<div class="section" id="id10">
+<h2>添加对外部身份验证的支持<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>接下来，我们将添加对外部身份验证的支持。
+这真的很简单，因为您真正需要的只是一个与 ASP.NET Core 兼容的身份验证处理程序。</p>
+<p>ASP.NET Core 本身支持 Google、Facebook、Twitter、Microsoft Account 和 OpenID Connect。
+此外，您可以在 <a class="reference external" href="https://github.com/aspnet-contrib/AspNet.Security.OAuth.Providers">此处</a> 找到许多其他身份验证提供程序的实现。</p>
+</div>
+<div class="section" id="google">
+<h2>添加 Google 支持<a class="headerlink" href="#google" title="永久链接至标题">¶</a></h2>
+<p>为了能够使用 Google 进行身份验证，您首先需要向他们注册。
+这是在他们的开发人员 <a class="reference external" href="https://console.developers.google.com/">控制台</a> 上完成的。
+创建一个新项目，启用 Google+ API ，并通过将 <em>/signin-google</em> 路径添加到您的基地址（例如 <a class="reference external" href="https://localhost:5001/signin-google">https://localhost:5001/signin-google</a>）来配置您本地 IdentityServer 的回调地址。</p>
+<p>开发者控制台将向您显示由 Google 发布的客户端ID和密码 —— 下一步你会用到的。</p>
+<p>将 Google 身份验证处理程序添加到 IdentityServer 主机的 DI。
+首先添加 <code class="docutils literal notranslate"><span class="pre">Microsoft.AspNetCore.Authentication.Google</span></code> nuget包，然后将此代码段添加到 <code class="docutils literal notranslate"><span class="pre">Startup</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> 中:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;&lt;在此处插入&gt;&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;&lt;在此处插入&gt;&quot;</span><span class="p">;</span>
+    <span class="p">});</span>
+</pre></div>
+</div>
+<p>默认情况下，IdentityServer 专门为外部身份验证的结果配置 cookie 处理程序（使用基于常量 <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> 的方案）。
+Google 处理程序的配置将使用该 cookie 处理程序。</p>
+<p>现在运行 MVC 客户端并尝试进行身份验证 —— 您将在登录页面上看到一个 Google 按钮:</p>
+<img alt="../_images/4_login_page.png" src="../_images/4_login_page.png" />
+<p>在使用MVC客户端进行身份验证之后，您可以看到这些声明现在来自 Google 数据。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>如果您对在登录页面上自动呈现 Google 按钮的魔法感兴趣，请检查 <code class="docutils literal notranslate"><span class="pre">AccountController</span></code> 上的 <code class="docutils literal notranslate"><span class="pre">BuildLoginViewModel</span></code> 方法。</p>
+</div>
+</div>
+<div class="section" id="id13">
+<h2>进一步的实验<a class="headerlink" href="#id13" title="永久链接至标题">¶</a></h2>
+<p>您可以添加额外的外部提供程序。
+我们有一个 <a class="reference external" href="https://demo.identityserver.io">云托管演示</a> 版本的 IdentityServer4，您可以使用 OpenID Connect 进行集成。</p>
+<p>将 OpenId Connect 处理程序添加到 DI:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;&lt;在此处插入&gt;&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;&lt;在此处插入&gt;&quot;</span><span class="p">;</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;oidc&quot;</span><span class="p">,</span> <span class="s">&quot;Demo IdentityServer&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignOutScheme</span> <span class="p">=</span> <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">SignoutScheme</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SaveTokens</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="s">&quot;https://demo.identityserver.io/&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;interactive.confidential&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;secret&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ResponseType</span> <span class="p">=</span> <span class="s">&quot;code&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">TokenValidationParameters</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TokenValidationParameters</span>
+        <span class="p">{</span>
+            <span class="n">NameClaimType</span> <span class="p">=</span> <span class="s">&quot;name&quot;</span><span class="p">,</span>
+            <span class="n">RoleClaimType</span> <span class="p">=</span> <span class="s">&quot;role&quot;</span>
+        <span class="p">};</span>
+    <span class="p">});</span>
+</pre></div>
+</div>
+<p>现在，用户应该能够使用云托管的演示身份提供程序。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>快速入门 UI 自动配置外部用户。 当外部用户第一次登录时，会创建一个新的本地用户，所有外部声明都被复制并与新用户关联。 但是，您处理这种情况的方式完全取决于您。 也许您想先显示一些注册 UI。 可以在 <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.Quickstart.UI">这里</a> 找到默认快速入门的源代码。 可以在 <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.Quickstart.UI/blob/main/Quickstart/Account/ExternalController.cs">此处</a> 找到执行自动配置的控制器。</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="3_aspnetcore_and_apis.html" class="btn btn-neutral float-right" title="ASP.NET Core 和 API 访问" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="1_client_credentials.html" class="btn btn-neutral float-left" title="使用客户端凭据保护 API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

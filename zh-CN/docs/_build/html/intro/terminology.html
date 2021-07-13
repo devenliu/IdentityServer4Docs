@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>术语 &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="支持的规范" href="specs.html" />
+    <link rel="prev" title="大图" href="big_picture.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="big_picture.html">大图</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">术语</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#identityserver">IdentityServer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#user">User</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resources">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#identity-token">Identity Token</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#access-token">Access Token</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>术语</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/intro/terminology.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>术语<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>规范、文档和对象模型使用了一些您应该了解的术语。</p>
+<img alt="../_images/terminology.png" src="../_images/terminology.png" />
+<div class="section" id="identityserver">
+<h2>IdentityServer<a class="headerlink" href="#identityserver" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer 是一个 OpenID Connect 提供者 —— 它实现了 OpenID Connect 和 OAuth 2.0 协议。</p>
+<p>不同的文献对同一角色使用不同的术语 —— 您可能还会发现安全令牌服务、身份提供者、授权服务器、IP-STS 等。</p>
+<p>但简而言之，它们是一个向客户发行安全令牌的软件。</p>
+<p>IdentityServer 有许多作业和功能 —— 包括：</p>
+<ul class="simple">
+<li><p>保护您的资源</p></li>
+<li><p>使用本地帐户存储或通过外部身份提供商对用户进行身份验证</p></li>
+<li><p>提供会话管理和单点登录</p></li>
+<li><p>管理和验证客户端</p></li>
+<li><p>向客户端颁发身份和访问令牌</p></li>
+<li><p>验证令牌</p></li>
+</ul>
+</div>
+<div class="section" id="user">
+<h2>User<a class="headerlink" href="#user" title="永久链接至标题">¶</a></h2>
+<p>用户是使用已注册客户端访问资源的人。</p>
+</div>
+<div class="section" id="client">
+<h2>Client<a class="headerlink" href="#client" title="永久链接至标题">¶</a></h2>
+<p>客户端是一个从 IdentityServer 请求令牌的软件 —— 用于验证用户（请求身份令牌）或访问资源（请求访问令牌）。客户端必须先向 IdentityServer 注册，然后才能请求令牌。</p>
+<p>客户端示例包括 Web 应用程序、原生移动或桌面应用程序、SPA、服务器进程等。</p>
+</div>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="永久链接至标题">¶</a></h2>
+<p>资源是您想要使用 IdentityServer 保护的东西 —— 您的用户的身份数据或 API。</p>
+<p>每个资源都有一个唯一的名称 —— 客户端使用这个名称来指定他们想要访问哪些资源。</p>
+<p><strong>Identity data</strong>
+关于用户的身份信息（又名 claim 声明），例如 姓名或电子邮件地址。</p>
+<p><strong>APIs</strong>
+APIs 资源代表客户端想要调用的功能 —— 通常建模为 Web API，但不一定。</p>
+</div>
+<div class="section" id="identity-token">
+<h2>Identity Token<a class="headerlink" href="#identity-token" title="永久链接至标题">¶</a></h2>
+<p>身份令牌代表身份验证过程的结果。
+它至少包含用户的标识符（称为“sub”，又名 subject claim 主题声明）以及有关用户如何以及何时进行身份验证的信息。
+它可以包含额外的身份数据。</p>
+</div>
+<div class="section" id="access-token">
+<h2>Access Token<a class="headerlink" href="#access-token" title="永久链接至标题">¶</a></h2>
+<p>访问令牌允许访问 API 资源。
+客户端请求访问令牌并将它们转发到 API。
+访问令牌包含有关客户端和用户（如果存在）的信息。
+API 使用该信息来授权对其数据的访问。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="specs.html" class="btn btn-neutral float-right" title="支持的规范" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="big_picture.html" class="btn btn-neutral float-left" title="大图" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

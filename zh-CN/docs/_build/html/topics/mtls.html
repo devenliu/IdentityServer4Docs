@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Mutual TLS &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Authorize Request Objects" href="request_object.html" />
+    <link rel="prev" title="Proof-of-Possession Access Tokens" href="pop.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mutual TLS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#server-setup">Server setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asp-net-core-setup">ASP.NET Core setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#identityserver-setup">IdentityServer setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#client-authentication">Client authentication</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-a-client-certificate-to-authenticate-to-identityserver">Using a client certificate to authenticate to IdentityServer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sender-constrained-access-tokens">Sender-constrained access tokens</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#confirmation-claim">Confirmation claim</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#validating-and-accepting-a-client-certificate-in-apis">Validating and accepting a client certificate in APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#introspection-and-the-confirmation-claim">Introspection and the confirmation claim</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ephemeral-client-certificates">Ephemeral client certificates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-an-ephemeral-certificate-to-request-a-token">Using an ephemeral certificate to request a token</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Mutual TLS</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/topics/mtls.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mutual-tls">
+<h1>Mutual TLS<a class="headerlink" href="#mutual-tls" title="永久链接至标题">¶</a></h1>
+<p>Mutual TLS support in IdentityServer allows for two features:</p>
+<ul class="simple">
+<li><p>Client authentication to IdentityServer endpoints using a TLS X.509 client certificate</p></li>
+<li><p>Binding of access tokens to clients using a TLS X.509 client certificate</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>See the <a class="reference external" href="https://tools.ietf.org/html/rfc8705">&quot;OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens&quot;</a> spec for more information</p>
+</div>
+<p>Setting up MTLS involves a couple of steps.</p>
+<div class="section" id="server-setup">
+<h2>Server setup<a class="headerlink" href="#server-setup" title="永久链接至标题">¶</a></h2>
+<p>It's the hosting layer's responsibility to do the actual validation of the client certificate.
+IdentityServer will then use that information to associate the certificate with a client and embed the certificate information in the access tokens.</p>
+<p>Depending which server you are using, those steps are different. See <a class="reference external" href="https://leastprivilege.com/2020/02/07/mutual-tls-and-proof-of-possession-access-tokens-part-1-setup/">this</a> blog post for more information.</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p><a class="reference external" href="https://github.com/FiloSottile/mkcert">mkcert</a> is a nice utility for creating certificates for development purposes.</p>
+</div>
+</div>
+<div class="section" id="asp-net-core-setup">
+<h2>ASP.NET Core setup<a class="headerlink" href="#asp-net-core-setup" title="永久链接至标题">¶</a></h2>
+<p>Depending on the server setup, there are different ways how the ASP.NET Core host will receive the client certificate. While for IIS and pure Kestrel hosting, there are no additional steps,
+typically you have a reverse proxy in front of the application server.</p>
+<p>This means that in addition to the typical forwarded headers handling, you also need to process the header that contains the client certificate.
+Add a call to <code class="docutils literal notranslate"><span class="pre">app.UseCertificateForwarding();</span></code> in the beginning of your middleware pipeline for that.</p>
+<p>The exact format how proxies transmit the certificates is not standardized, that's why you need to register a callback to do the actual header parsing.
+The Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth?view=aspnetcore-3.1">docs</a> show how that would work for Azure Web Apps.</p>
+<p>If you are using Nginx (which we found is the most flexible hosting option), you need to register the following service in <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddCertificateForwarding</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="c1">// header name might be different, based on your nginx config</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">CertificateHeader</span> <span class="p">=</span> <span class="s">&quot;X-SSL-CERT&quot;</span><span class="p">;</span>
+
+    <span class="n">options</span><span class="p">.</span><span class="n">HeaderConverter</span> <span class="p">=</span> <span class="p">(</span><span class="n">headerValue</span><span class="p">)</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">X509Certificate2</span> <span class="n">clientCertificate</span> <span class="p">=</span> <span class="k">null</span><span class="p">;</span>
+
+        <span class="k">if</span><span class="p">(!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">headerValue</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">bytes</span> <span class="p">=</span> <span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">Uri</span><span class="p">.</span><span class="n">UnescapeDataString</span><span class="p">(</span><span class="n">headerValue</span><span class="p">));</span>
+            <span class="n">clientCertificate</span> <span class="p">=</span> <span class="k">new</span> <span class="n">X509Certificate2</span><span class="p">(</span><span class="n">bytes</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">clientCertificate</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Once, the certificate has been loaded, you also need to setup the authentication handler.
+In this scenario we want to support self-signed certificates, hence the <code class="docutils literal notranslate"><span class="pre">CertificateType.All</span></code> and no revocation checking.
+These settings might be different in your environment:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddCertificate</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">AllowedCertificateTypes</span> <span class="p">=</span> <span class="n">CertificateTypes</span><span class="p">.</span><span class="n">All</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">RevocationMode</span> <span class="p">=</span> <span class="n">X509RevocationMode</span><span class="p">.</span><span class="n">NoCheck</span><span class="p">;</span>
+    <span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="identityserver-setup">
+<h2>IdentityServer setup<a class="headerlink" href="#identityserver-setup" title="永久链接至标题">¶</a></h2>
+<p>Next step is to enable MTLS in IdentityServer. For that you need to specify the name of the certificate authentication handler you set-up in the last step (defaults to <code class="docutils literal notranslate"><span class="pre">Certificate</span></code>),
+and the MTLS hosting strategy.</p>
+<p>In IdentityServer, the mutual TLS endpoints, can be configured in three ways (assuming IdentityServer is running on <code class="docutils literal notranslate"><span class="pre">https://identityserver.io</span></code>:</p>
+<ul class="simple">
+<li><p>path-based - endpoints located beneath the path <code class="docutils literal notranslate"><span class="pre">~/connect/mtls</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">https://identityserver.io/connect/mtls/token</span></code>.</p></li>
+<li><p>sub-domain based - endpoints are on a sub-domain of the main server, e.g. <code class="docutils literal notranslate"><span class="pre">https://mtls.identityserver.io/connect/token</span></code>.</p></li>
+<li><p>domain-based - endpoints are on a different domain, e.g. <code class="docutils literal notranslate"><span class="pre">https://identityserver-mtls.io</span></code>.</p></li>
+</ul>
+<p>For example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">MutualTls</span><span class="p">.</span><span class="n">Enabled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">MutualTls</span><span class="p">.</span><span class="n">ClientCertificateAuthenticationScheme</span> <span class="p">=</span> <span class="s">&quot;Certificate&quot;</span><span class="p">;</span>
+
+    <span class="c1">// uses sub-domain hosting</span>
+    <span class="n">options</span><span class="p">.</span><span class="n">MutualTls</span><span class="p">.</span><span class="n">DomainName</span> <span class="p">=</span> <span class="s">&quot;mtls&quot;</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>IdentityServer's discovery document reflects those endpoints:</p>
+<img alt="../_images/mtls_endpoints.png" src="../_images/mtls_endpoints.png" />
+</div>
+<div class="section" id="client-authentication">
+<h2>Client authentication<a class="headerlink" href="#client-authentication" title="永久链接至标题">¶</a></h2>
+<p>Clients can use a X.509 client certificate as an authentication mechanism to endpoints in IdentityServer.</p>
+<p>For this you need to associate a client certificate with a client in IdentityServer.
+Use the <a class="reference internal" href="startup.html#refstartup"><span class="std std-ref">IdentityServer builder</span></a> to add the services to DI which contain a default implementation to do that either thumbprint or common-name based:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">builder</span><span class="p">.</span><span class="n">AddMutualTlsSecretValidators</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Finally, for the <a class="reference internal" href="../reference/client.html#refclient"><span class="std std-ref">client configuration</span></a> add to the <code class="docutils literal notranslate"><span class="pre">ClientSecrets</span></code> collection a secret type of either <code class="docutils literal notranslate"><span class="pre">SecretTypes.X509CertificateName</span></code>
+if you wish to authenticate the client from the certificate distinguished name or <code class="docutils literal notranslate"><span class="pre">SecretTypes.X509CertificateThumbprint</span></code> if you wish to authenticate the client by certificate thumbprint.</p>
+<p>For example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">new</span> <span class="n">Client</span>
+<span class="p">{</span>
+    <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mtls&quot;</span><span class="p">,</span>
+    <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">ClientCredentials</span><span class="p">,</span>
+    <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;api1&quot;</span> <span class="p">}</span>
+    <span class="n">ClientSecrets</span> <span class="p">=</span>
+    <span class="p">{</span>
+        <span class="c1">// name based</span>
+        <span class="k">new</span> <span class="nf">Secret</span><span class="p">(</span><span class="s">@&quot;CN=mtls.test, OU=ROO\ballen@roo, O=mkcert development certificate&quot;</span><span class="p">,</span> <span class="s">&quot;mtls.test&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">Type</span> <span class="p">=</span> <span class="n">SecretTypes</span><span class="p">.</span><span class="n">X509CertificateName</span>
+        <span class="p">},</span>
+        <span class="c1">// or thumbprint based</span>
+        <span class="c1">//new Secret(&quot;bca0d040847f843c5ee0fa6eb494837470155868&quot;, &quot;mtls.test&quot;)</span>
+        <span class="c1">//{</span>
+        <span class="c1">//    Type = SecretTypes.X509CertificateThumbprint</span>
+        <span class="c1">//},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="using-a-client-certificate-to-authenticate-to-identityserver">
+<h3>Using a client certificate to authenticate to IdentityServer<a class="headerlink" href="#using-a-client-certificate-to-authenticate-to-identityserver" title="永久链接至标题">¶</a></h3>
+<p>When writing a client to connect to IdentityServer, the <code class="docutils literal notranslate"><span class="pre">SocketsHttpHandler</span></code> (or <code class="docutils literal notranslate"><span class="pre">HttpClientHandler</span></code> if you are on older .NET Framework versions)
+class provides a convenient mechanism to add a client certificate to outgoing requests.</p>
+<p>And then HTTP calls (including using the various <a class="reference external" href="https://github.com/IdentityModel/IdentityModel2">IdentityModel</a> extension methods) with the <code class="docutils literal notranslate"><span class="pre">HttpClient</span></code>
+will perform client certificate authentication at the TLS channel.</p>
+<p>For example:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">TokenResponse</span><span class="p">&gt;</span> <span class="n">RequestTokenAsync</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">handler</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SocketsHttpHandler</span><span class="p">();</span>
+    <span class="kt">var</span> <span class="n">cert</span> <span class="p">=</span> <span class="k">new</span> <span class="n">X509Certificate2</span><span class="p">(</span><span class="s">&quot;client.p12&quot;</span><span class="p">,</span> <span class="s">&quot;password&quot;</span><span class="p">);</span>
+    <span class="n">handler</span><span class="p">.</span><span class="n">SslOptions</span><span class="p">.</span><span class="n">ClientCertificates</span> <span class="p">=</span> <span class="k">new</span> <span class="n">X509CertificateCollection</span> <span class="p">{</span> <span class="n">cert</span> <span class="p">};</span>
+
+    <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpClient</span><span class="p">(</span><span class="n">handler</span><span class="p">);</span>
+
+    <span class="kt">var</span> <span class="n">disco</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">GetDiscoveryDocumentAsync</span><span class="p">(</span><span class="n">Constants</span><span class="p">.</span><span class="n">Authority</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">disco</span><span class="p">.</span><span class="n">IsError</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">disco</span><span class="p">.</span><span class="n">Error</span><span class="p">);</span>
+
+    <span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">RequestClientCredentialsTokenAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">ClientCredentialsTokenRequest</span>
+    <span class="p">{</span>
+        <span class="n">Address</span> <span class="p">=</span> <span class="n">disco</span>
+                        <span class="p">.</span><span class="n">TryGetValue</span><span class="p">(</span><span class="n">OidcConstants</span><span class="p">.</span><span class="n">Discovery</span><span class="p">.</span><span class="n">MtlsEndpointAliases</span><span class="p">)</span>
+                        <span class="p">.</span><span class="n">Value</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="n">OidcConstants</span><span class="p">.</span><span class="n">Discovery</span><span class="p">.</span><span class="n">TokenEndpoint</span><span class="p">)</span>
+                        <span class="p">.</span><span class="n">ToString</span><span class="p">(),</span>
+
+        <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mtls&quot;</span><span class="p">,</span>
+        <span class="n">Scope</span> <span class="p">=</span> <span class="s">&quot;api1&quot;</span>
+    <span class="p">});</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">IsError</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">Error</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">response</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="sender-constrained-access-tokens">
+<h2>Sender-constrained access tokens<a class="headerlink" href="#sender-constrained-access-tokens" title="永久链接至标题">¶</a></h2>
+<p>Whenever a client authenticates to IdentityServer using a client certificate, the thumbprint of that certificate will be embedded in the access token.</p>
+<p>Clients can use a X.509 client certificate as a mechanism for sender-constrained access tokens when authenticating to APIs.
+The use of these sender-constrained access tokens requires the client to use the same X.509 client certificate to authenticate to the API as the one used for IdentityServer.</p>
+<div class="section" id="confirmation-claim">
+<h3>Confirmation claim<a class="headerlink" href="#confirmation-claim" title="永久链接至标题">¶</a></h3>
+<p>When a client obtains an access token and has authenticated with mutual TLS, IdentityServer issues a confirmation claim (or <code class="docutils literal notranslate"><span class="pre">cnf</span></code>) in the access token.
+This value is a hash of the thumbprint of the client certificate used to authenticate with IdentityServer.</p>
+<p>This value can be seen in this screen shot of a decoded access token:</p>
+<img alt="../_images/mtls_access_token_with_cnf.png" src="../_images/mtls_access_token_with_cnf.png" />
+<p>The API will then use this value to ensure the client certificate being used at the API matches the confirmation value in the access token.</p>
+</div>
+<div class="section" id="validating-and-accepting-a-client-certificate-in-apis">
+<h3>Validating and accepting a client certificate in APIs<a class="headerlink" href="#validating-and-accepting-a-client-certificate-in-apis" title="永久链接至标题">¶</a></h3>
+<p>As mentioned above for client authentication in IdentityServer, in the API the web server is expected to perform the client certificate validation at the TLS layer.</p>
+<p>Additionally, the API hosting application will need a mechanism to accept the client certificate in order to obtain the thumbprint to perform the confirmation claim validation.
+Below is an example how an API in ASP.NET Core might be configured for both access tokens and client certificates:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddIdentityServerAuthentication</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="s">&quot;https://identityserver.io&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ApiName</span> <span class="p">=</span> <span class="s">&quot;api1&quot;</span><span class="p">;</span>
+
+    <span class="p">})</span>
+    <span class="p">.</span><span class="n">AddCertificate</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">AllowedCertificateTypes</span> <span class="p">=</span> <span class="n">CertificateTypes</span><span class="p">.</span><span class="n">All</span><span class="p">;</span>
+    <span class="p">});</span>
+</pre></div>
+</div>
+<p>Finally, a mechanism is needed that runs after the authentication middleware to authenticate the client certificate and compare the thumbprint to the <code class="docutils literal notranslate"><span class="pre">cnf</span></code> from the access token.</p>
+<p>Below is a simple middleware that checks the claims:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">ConfirmationValidationMiddlewareOptions</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">CertificateSchemeName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="n">CertificateAuthenticationDefaults</span><span class="p">.</span><span class="n">AuthenticationScheme</span><span class="p">;</span>
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">JwtBearerSchemeName</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="n">JwtBearerDefaults</span><span class="p">.</span><span class="n">AuthenticationScheme</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// this middleware validate the cnf claim (if present) against the thumbprint of the X.509 client certificate for the current client</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">ConfirmationValidationMiddleware</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="n">RequestDelegate</span> <span class="n">_next</span><span class="p">;</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="n">ConfirmationValidationMiddlewareOptions</span> <span class="n">_options</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="nf">ConfirmationValidationMiddleware</span><span class="p">(</span><span class="n">RequestDelegate</span> <span class="n">next</span><span class="p">,</span> <span class="n">ConfirmationValidationMiddlewareOptions</span> <span class="n">options</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_next</span> <span class="p">=</span> <span class="n">next</span><span class="p">;</span>
+        <span class="n">_options</span> <span class="p">=</span> <span class="n">options</span> <span class="p">??</span> <span class="k">new</span> <span class="n">ConfirmationValidationMiddlewareOptions</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">Invoke</span><span class="p">(</span><span class="n">HttpContext</span> <span class="n">ctx</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">Identity</span><span class="p">.</span><span class="n">IsAuthenticated</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">var</span> <span class="n">cnfJson</span> <span class="p">=</span> <span class="n">ctx</span><span class="p">.</span><span class="n">User</span><span class="p">.</span><span class="n">FindFirst</span><span class="p">(</span><span class="s">&quot;cnf&quot;</span><span class="p">)?.</span><span class="n">Value</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(!</span><span class="n">String</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">cnfJson</span><span class="p">))</span>
+            <span class="p">{</span>
+                <span class="kt">var</span> <span class="n">certResult</span> <span class="p">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="n">_options</span><span class="p">.</span><span class="n">CertificateSchemeName</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(!</span><span class="n">certResult</span><span class="p">.</span><span class="n">Succeeded</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">ChallengeAsync</span><span class="p">(</span><span class="n">_options</span><span class="p">.</span><span class="n">CertificateSchemeName</span><span class="p">);</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+
+                <span class="kt">var</span> <span class="n">certificate</span> <span class="p">=</span> <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">Connection</span><span class="p">.</span><span class="n">GetClientCertificateAsync</span><span class="p">();</span>
+                <span class="kt">var</span> <span class="n">thumbprint</span> <span class="p">=</span> <span class="n">Base64UrlTextEncoder</span><span class="p">.</span><span class="n">Encode</span><span class="p">(</span><span class="n">certificate</span><span class="p">.</span><span class="n">GetCertHash</span><span class="p">(</span><span class="n">HashAlgorithmName</span><span class="p">.</span><span class="n">SHA256</span><span class="p">));</span>
+
+                <span class="kt">var</span> <span class="n">cnf</span> <span class="p">=</span> <span class="n">JObject</span><span class="p">.</span><span class="n">Parse</span><span class="p">(</span><span class="n">cnfJson</span><span class="p">);</span>
+                <span class="kt">var</span> <span class="n">sha256</span> <span class="p">=</span> <span class="n">cnf</span><span class="p">.</span><span class="n">Value</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="s">&quot;x5t#S256&quot;</span><span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">sha256</span><span class="p">)</span> <span class="p">||</span>
+                    <span class="p">!</span><span class="n">thumbprint</span><span class="p">.</span><span class="n">Equals</span><span class="p">(</span><span class="n">sha256</span><span class="p">,</span> <span class="n">StringComparison</span><span class="p">.</span><span class="n">Ordinal</span><span class="p">))</span>
+                <span class="p">{</span>
+                    <span class="k">await</span> <span class="n">ctx</span><span class="p">.</span><span class="n">ChallengeAsync</span><span class="p">(</span><span class="n">_options</span><span class="p">.</span><span class="n">JwtBearerSchemeName</span><span class="p">);</span>
+                    <span class="k">return</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">await</span> <span class="nf">_next</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>Below is an example pipeline for an API:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">app</span><span class="p">.</span><span class="n">UseForwardedHeaders</span><span class="p">(</span><span class="k">new</span> <span class="n">ForwardedHeadersOptions</span>
+    <span class="p">{</span>
+        <span class="n">ForwardedHeaders</span> <span class="p">=</span> <span class="n">ForwardedHeaders</span><span class="p">.</span><span class="n">XForwardedFor</span> <span class="p">|</span> <span class="n">ForwardedHeaders</span><span class="p">.</span><span class="n">XForwardedProto</span>
+    <span class="p">});</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseCertificateForwarding</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">UseRouting</span><span class="p">();</span>
+<span class="n">app</span><span class="p">.</span><span class="n">UseAuthentication</span><span class="p">();</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseMiddleware</span><span class="p">&lt;</span><span class="n">ConfirmationValidationMiddleware</span><span class="p">&gt;(</span><span class="k">new</span> <span class="n">ConfirmationValidationMiddlewareOptions</span>
+<span class="p">{</span>
+    <span class="n">CertificateSchemeName</span> <span class="p">=</span> <span class="n">CertificateAuthenticationDefaults</span><span class="p">.</span><span class="n">AuthenticationScheme</span><span class="p">,</span>
+    <span class="n">JwtBearerSchemeName</span> <span class="p">=</span> <span class="s">&quot;token&quot;</span>
+<span class="p">});</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseAuthorization</span><span class="p">();</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">UseEndpoints</span><span class="p">(</span><span class="n">endpoints</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="n">endpoints</span><span class="p">.</span><span class="n">MapControllers</span><span class="p">();</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>Once the above middleware succeeds, then the caller has been authenticated with a sender-constrained access token.</p>
+</div>
+<div class="section" id="introspection-and-the-confirmation-claim">
+<h3>Introspection and the confirmation claim<a class="headerlink" href="#introspection-and-the-confirmation-claim" title="永久链接至标题">¶</a></h3>
+<p>When the access token is a JWT, then the confirmation claim is contained in the token as a claim.
+When using reference tokens, the claims that the access token represents must be obtained via introspection.
+The introspection endpoint in IdentityServer will return a <code class="docutils literal notranslate"><span class="pre">cnf</span></code> claim for reference tokens obtained via mutual TLS.</p>
+</div>
+</div>
+<div class="section" id="ephemeral-client-certificates">
+<h2>Ephemeral client certificates<a class="headerlink" href="#ephemeral-client-certificates" title="永久链接至标题">¶</a></h2>
+<p>You can use the IdentityServer MTLS support also to create sender-constrained access tokens without using the client certificate for client authentication.
+This is useful for situations where you already have client secrets in place that you don't want to change, e.g. shared secrets, or better private key JWTs.</p>
+<p>Still, if a client certificate is present, the confirmation claim can be embedded in outgoing access tokens. And as long as the client is using the same client certificate to
+request the token and calling the API, this will give you the desired proof-of-possession properties.</p>
+<p>For this enable the following setting in the options:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
+<span class="p">{</span>
+    <span class="c1">// other settings</span>
+
+    <span class="n">options</span><span class="p">.</span><span class="n">MutualTls</span><span class="p">.</span><span class="n">AlwaysEmitConfirmationClaim</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="section" id="using-an-ephemeral-certificate-to-request-a-token">
+<h3>Using an ephemeral certificate to request a token<a class="headerlink" href="#using-an-ephemeral-certificate-to-request-a-token" title="永久链接至标题">¶</a></h3>
+<p>In this scenario, the client uses <em>some</em> client secret (a shared secret in the below sample), but attaches an additional client certificate to the token request.
+Since this certificate does not need to be associated with the client at the token services, it can be created on the fly:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span>static X509Certificate2 CreateClientCertificate(string name)
+{
+    X500DistinguishedName distinguishedName = new X500DistinguishedName($&quot;CN={name}&quot;);
+
+    using (RSA rsa = RSA.Create(2048))
+    {
+        var request = new CertificateRequest(distinguishedName, rsa, HashAlgorithmName.SHA256,RSASignaturePadding.Pkcs1);
+
+        request.CertificateExtensions.Add(
+            new X509KeyUsageExtension(X509KeyUsageFlags.DataEncipherment | X509KeyUsageFlags.KeyEncipherment | X509KeyUsageFlags.DigitalSignature , false));
+
+        request.CertificateExtensions.Add(
+            new X509EnhancedKeyUsageExtension(
+                new OidCollection { new Oid(&quot;1.3.6.1.5.5.7.3.2&quot;) }, false));
+
+        return request.CreateSelfSigned(new DateTimeOffset(DateTime.UtcNow.AddDays(-1)), new DateTimeOffset(DateTime.UtcNow.AddDays(10)));
+    }
+}
+</pre></div>
+</div>
+<p>Then use this client certificate in addition to the already setup-up client secret:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">TokenResponse</span><span class="p">&gt;</span> <span class="n">RequestTokenAsync</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">HttpClient</span><span class="p">(</span><span class="n">GetHandler</span><span class="p">(</span><span class="n">ClientCertificate</span><span class="p">));</span>
+
+    <span class="kt">var</span> <span class="n">disco</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">GetDiscoveryDocumentAsync</span><span class="p">(</span><span class="s">&quot;https://identityserver.local&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">disco</span><span class="p">.</span><span class="n">IsError</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">disco</span><span class="p">.</span><span class="n">Error</span><span class="p">);</span>
+
+    <span class="kt">var</span> <span class="n">endpoint</span> <span class="p">=</span> <span class="n">disco</span>
+        <span class="p">.</span><span class="n">TryGetValue</span><span class="p">(</span><span class="n">OidcConstants</span><span class="p">.</span><span class="n">Discovery</span><span class="p">.</span><span class="n">MtlsEndpointAliases</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">Value</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;(</span><span class="n">OidcConstants</span><span class="p">.</span><span class="n">Discovery</span><span class="p">.</span><span class="n">TokenEndpoint</span><span class="p">)</span>
+        <span class="p">.</span><span class="n">ToString</span><span class="p">();</span>
+
+    <span class="kt">var</span> <span class="n">response</span> <span class="p">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">RequestClientCredentialsTokenAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">ClientCredentialsTokenRequest</span>
+    <span class="p">{</span>
+        <span class="n">Address</span> <span class="p">=</span> <span class="n">endpoint</span><span class="p">,</span>
+
+        <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;client&quot;</span><span class="p">,</span>
+        <span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;secret&quot;</span><span class="p">,</span>
+        <span class="n">Scope</span> <span class="p">=</span> <span class="s">&quot;api1&quot;</span>
+    <span class="p">});</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">IsError</span><span class="p">)</span> <span class="k">throw</span> <span class="k">new</span> <span class="n">Exception</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">Error</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">response</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="n">SocketsHttpHandler</span> <span class="nf">GetHandler</span><span class="p">(</span><span class="n">X509Certificate2</span> <span class="n">certificate</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">var</span> <span class="n">handler</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SocketsHttpHandler</span><span class="p">();</span>
+    <span class="n">handler</span><span class="p">.</span><span class="n">SslOptions</span><span class="p">.</span><span class="n">ClientCertificates</span> <span class="p">=</span> <span class="k">new</span> <span class="n">X509CertificateCollection</span> <span class="p">{</span> <span class="n">certificate</span> <span class="p">};</span>
+
+    <span class="k">return</span> <span class="n">handler</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="request_object.html" class="btn btn-neutral float-right" title="Authorize Request Objects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pop.html" class="btn btn-neutral float-left" title="Proof-of-Possession Access Tokens" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

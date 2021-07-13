@@ -1,0 +1,567 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>IdentityServer Options &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Identity Resource" href="identity_resource.html" />
+    <link rel="prev" title="End Session Endpoint" href="../endpoints/endsession.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">IdentityServer Options</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#endpoints">Endpoints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#discovery">Discovery</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#events">Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inputlengthrestrictions">InputLengthRestrictions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#userinteraction">UserInteraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cors">CORS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#csp-content-security-policy">CSP (Content Security Policy)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#device-flow">Device Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mutual-tls">Mutual TLS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>IdentityServer Options</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/reference/options.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="identityserver-options">
+<h1>IdentityServer Options<a class="headerlink" href="#identityserver-options" title="永久链接至标题">¶</a></h1>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">IssuerUri</span></code></dt><dd><p>Set the issuer name that will appear in the discovery document and the issued JWT tokens.
+It is recommended to not set this property, which infers the issuer name from the host name that is used by the clients.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">LowerCaseIssuerUri</span></code></dt><dd><p>Set to <code class="docutils literal notranslate"><span class="pre">false</span></code> to preserve the original casing of the IssuerUri. Defaults to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">AccessTokenJwtType</span></code></dt><dd><p>Specifies the value used for the JWT typ header for access tokens (defaults to <code class="docutils literal notranslate"><span class="pre">at+jwt</span></code>).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EmitScopesAsSpaceDelimitedStringInJwt</span></code></dt><dd><p>Specifies whether scopes in JWTs are emitted as array or string</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EmitStaticAudienceClaim</span></code></dt><dd><p>Emits an <code class="docutils literal notranslate"><span class="pre">aud</span></code> claim with the format issuer/resources. Defaults to false.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="永久链接至标题">¶</a></h2>
+<p>Allows enabling/disabling individual endpoints, e.g. token, authorize, userinfo etc.</p>
+<p>By default all endpoints are enabled, but you can lock down your server by disabling endpoint that you don't need.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">EnableJwtRequestUri</span></code></dt><dd><p>JWT request_uri processing is enabled on the authorize endpoint. Defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="discovery">
+<h2>Discovery<a class="headerlink" href="#discovery" title="永久链接至标题">¶</a></h2>
+<p>Allows enabling/disabling various sections of the discovery document, e.g. endpoints, scopes, claims, grant types etc.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CustomEntries</span></code> dictionary allows adding custom elements to the discovery document.</p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CookieAuthenticationScheme</span></code></dt><dd><p>Sets the cookie authentication scheme configured by the host used for interactive users. If not set, the scheme will be inferred from the host's default authentication scheme. This setting is typically used when AddPolicyScheme is used in the host as the default scheme.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CookieLifetime</span></code></dt><dd><p>The authentication cookie lifetime (only effective if the IdentityServer-provided cookie handler is used).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CookieSlidingExpiration</span></code></dt><dd><p>Specifies if the cookie should be sliding or not (only effective if the IdentityServer-provided cookie handler is used).</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CookieSameSiteMode</span></code></dt><dd><p>Specifies the SameSite mode for the internal cookies.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RequireAuthenticatedUserForSignOutMessage</span></code></dt><dd><p>Indicates if user must be authenticated to accept parameters to end session endpoint. Defaults to false.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CheckSessionCookieName</span></code></dt><dd><p>The name of the cookie used for the check session endpoint.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CheckSessionCookieDomain</span></code></dt><dd><p>The domain of the cookie used for the check session endpoint.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CheckSessionCookieSameSiteMode</span></code></dt><dd><p>The SameSite mode of the cookie used for the check session endpoint.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">RequireCspFrameSrcForSignout</span></code></dt><dd><p>If set, will require frame-src CSP headers being emitting on the end session callback endpoint which renders iframes to clients for front-channel signout notification. Defaults to true.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="events">
+<h2>Events<a class="headerlink" href="#events" title="永久链接至标题">¶</a></h2>
+<p>Allows configuring if and which events should be submitted to a registered event sink. See <a class="reference internal" href="../topics/events.html#refevents"><span class="std std-ref">here</span></a> for more information on events.</p>
+</div>
+<div class="section" id="inputlengthrestrictions">
+<h2>InputLengthRestrictions<a class="headerlink" href="#inputlengthrestrictions" title="永久链接至标题">¶</a></h2>
+<p>Allows setting length restrictions on various protocol parameters like client id, scope, redirect URI etc.</p>
+</div>
+<div class="section" id="userinteraction">
+<h2>UserInteraction<a class="headerlink" href="#userinteraction" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">LoginUrl</span></code>, <code class="docutils literal notranslate"><span class="pre">LogoutUrl</span></code>, <code class="docutils literal notranslate"><span class="pre">ConsentUrl</span></code>, <code class="docutils literal notranslate"><span class="pre">ErrorUrl</span></code>, <code class="docutils literal notranslate"><span class="pre">DeviceVerificationUrl</span></code></dt><dd><p>Sets the URLs for the login, logout, consent, error and device verification pages.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">LoginReturnUrlParameter</span></code></dt><dd><p>Sets the name of the return URL parameter passed to the login page. Defaults to <em>returnUrl</em>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">LogoutIdParameter</span></code></dt><dd><p>Sets the name of the logout message id parameter passed to the logout page. Defaults to <em>logoutId</em>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ConsentReturnUrlParameter</span></code></dt><dd><p>Sets the name of the return URL parameter passed to the consent page. Defaults to <em>returnUrl</em>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ErrorIdParameter</span></code></dt><dd><p>Sets the name of the error message id parameter passed to the error page. Defaults to <em>errorId</em>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CustomRedirectReturnUrlParameter</span></code></dt><dd><p>Sets the name of the return URL parameter passed to a custom redirect from the authorization endpoint. Defaults to <em>returnUrl</em>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DeviceVerificationUserCodeParameter</span></code></dt><dd><p>Sets the name of the user code parameter passed to the device verification page. Defaults to <em>userCode</em>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CookieMessageThreshold</span></code></dt><dd><p>Certain interactions between IdentityServer and some UI pages require a cookie to pass state and context (any of the pages above that have a configurable &quot;message id&quot; parameter).
+Since browsers have limits on the number of cookies and their size, this setting is used to prevent too many cookies being created.
+The value sets the maximum number of message cookies of any type that will be created.
+The oldest message cookies will be purged once the limit has been reached.
+This effectively indicates how many tabs can be opened by a user when using IdentityServer.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="caching">
+<h2>Caching<a class="headerlink" href="#caching" title="永久链接至标题">¶</a></h2>
+<p>These settings only apply if the respective caching has been enabled in the services configuration in startup.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ClientStoreExpiration</span></code></dt><dd><p>Cache duration of client configuration loaded from the client store.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ResourceStoreExpiration</span></code></dt><dd><p>Cache duration of identity and API resource configuration loaded from the resource store.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="cors">
+<h2>CORS<a class="headerlink" href="#cors" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer supports CORS for some of its endpoints.
+The underlying CORS implementation is provided from ASP.NET Core, and as such it is automatically registered in the dependency injection system.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CorsPolicyName</span></code></dt><dd><p>Name of the CORS policy that will be evaluated for CORS requests into IdentityServer (defaults to <code class="docutils literal notranslate"><span class="pre">&quot;IdentityServer4&quot;</span></code>).
+The policy provider that handles this is implemented in terms of the <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code> registered in the dependency injection system.
+If you wish to customize the set of CORS origins allowed to connect, then it is recommended that you provide a custom implementation of <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">CorsPaths</span></code></dt><dd><p>The endpoints within IdentityServer where CORS is supported.
+Defaults to the discovery, user info, token, and revocation endpoints.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">PreflightCacheDuration</span></code></dt><dd><p><cite>Nullable&lt;TimeSpan&gt;</cite> indicating the value to be used in the preflight <cite>Access-Control-Max-Age</cite> response header.
+Defaults to <cite>null</cite> indicating no caching header is set on the response.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="csp-content-security-policy">
+<h2>CSP (Content Security Policy)<a class="headerlink" href="#csp-content-security-policy" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer emits CSP headers for some responses, where appropriate.</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Level</span></code></dt><dd><p>The level of CSP to use. CSP Level 2 is used by default, but if older browsers must be supported then this be changed to <code class="docutils literal notranslate"><span class="pre">CspLevel.One</span></code> to accommodate them.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">AddDeprecatedHeader</span></code></dt><dd><p>Indicates if the older <code class="docutils literal notranslate"><span class="pre">X-Content-Security-Policy</span></code> CSP header should also be emitted (in addition to the standards-based header value). Defaults to true.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="device-flow">
+<h2>Device Flow<a class="headerlink" href="#device-flow" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DefaultUserCodeType</span></code></dt><dd><p>The user code type to use, unless set at the client level. Defaults to <em>Numeric</em>, a 9-digit code.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Interval</span></code></dt><dd><p>Defines the minimum allowed polling interval on the token endpoint. Defaults to <em>5</em>.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="mutual-tls">
+<h2>Mutual TLS<a class="headerlink" href="#mutual-tls" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">Enabled</span></code></dt><dd><p>Specifies if MTLS support should be enabled. Defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">ClientCertificateAuthenticationScheme</span></code></dt><dd><p>Specifies the name of the authentication handler for X.509 client certificates. Defaults to <code class="docutils literal notranslate"><span class="pre">&quot;Certificate&quot;</span></code>.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">DomainName</span></code></dt><dd><p>Specifies either the name of the sub-domain or full domain for running the MTLS endpoints (will use path-based endpoints if not set).
+Use a simple string (e.g. &quot;mtls&quot;) to set a sub-domain, use a full domain name (e.g. &quot;identityserver-mtls.io&quot;) to set a full domain name.
+When a full domain name is used, you also need to set the <code class="docutils literal notranslate"><span class="pre">IssuerName</span></code> to a fixed value.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">AlwaysEmitConfirmationClaim</span></code></dt><dd><p>Specifies whether a cnf claim gets emitted for access tokens if a client certificate was present.
+Normally the cnf claims only gets emitted if the client used the client certificate for authentication,
+setting this to true, will set the claim regardless of the authentication method. (defaults to false).</p>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="identity_resource.html" class="btn btn-neutral float-right" title="Identity Resource" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../endpoints/endsession.html" class="btn btn-neutral float-left" title="End Session Endpoint" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

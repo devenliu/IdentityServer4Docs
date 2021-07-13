@@ -1,0 +1,389 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Blog posts &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Videos" href="videos.html" />
+    <link rel="prev" title="Training" href="training.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="training.html">Training</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Blog posts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#team-posts">Team posts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">2020</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">2019</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2018</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">2017</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#community-posts">Community posts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Blog posts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/misc/blogs.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="blog-posts">
+<h1>Blog posts<a class="headerlink" href="#blog-posts" title="永久链接至标题">¶</a></h1>
+<div class="section" id="team-posts">
+<h2>Team posts<a class="headerlink" href="#team-posts" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id1">
+<h3>2020<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/07/06/flexible-access-token-validation-in-asp-net-core/">Flexible Access Token Validation in ASP.NET Core</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/06/18/resource-access-in-identityserver4-v4-and-going-forward/">Resource Access in IdentityServer4 v4 and going forward</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/05/18/automatic-token-management-for-asp-net-core-and-worker-services-1-0/">Automatic Token Management for ASP.NET Core and Worker Services 1.0</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/02/12/mutual-tls-and-proof-of-possession-tokens-summary/">Mutual TLS and Proof-of-Possession Tokens: Summary</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/02/07/mutual-tls-and-proof-of-possession-access-tokens-part-1-setup/">Mutual TLS and Proof-of-Possession Access Tokens – Part 1: Setup</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/02/04/hardening-openid-connect-oauth-authorize-requests-and-responses/">Hardening OpenID Connect/OAuth Authorize Requests (and Responses)</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/01/21/hardening-refresh-tokens/">Hardening Refresh Tokens</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2020/01/15/oauth-2-0-the-long-road-to-proof-of-possession-access-tokens/">OAuth 2.0: The long Road to Proof-of-Possession Access Tokens</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/Outsourcing-IdentityServer4-Token-Signing-to-Azure-Key-Vault">Outsourcing IdentityServer4 Token Signing to Azure Key Vault</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/Using-ECDSA-in-IdentityServer4">Using ECDSA in IdentityServer4</a></p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h3>2019<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://brockallen.com/2019/02/25/scope-and-claims-design-in-identityserver/">Scope and claims design in IdentityServer</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2019/02/08/try-device-flow-with-identityserver4/">Try Device Flow with IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://brockallen.com/2019/01/03/the-state-of-the-implicit-flow-in-oauth2/">The State of the Implicit Flow in OAuth2</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2019/01/18/an-alternative-way-to-secure-spas-with-asp-net-core-openid-connect-oauth-2-0-and-proxykit/">An alternative way to secure SPAs (with ASP.NET Core, OpenID Connect, OAuth 2.0 and ProxyKit)</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2019/01/14/automatic-oauth-2-0-token-management-in-asp-net-core/">Automatic OAuth 2.0 Token Management in ASP.NET Core</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/Encrypting-Identity-Tokens-in-IdentityServer4">Encrypting Identity Tokens in IdentityServer4</a></p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h3>2018<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://leastprivilege.com/2018/01/17/ndc-london-2018-identityserver-update/">IdentityServer4 Update</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/ASPNET-Core-Swagger-UI-Authorization-using-IdentityServer4">IdentityServer and Swagger</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/OAuth/Removing-Shared-Secrets-for-OAuth-Client-Authentication">Removing Shared Secrets for OAuth Client Authentication</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/Creating-Your-Own-IdentityServer4-Storage-Library">Creating Your Own IdentityServer4 Storage Library</a></p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>2017<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p><a class="reference external" href="https://leastprivilege.com/2017/01/15/platforms-where-you-can-run-identityserver4/">Platforms where you can run IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2016/12/14/optimizing-identity-tokens-for-size/">Optimizing Tokens for size</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2016/12/16/identity-vs-permissions/">Identity vs Permissions</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2017/01/06/bootstrapping-openid-connect-discovery/">Bootstraping OpenID Connect: Discovery</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2017/03/03/extending-identityserver4-with-ws-federation-support/">Extending IdentityServer4 with WS-Federation Support</a></p></li>
+<li><p><a class="reference external" href="https://leastprivilege.com/2016/09/06/identityserver4-rc1/">Announcing IdentityServer4 RC1</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/Getting-Started-with-IdentityServer-4">Getting Started with IdentityServer 4</a></p></li>
+<li><p><a class="reference external" href="https://www.scottbrady91.com/Identity-Server/IdentityServer-4-SharePoint-Integration-using-WS-Federation">IdentityServer 4 SharePoint Integration using WS-Federation</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="community-posts">
+<h2>Community posts<a class="headerlink" href="#community-posts" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://nahidfa.com/posts/blazor-webassembly-authentication-and-authorization-with-identityserver4/">Blazor WebAssembly authentication and authorization with IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://lurumad.github.io/aditional-api-endpoints-to-identityserver4">Additional API Endpoints to IdentityServer 4</a></p></li>
+<li><p><a class="reference external" href="https://lurumad.github.io/securing-hangfire-dashboard-using-an-openid-connect-server-identityserver-4">Securing Hangfire Dashboard using an OpenID Connect server (IdentityServer 4)</a></p></li>
+<li><p><a class="reference external" href="https://wp.me/p3mRWu-1Ag/">OAuth 2.0 - OpenID Connect &amp; IdentityServer</a></p></li>
+<li><p><a class="reference external" href="https://espressocoder.com/2019/01/29/running-identityserver4-in-a-docker-container/">Running IdentityServer4 in a Docker Container</a></p></li>
+<li><p><a class="reference external" href="https://lurumad.github.io/connecting-zendesk-and-identityserver-4-saml2p-identity-provider">Connecting Zendesk and IdentityServer 4 SAML 2.0 Identity Provider</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2017/11/11/identityserver4-localization-using-ui_locales-and-the-query-string">IdentityServer localization using ui_locales</a></p></li>
+<li><p><a class="reference external" href="https://www.strathweb.com/2017/10/self-issuing-an-identityserver4-token-in-an-identityserver4-service/">Self-issuing an IdentityServer4 token in an IdentityServer4 service</a></p></li>
+<li><p><a class="reference external" href="https://blogs.msdn.microsoft.com/webdev/2017/01/23/asp-net-core-authentication-with-identityserver4/">IdentityServer4 on the ASP.NET Team Blog</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2016/03/02/angular2-openid-connect-implicit-flow-with-identityserver4/">Angular2 OpenID Connect Implicit Flow with IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2016/09/16/full-server-logout-with-identityserver4-and-openid-connect-implicit-flow/">Full Server Logout with IdentityServer4 and OpenID Connect Implicit Flow</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2016/10/01/identityserver4-webapi-and-angular2-in-a-single-asp-net-core-project/">IdentityServer4, ASP.NET Identity, Web API and Angular in a single Project</a></p></li>
+<li><p><a class="reference external" href="https://social.technet.microsoft.com/wiki/contents/articles/37169.secure-your-netcore-web-applications-using-identityserver-4.aspx">Secure your .NETCore web applications using IdentityServer 4</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2017/04/14/asp-net-core-identityserver4-resource-owner-password-flow-with-custom-userrepository/">ASP.NET Core IdentityServer4 Resource Owner Password Flow with custom UserRepository</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2017/05/06/secure-asp-net-core-mvc-with-angular-using-identityserver4-openid-connect-hybrid-flow//">Secure ASP.NET Core MVC with Angular using IdentityServer4 OpenID Connect Hybrid Flow</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2017/07/11/adding-an-external-microsoft-login-to-identityserver4/">Adding an external Microsoft login to IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2017/07/14/implementing-two-factor-authentication-with-identityserver4-and-twilio/">Implementing Two-factor authentication with IdentityServer4 and Twilio</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2019/03/06/security-experiments-with-grpc-and-asp-net-core-3-0/">Security Experiments with gRPC and ASP.NET Core 3.0</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2019/02/20/asp-net-core-oauth-device-flow-client-with-identityserver4/">ASP.NET Core OAuth Device Flow Client with IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2019/01/29/securing-a-vue-js-app-using-openid-connect-code-flow-with-pkce-and-identityserver4/">Securing a Vue.js app using OpenID Connect Code Flow with PKCE and IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2018/10/18/using-an-odata-client-with-an-asp-net-core-api/">Using an OData Client with an ASP.NET Core API</a></p></li>
+<li><p><a class="reference external" href="https://damienbod.com/2018/12/18/openid-connect-back-channel-logout-using-azure-redis-cache-and-identityserver4/">OpenID Connect back-channel logout using Azure Redis Cache and IdentityServer4</a></p></li>
+<li><p><a class="reference external" href="https://blog.tretainfotech.com/posts/2018/august/single-sign-out-in-identityserver4-with-back-channel-logout">Single Sign Out in IdentityServer4 with Back Channel Logout</a></p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="videos.html" class="btn btn-neutral float-right" title="Videos" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="training.html" class="btn btn-neutral float-left" title="Training" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

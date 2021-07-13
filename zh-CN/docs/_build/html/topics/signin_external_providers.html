@@ -1,0 +1,510 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Sign-in with External Identity Providers &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Windows Authentication" href="windows.html" />
+    <link rel="prev" title="Sign-in" href="signin.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sign-in with External Identity Providers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-authentication-handlers-for-external-providers">Adding authentication handlers for external providers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-role-of-cookies">The role of cookies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#triggering-the-authentication-handler">Triggering the authentication handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-the-callback-and-signing-in-the-user">Handling the callback and signing in the user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#state-url-length-and-isecuredataformat">State, URL length, and ISecureDataFormat</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Sign-in with External Identity Providers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/topics/signin_external_providers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sign-in-with-external-identity-providers">
+<h1>Sign-in with External Identity Providers<a class="headerlink" href="#sign-in-with-external-identity-providers" title="永久链接至标题">¶</a></h1>
+<p>ASP.NET Core has a flexible way to deal with external authentication. This involves a couple of steps.</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>If you are using ASP.NET Identity, many of the underlying technical details are hidden from you. It is recommended that you also read the Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/">docs</a> and do the ASP.NET Identity <a class="reference internal" href="../quickstarts/6_aspnet_identity.html#refaspnetidentityquickstart"><span class="std std-ref">quickstart</span></a>.</p>
+</div>
+<div class="section" id="adding-authentication-handlers-for-external-providers">
+<h2>Adding authentication handlers for external providers<a class="headerlink" href="#adding-authentication-handlers-for-external-providers" title="永久链接至标题">¶</a></h2>
+<p>The protocol implementation that is needed to talk to an external provider is encapsulated in an <em>authentication handler</em>.
+Some providers use proprietary protocols (e.g. social providers like Facebook) and some use standard protocols, e.g. OpenID Connect, WS-Federation or SAML2p.</p>
+<p>See this <a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html#refexternalauthenticationquickstart"><span class="std std-ref">quickstart</span></a> for step-by-step instructions for adding external authentication and configuring it.</p>
+</div>
+<div class="section" id="the-role-of-cookies">
+<h2>The role of cookies<a class="headerlink" href="#the-role-of-cookies" title="永久链接至标题">¶</a></h2>
+<p>One option on an external authentication handlers is called <code class="docutils literal notranslate"><span class="pre">SignInScheme</span></code>, e.g.:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="s">&quot;scheme of cookie handler to use&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+<p>The signin scheme specifies the name of the cookie handler that will temporarily store the outcome of the external authentication,
+e.g. the claims that got sent by the external provider. This is necessary, since there are typically a couple of redirects involved until you are done with the
+external authentication process.</p>
+<p>Given that this is such a common practise, IdentityServer registers a cookie handler specifically for this external provider workflow.
+The scheme is represented via the <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> constant.
+If you were to use our external cookie handler, then for the <code class="docutils literal notranslate"><span class="pre">SignInScheme</span></code> above you'd assign the value to be the <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> constant:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+<p>You can also register your own custom cookie handler instead, like this:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+    <span class="p">.</span><span class="n">AddCookie</span><span class="p">(</span><span class="s">&quot;YourCustomScheme&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="s">&quot;YourCustomScheme&quot;</span><span class="p">;</span>
+
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>For specialized scenarios, you can also short-circuit the external cookie mechanism and forward the external user directly to the main cookie handler. This typically involves handling events on the external handler to make sure you do the correct claims transformation from the external identity source.</p>
+</div>
+</div>
+<div class="section" id="triggering-the-authentication-handler">
+<h2>Triggering the authentication handler<a class="headerlink" href="#triggering-the-authentication-handler" title="永久链接至标题">¶</a></h2>
+<p>You invoke an external authentication handler via the <code class="docutils literal notranslate"><span class="pre">ChallengeAsync</span></code> extension method on the <code class="docutils literal notranslate"><span class="pre">HttpContext</span></code> (or using the MVC <code class="docutils literal notranslate"><span class="pre">ChallengeResult</span></code>).</p>
+<p>You typically want to pass in some options to the challenge operation, e.g. the path to your callback page and the name of the provider for bookkeeping, e.g.:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">callbackUrl</span> <span class="p">=</span> <span class="n">Url</span><span class="p">.</span><span class="n">Action</span><span class="p">(</span><span class="s">&quot;ExternalLoginCallback&quot;</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">props</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AuthenticationProperties</span>
+<span class="p">{</span>
+    <span class="n">RedirectUri</span> <span class="p">=</span> <span class="n">callbackUrl</span><span class="p">,</span>
+    <span class="n">Items</span> <span class="p">=</span>
+    <span class="p">{</span>
+        <span class="p">{</span> <span class="s">&quot;scheme&quot;</span><span class="p">,</span> <span class="n">provider</span> <span class="p">},</span>
+        <span class="p">{</span> <span class="s">&quot;returnUrl&quot;</span><span class="p">,</span> <span class="n">returnUrl</span> <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">return</span> <span class="nf">Challenge</span><span class="p">(</span><span class="n">provider</span><span class="p">,</span> <span class="n">props</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="handling-the-callback-and-signing-in-the-user">
+<h2>Handling the callback and signing in the user<a class="headerlink" href="#handling-the-callback-and-signing-in-the-user" title="永久链接至标题">¶</a></h2>
+<p>On the callback page your typical tasks are:</p>
+<ul class="simple">
+<li><p>inspect the identity returned by the external provider.</p></li>
+<li><p>make a decision how you want to deal with that user. This might be different based on the fact if this is a new user or a returning user.</p></li>
+<li><p>new users might need additional steps and UI before they are allowed in.</p></li>
+<li><p>probably create a new internal user account that is linked to the external provider.</p></li>
+<li><p>store the external claims that you want to keep.</p></li>
+<li><p>delete the temporary cookie</p></li>
+<li><p>sign-in the user</p></li>
+</ul>
+<p><strong>Inspecting the external identity</strong>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// read external identity from the temporary cookie</span>
+<span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">?.</span><span class="n">Succeeded</span> <span class="p">!=</span> <span class="k">true</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;External authentication error&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// retrieve claims of the external user</span>
+<span class="kt">var</span> <span class="n">externalUser</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Principal</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">externalUser</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;External authentication error&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// retrieve claims of the external user</span>
+<span class="kt">var</span> <span class="n">claims</span> <span class="p">=</span> <span class="n">externalUser</span><span class="p">.</span><span class="n">Claims</span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
+
+<span class="c1">// try to determine the unique id of the external user - the most common claim type for that are the sub claim and the NameIdentifier</span>
+<span class="c1">// depending on the external provider, some other claim type might be used</span>
+<span class="kt">var</span> <span class="n">userIdClaim</span> <span class="p">=</span> <span class="n">claims</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Type</span> <span class="p">==</span> <span class="n">JwtClaimTypes</span><span class="p">.</span><span class="n">Subject</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">userIdClaim</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">userIdClaim</span> <span class="p">=</span> <span class="n">claims</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Type</span> <span class="p">==</span> <span class="n">ClaimTypes</span><span class="p">.</span><span class="n">NameIdentifier</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">userIdClaim</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;Unknown userid&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">var</span> <span class="n">externalUserId</span> <span class="p">=</span> <span class="n">userIdClaim</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">externalProvider</span> <span class="p">=</span> <span class="n">userIdClaim</span><span class="p">.</span><span class="n">Issuer</span><span class="p">;</span>
+
+<span class="c1">// use externalProvider and externalUserId to find your user, or provision a new user</span>
+</pre></div>
+</div>
+<p><strong>Clean-up and sign-in</strong>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// issue authentication cookie for user</span>
+<span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignInAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">IdentityServerUser</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">SubjectId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DisplayName</span> <span class="p">=</span> <span class="n">user</span><span class="p">.</span><span class="n">Username</span><span class="p">,</span>
+    <span class="n">IdentityProvider</span> <span class="p">=</span> <span class="n">provider</span><span class="p">,</span>
+    <span class="n">AdditionalClaims</span> <span class="p">=</span> <span class="n">additionalClaims</span><span class="p">,</span>
+    <span class="n">AuthenticationTime</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span>
+<span class="p">});</span>
+
+<span class="c1">// delete temporary cookie used during external authentication</span>
+<span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignOutAsync</span><span class="p">(</span><span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">);</span>
+
+<span class="c1">// validate return URL and redirect back to authorization endpoint or a local page</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">_interaction</span><span class="p">.</span><span class="n">IsValidReturnUrl</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">)</span> <span class="p">||</span> <span class="n">Url</span><span class="p">.</span><span class="n">IsLocalUrl</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="nf">Redirect</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">return</span> <span class="nf">Redirect</span><span class="p">(</span><span class="s">&quot;~/&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="state-url-length-and-isecuredataformat">
+<h2>State, URL length, and ISecureDataFormat<a class="headerlink" href="#state-url-length-and-isecuredataformat" title="永久链接至标题">¶</a></h2>
+<p>When redirecting to an external provider for sign-in, frequently state from the client application must be round-tripped.
+This means that state is captured prior to leaving the client and preserved until the user has returned to the client application.
+Many protocols, including OpenID Connect, allow passing some sort of state as a parameter as part of the request, and the identity provider will return that state on the response.
+The OpenID Connect authentication handler provided by ASP.NET Core utilizes this feature of the protocol, and that is how it implements the <code class="docutils literal notranslate"><span class="pre">returnUrl</span></code> feature mentioned above.</p>
+<p>The problem with storing state in a request parameter is that the request URL can get too large (over the common limit of 2000 characters).
+The OpenID Connect authentication handler does provide an extensibility point to store the state in your server, rather than in the request URL.
+You can implement this yourself by implementing <code class="docutils literal notranslate"><span class="pre">ISecureDataFormat&lt;AuthenticationProperties&gt;</span></code> and configuring it on the <a class="reference external" href="https://github.com/aspnet/AspNetCore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L249">OpenIdConnectOptions</a>.</p>
+<p>Fortunately, IdentityServer provides an implementation of this for you, backed by the <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code> implementation registered in the DI container (e.g. the standard <code class="docutils literal notranslate"><span class="pre">MemoryDistributedCache</span></code>).
+To use the IdentityServer provided secure data format implementation, simply call the <code class="docutils literal notranslate"><span class="pre">AddOidcStateDataFormatterCache</span></code> extension method on the <code class="docutils literal notranslate"><span class="pre">IServiceCollection</span></code> when configuring DI.
+If no parameters are passed, then all OpenID Connect handlers configured will use the IdentityServer provided secure data format implementation:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// configures the OpenIdConnect handlers to persist the state parameter into the server-side IDistributedCache.</span>
+    <span class="n">services</span><span class="p">.</span><span class="n">AddOidcStateDataFormatterCache</span><span class="p">();</span>
+
+    <span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+        <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;demoidsrv&quot;</span><span class="p">,</span> <span class="s">&quot;IdentityServer&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;aad&quot;</span><span class="p">,</span> <span class="s">&quot;Azure AD&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;adfs&quot;</span><span class="p">,</span> <span class="s">&quot;ADFS&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If only particular schemes are to be configured, then pass those schemes as parameters:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// configures the OpenIdConnect handlers to persist the state parameter into the server-side IDistributedCache.</span>
+    <span class="n">services</span><span class="p">.</span><span class="n">AddOidcStateDataFormatterCache</span><span class="p">(</span><span class="s">&quot;aad&quot;</span><span class="p">,</span> <span class="s">&quot;demoidsrv&quot;</span><span class="p">);</span>
+
+    <span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
+        <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;demoidsrv&quot;</span><span class="p">,</span> <span class="s">&quot;IdentityServer&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;aad&quot;</span><span class="p">,</span> <span class="s">&quot;Azure AD&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;adfs&quot;</span><span class="p">,</span> <span class="s">&quot;ADFS&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// ...</span>
+        <span class="p">});</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="windows.html" class="btn btn-neutral float-right" title="Windows Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="signin.html" class="btn btn-neutral float-left" title="Sign-in" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

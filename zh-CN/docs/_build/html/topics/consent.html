@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Consent &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Protecting APIs" href="apis.html" />
+    <link rel="prev" title="Federation Gateway" href="federation_gateway.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Consent</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#consent-page">Consent Page</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authorization-context">Authorization Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#informing-identityserver-of-the-consent-result">Informing IdentityServer of the consent result</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#returning-the-user-to-the-authorization-endpoint">Returning the user to the authorization endpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Consent</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/topics/consent.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="consent">
+<h1>Consent<a class="headerlink" href="#consent" title="永久链接至标题">¶</a></h1>
+<p>During an authorization request, if IdentityServer requires user consent the browser will be redirected to the consent page.</p>
+<p>Consent is used to allow an end user to grant a client access to resources (<a class="reference internal" href="../reference/identity_resource.html#refidentityresource"><span class="std std-ref">identity</span></a> or <a class="reference internal" href="../reference/api_resource.html#refapiresource"><span class="std std-ref">API</span></a>).
+This is typically only necessary for third-party clients, and can be enabled/disabled per-client on the <a class="reference internal" href="../reference/client.html#refclient"><span class="std std-ref">client settings</span></a>.</p>
+<div class="section" id="consent-page">
+<h2>Consent Page<a class="headerlink" href="#consent-page" title="永久链接至标题">¶</a></h2>
+<p>In order for the user to grant consent, a consent page must be provided by the hosting application.
+The <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.Quickstart.UI">quickstart UI</a> has a basic implementation of a consent page.</p>
+<p>A consent page normally renders the display name of the current user,
+the display name of the client requesting access,
+the logo of the client,
+a link for more information about the client,
+and the list of resources the client is requesting access to.
+It's also common to allow the user to indicate that their consent should be &quot;remembered&quot; so they are not prompted again in the future for the same client.</p>
+<p>Once the user has provided consent, the consent page must inform IdentityServer of the consent, and then the browser must be redirected back to the authorization endpoint.</p>
+</div>
+<div class="section" id="authorization-context">
+<h2>Authorization Context<a class="headerlink" href="#authorization-context" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer will pass a <cite>returnUrl</cite> parameter (configurable on the <a class="reference internal" href="../reference/options.html#refoptions"><span class="std std-ref">user interaction options</span></a>) to the consent page which contains the parameters of the authorization request.
+These parameters provide the context for the consent page, and can be read with help from the <a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">interaction service</span></a>.
+The <code class="docutils literal notranslate"><span class="pre">GetAuthorizationContextAsync</span></code> API will return an instance of <code class="docutils literal notranslate"><span class="pre">AuthorizationRequest</span></code>.</p>
+<p>Additional details about the client or resources can be obtained using the <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> and <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> interfaces.</p>
+</div>
+<div class="section" id="informing-identityserver-of-the-consent-result">
+<h2>Informing IdentityServer of the consent result<a class="headerlink" href="#informing-identityserver-of-the-consent-result" title="永久链接至标题">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">GrantConsentAsync</span></code> API on the <a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">interaction service</span></a> allows the consent page to inform IdentityServer of the outcome of consent (which might also be to deny the client access).</p>
+<p>IdentityServer will temporarily persist the outcome of the consent.
+This persistence uses a cookie by default, as it only needs to last long enough to convey the outcome back to the authorization endpoint.
+This temporary persistence is different than the persistence used for the &quot;remember my consent&quot; feature (and it is the authorization endpoint which persists the &quot;remember my consent&quot; for the user).
+If you wish to use some other persistence between the consent page and the authorization redirect, then you can implement <code class="docutils literal notranslate"><span class="pre">IMessageStore&lt;ConsentResponse&gt;</span></code> and register the implementation in DI.</p>
+</div>
+<div class="section" id="returning-the-user-to-the-authorization-endpoint">
+<h2>Returning the user to the authorization endpoint<a class="headerlink" href="#returning-the-user-to-the-authorization-endpoint" title="永久链接至标题">¶</a></h2>
+<p>Once the consent page has informed IdentityServer of the outcome, the user can be redirected back to the <cite>returnUrl</cite>.
+Your consent page should protect against open redirects by verifying that the <cite>returnUrl</cite> is valid.
+This can be done by calling <code class="docutils literal notranslate"><span class="pre">IsValidReturnUrl</span></code> on the <a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">interaction service</span></a>.
+Also, if <code class="docutils literal notranslate"><span class="pre">GetAuthorizationContextAsync</span></code> returns a non-null result, then you can also trust that the <cite>returnUrl</cite> is valid.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="apis.html" class="btn btn-neutral float-right" title="Protecting APIs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="federation_gateway.html" class="btn btn-neutral float-left" title="Federation Gateway" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

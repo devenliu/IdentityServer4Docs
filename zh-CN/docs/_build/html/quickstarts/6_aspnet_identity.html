@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>使用 ASP.NET Core Identity &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Startup" href="../topics/startup.html" />
+    <link rel="prev" title="使用 EntityFramework Core 获取配置和操作数据" href="5_entityframework.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">使用 ASP.NET Core Identity</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">新的 ASP.NET Core Identity 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">检查新项目</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#identityserveraspnetidentity-csproj">IdentityServerAspNetIdentity.csproj</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#startup-cs">Startup.cs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-cs">Config.cs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#program-cs-seeddata-cs">Program.cs 和 SeedData.cs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accountcontroller">AccountController</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mvc">使用 MVC 客户端登录</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">缺少了什么？</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/add_protocols.html">Adding new Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>使用 ASP.NET Core Identity</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/quickstarts/6_aspnet_identity.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="asp-net-core-identity">
+<h1>使用 ASP.NET Core Identity<a class="headerlink" href="#asp-net-core-identity" title="永久链接至标题">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>对于任何先决条件（例如模板），请先查看 <a class="reference internal" href="0_overview.html#refquickstartoverview"><span class="std std-ref">概述</span></a> 。</p>
+</div>
+<p>IdentityServer 旨在提供灵活性，其中一部分是允许您为您的用户及其数据（包括密码）使用您想使用的任何数据库。
+如果您开始使用新的用户数据库，则 ASP.NET Core Identity 是您可以选择的一个选择。
+本快速入门展示了如何将 ASP.NET Core Identity 与 IdentityServer 结合使用。</p>
+<p>本快速入门使用 ASP.NET Core Identity 的方法是为 IdentityServer 主机创建一个新项目。
+这个新项目将取代我们在之前的快速入门中建立的先前 IdentityServer 项目。
+这个新项目的原因是由于使用 ASP.NET Core Identity 时 UI 资产的差异（主要围绕登录和注销的差异）。
+此解决方案中的所有其他项目（针对客户端和 API）将保持不变。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>本快速入门假设您熟悉 ASP.NET Core Identity 的工作原理。 如果不是，建议先 <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/identity">了解一下</a>。</p>
+</div>
+<div class="section" id="id2">
+<h2>新的 ASP.NET Core Identity 项目<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>第一步是将 ASP.NET Core Identity 的新项目添加到您的解决方案中。
+我们提供了一个模板，其中包含 ASP.NET Core Identity 和 IdentityServer 所需的最少 UI 资产。
+您最终将删除 IdentityServer 的旧项目，但您需要迁移一些项目。</p>
+<p>首先创建一个将使用 ASP.NET Core Identity 的新 IdentityServer 项目:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">quickstart</span><span class="p">/</span><span class="n">src</span>
+<span class="n">dotnet</span> <span class="k">new</span> <span class="n">is4aspid</span> <span class="p">-</span><span class="n">n</span> <span class="n">IdentityServerAspNetIdentity</span>
+</pre></div>
+</div>
+<p>当提示 &quot;seed&quot; 用户数据库时，选择 &quot;Y&quot; 作为 &quot;yes&quot;。
+这将使用我们的 “alice” 和 “bob” 用户填充用户数据库。
+他们的密码是 “Pass123$”。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>该模板使用 Sqlite 作为用户的数据库，并且在模板中预先创建了 EF 迁移。 如果您希望使用不同的数据库提供程序，则需要更改代码中使用的提供程序并重新创建 EF 迁移。</p>
+</div>
+</div>
+<div class="section" id="id3">
+<h2>检查新项目<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>在您选择的编辑器中打开新项目，并检查生成的代码。
+请务必查看：</p>
+<div class="section" id="identityserveraspnetidentity-csproj">
+<h3>IdentityServerAspNetIdentity.csproj<a class="headerlink" href="#identityserveraspnetidentity-csproj" title="永久链接至标题">¶</a></h3>
+<p>注意对 <cite>IdentityServer4.AspNetIdentity</cite> 的引用。
+此 NuGet 包包含 IdentityServer 的 ASP.NET Core Identity 集成组件。</p>
+</div>
+<div class="section" id="startup-cs">
+<h3>Startup.cs<a class="headerlink" href="#startup-cs" title="永久链接至标题">¶</a></h3>
+<p>在`ConfigureServices` 中注意必要的 <code class="docutils literal notranslate"><span class="pre">AddDbContext&lt;ApplicationDbContext&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">AddIdentity&lt;ApplicationUser,</span> <span class="pre">IdentityRole&gt;</span></code> 调用来配置 ASP.NET Core Identity。</p>
+<p>另请注意，您在之前的快速入门中所做的大部分相同 IdentityServer 配置已经完成。
+该模板对客户端和资源使用内存中的样式，它们来自 <cite>Config.cs</cite>。</p>
+<p>最后，注意添加了对 <code class="docutils literal notranslate"><span class="pre">AddAspNetIdentity&lt;ApplicationUser&gt;</span></code> 的新调用。
+<code class="docutils literal notranslate"><span class="pre">AddAspNetIdentity</span></code> 添加了集成层以允许 IdentityServer 访问 ASP.NET Core Identity 用户数据库的用户数据。
+当 IdentityServer 必须将用户的声明添加到令牌中时，这是必需的。</p>
+<p>注意 <code class="docutils literal notranslate"><span class="pre">AddIdentity&lt;ApplicationUser,</span> <span class="pre">IdentityRole&gt;</span></code> 必须在 <code class="docutils literal notranslate"><span class="pre">AddIdentityServer</span></code> 之前调用。</p>
+</div>
+<div class="section" id="config-cs">
+<h3>Config.cs<a class="headerlink" href="#config-cs" title="永久链接至标题">¶</a></h3>
+<p><cite>Config.cs</cite> 包含硬编码的内存客户端和资源定义。
+为了让相同的客户端和 API 像之前的快速入门一样工作，我们需要将旧 IdentityServer 项目中的配置数据复制到这个项目中。
+现在这样做，之后 <cite>Config.cs</cite> 应该是这样的:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">Config</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">IdentityResource</span><span class="p">&gt;</span> <span class="n">IdentityResources</span> <span class="p">=&gt;</span>
+        <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">IdentityResource</span><span class="p">&gt;</span>
+        <span class="p">{</span>
+            <span class="k">new</span> <span class="n">IdentityResources</span><span class="p">.</span><span class="n">OpenId</span><span class="p">(),</span>
+            <span class="k">new</span> <span class="n">IdentityResources</span><span class="p">.</span><span class="n">Profile</span><span class="p">(),</span>
+        <span class="p">};</span>
+
+    <span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">ApiScope</span><span class="p">&gt;</span> <span class="n">ApiScopes</span> <span class="p">=&gt;</span>
+        <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">ApiScope</span><span class="p">&gt;</span>
+        <span class="p">{</span>
+            <span class="k">new</span> <span class="nf">ApiScope</span><span class="p">(</span><span class="s">&quot;api1&quot;</span><span class="p">,</span> <span class="s">&quot;My API&quot;</span><span class="p">)</span>
+        <span class="p">};</span>
+
+    <span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Client</span><span class="p">&gt;</span> <span class="n">Clients</span> <span class="p">=&gt;</span>
+        <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">Client</span><span class="p">&gt;</span>
+        <span class="p">{</span>
+            <span class="c1">// 机器对机器客户端</span>
+            <span class="k">new</span> <span class="n">Client</span>
+            <span class="p">{</span>
+                <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;client&quot;</span><span class="p">,</span>
+                <span class="n">ClientSecrets</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">())</span> <span class="p">},</span>
+
+                <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">ClientCredentials</span><span class="p">,</span>
+                <span class="c1">// 客户端有权访问的范围</span>
+                <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;api1&quot;</span> <span class="p">}</span>
+            <span class="p">},</span>
+
+            <span class="c1">// interactive ASP.NET Core MVC client</span>
+            <span class="k">new</span> <span class="n">Client</span>
+            <span class="p">{</span>
+                <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;mvc&quot;</span><span class="p">,</span>
+                <span class="n">ClientSecrets</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">())</span> <span class="p">},</span>
+
+                <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">Code</span><span class="p">,</span>
+
+                <span class="c1">// 登录后重定向到哪里</span>
+                <span class="n">RedirectUris</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;https://localhost:5002/signin-oidc&quot;</span> <span class="p">},</span>
+
+                <span class="c1">// 注销后重定向到哪里</span>
+                <span class="n">PostLogoutRedirectUris</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;https://localhost:5002/signout-callback-oidc&quot;</span> <span class="p">},</span>
+
+                <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="kt">string</span><span class="p">&gt;</span>
+                <span class="p">{</span>
+                    <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">StandardScopes</span><span class="p">.</span><span class="n">OpenId</span><span class="p">,</span>
+                    <span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">StandardScopes</span><span class="p">.</span><span class="n">Profile</span><span class="p">,</span>
+                    <span class="s">&quot;api1&quot;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>此时，您不再需要旧的 IdentityServer 项目。</p>
+</div>
+<div class="section" id="program-cs-seeddata-cs">
+<h3>Program.cs 和 SeedData.cs<a class="headerlink" href="#program-cs-seeddata-cs" title="永久链接至标题">¶</a></h3>
+<p><cite>Program.cs</cite> 的 <code class="docutils literal notranslate"><span class="pre">Main</span></code> 与大多数 ASP.NET Core 项目略有不同。
+请注意这如何查找名为 <cite>/seed</cite> 的命令行参数，该参数用作在 ASP.NET Core Identity 数据库中为用户提供种子的标志。</p>
+<p>查看 <code class="docutils literal notranslate"><span class="pre">SeedData</span></code> 类代码以了解如何创建数据库以及如何创建第一个用户。</p>
+</div>
+<div class="section" id="accountcontroller">
+<h3>AccountController<a class="headerlink" href="#accountcontroller" title="永久链接至标题">¶</a></h3>
+<p>此模板中要检查的最后一个代码是 <code class="docutils literal notranslate"><span class="pre">AccountController</span></code>。
+这包含与之前的快速入门和模板略有不同的登录和注销代码。
+请注意使用 ASP.NET Core Identity 中的 <code class="docutils literal notranslate"><span class="pre">SignInManager&lt;ApplicationUser&gt;</span></code> 和 <code class="docutils literal notranslate"><span class="pre">UserManager&lt;ApplicationUser&gt;</span></code> 来验证凭据和管理身份验证会话。</p>
+<p>其余大部分代码与之前的快速入门和模板相同。</p>
+</div>
+</div>
+<div class="section" id="mvc">
+<h2>使用 MVC 客户端登录<a class="headerlink" href="#mvc" title="永久链接至标题">¶</a></h2>
+<p>此时，您应该能够运行所有现有的客户端和示例。
+一个例外是 <cite>ResourceOwnerClient</cite> ——密码需要从 <code class="docutils literal notranslate"><span class="pre">password</span></code> 更新为 <code class="docutils literal notranslate"><span class="pre">Pass123$</span></code>。</p>
+<p>启动 MVC 客户端应用程序，您应该能够单击“安全”链接以登录。</p>
+<img alt="../_images/aspid_mvc_client.png" src="../_images/aspid_mvc_client.png" />
+<p>您应该被重定向到 ASP.NET Core Identity 登录页面。
+使用您新创建的用户登录：</p>
+<img alt="../_images/aspid_login.png" src="../_images/aspid_login.png" />
+<p>登录后，您会看到正常的同意页面。
+同意后，您将被重定向回 MVC 客户端应用程序，您的用户声明应在其中列出。</p>
+<img alt="../_images/aspid_claims.png" src="../_images/aspid_claims.png" />
+<p>您还应该能够点击 &quot;Call API using application identity&quot; 以代表用户调用 API：</p>
+<img alt="../_images/aspid_api_claims.png" src="../_images/aspid_api_claims.png" />
+<p>现在，您正在 IdentityServer 中使用来自 ASP.NET Core Identity 的用户。</p>
+</div>
+<div class="section" id="id4">
+<h2>缺少了什么？<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>此模板中的大部分其余代码与我们提供的其他快速入门和模板类似。
+您会注意到此模板中缺少的一件事是用于用户注册、密码重置的 UI 代码，以及您可能期望从 Visual Studio ASP.NET Core Identity 模板中获得的其他内容。</p>
+<p>鉴于使用 ASP.NET Core Identity 的各种要求和不同方法，我们的模板故意不提供这些功能。
+您应该了解 ASP.NET Core Identity 如何工作得足够好，以便将这些功能添加到您的项目中。
+或者，您可以基于 Visual Studio ASP.NET Core Identity 模板创建一个新项目，并将您在这些快速入门中了解的 IdentityServer 功能添加到该项目。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../topics/startup.html" class="btn btn-neutral float-right" title="Startup" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="5_entityframework.html" class="btn btn-neutral float-left" title="使用 EntityFramework Core 获取配置和操作数据" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

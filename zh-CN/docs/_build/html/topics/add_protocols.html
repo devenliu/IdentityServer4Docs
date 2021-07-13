@@ -1,0 +1,384 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Adding new Protocols &mdash; IdentityServer4 1.0.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Tools" href="tools.html" />
+    <link rel="prev" title="Adding more API Endpoints" href="add_apis.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> IdentityServer4
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">介绍</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro/big_picture.html">大图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/terminology.html">术语</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/specs.html">支持的规范</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/packaging.html">打包和构建</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/support.html">支持和咨询选项</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/test.html">演示服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro/contributing.html">贡献</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">快速入门</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/0_overview.html">概述</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/1_client_credentials.html">使用客户端凭据保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html">使用 ASP.NET Core 的交互式应用程序</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">主题</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="refresh_tokens.html">Refresh Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference_tokens.html">Reference Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="persisted_grants.html">Persisted Grants</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pop.html">Proof-of-Possession Access Tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mtls.html">Mutual TLS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="request_object.html">Authorize Request Objects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_token_request_validation.html">Custom Token Request Validation and Issuance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cors.html">CORS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discovery.html">Discovery</a></li>
+<li class="toctree-l1"><a class="reference internal" href="add_apis.html">Adding more API Endpoints</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Adding new Protocols</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#typical-authentication-workflow">Typical authentication workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#useful-identityserver-services">Useful IdentityServer services</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">端点</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/discovery.html">Discovery Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/authorize.html">Authorize Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/token.html">Token Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/userinfo.html">UserInfo Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/device_authorization.html">Device Authorization Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/introspection.html">Introspection Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/revocation.html">Revocation Endpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../endpoints/endsession.html">End Session Endpoint</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">参考</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/options.html">IdentityServer Options</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/identity_resource.html">Identity Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_scope.html">API Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/api_resource.html">API Resource</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/client.html">Client</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/grant_validation_result.html">GrantValidationResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/profileservice.html">Profile Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/interactionservice.html">IdentityServer Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/deviceflow_interactionservice.html">Device Flow Interaction Service</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/ef.html">Entity Framework Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/aspnet_identity.html">ASP.NET Identity Support</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">杂项</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../misc/training.html">Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/blogs.html">Blog posts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../misc/videos.html">Videos</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IdentityServer4</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Adding new Protocols</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/topics/add_protocols.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="adding-new-protocols">
+<h1>Adding new Protocols<a class="headerlink" href="#adding-new-protocols" title="永久链接至标题">¶</a></h1>
+<p>IdentityServer4 allows adding support for other protocols besides the built-in
+support for OpenID Connect and OAuth 2.0.</p>
+<p>You can add those additional protocol endpoints either as middleware or using e.g. MVC controllers.
+In both cases you have access to the ASP.NET Core DI system which allows re-using our
+internal services like access to client definitions or key material.</p>
+<p>A sample for adding WS-Federation support can be found <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.WsFederation">here</a>.</p>
+<div class="section" id="typical-authentication-workflow">
+<h2>Typical authentication workflow<a class="headerlink" href="#typical-authentication-workflow" title="永久链接至标题">¶</a></h2>
+<p>An authentication request typically works like this:</p>
+<ul class="simple">
+<li><p>authentication request arrives at protocol endpoint</p></li>
+<li><p>protocol endpoint does input validation</p></li>
+<li><dl class="simple">
+<dt>redirection to login page with a return URL set back to protocol endpoint (if user is anonymous)</dt><dd><ul>
+<li><p>access to current request details via the <code class="docutils literal notranslate"><span class="pre">IIdentityServerInteractionService</span></code></p></li>
+<li><p>authentication of user (either locally or via external authentication middleware)</p></li>
+<li><p>signing in the user</p></li>
+<li><p>redirect back to protocol endpoint</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>creation of protocol response (token creation and redirect back to client)</p></li>
+</ul>
+</div>
+<div class="section" id="useful-identityserver-services">
+<h2>Useful IdentityServer services<a class="headerlink" href="#useful-identityserver-services" title="永久链接至标题">¶</a></h2>
+<p>To achieve the above workflow, some interaction points with IdentityServer are needed.</p>
+<p><strong>Access to configuration and redirecting to the login page</strong></p>
+<p>You can get access to the IdentityServer configuration by injecting the <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions</span></code>
+class into your code. This, e.g. has the configured path to the login page:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">returnUrl</span> <span class="p">=</span> <span class="n">Url</span><span class="p">.</span><span class="n">Action</span><span class="p">(</span><span class="s">&quot;Index&quot;</span><span class="p">);</span>
+<span class="n">returnUrl</span> <span class="p">=</span> <span class="n">returnUrl</span><span class="p">.</span><span class="n">AddQueryString</span><span class="p">(</span><span class="n">Request</span><span class="p">.</span><span class="n">QueryString</span><span class="p">.</span><span class="n">Value</span><span class="p">);</span>
+
+<span class="kt">var</span> <span class="n">loginUrl</span> <span class="p">=</span> <span class="n">_options</span><span class="p">.</span><span class="n">UserInteraction</span><span class="p">.</span><span class="n">LoginUrl</span><span class="p">;</span>
+<span class="kt">var</span> <span class="n">url</span> <span class="p">=</span> <span class="n">loginUrl</span><span class="p">.</span><span class="n">AddQueryString</span><span class="p">(</span><span class="n">_options</span><span class="p">.</span><span class="n">UserInteraction</span><span class="p">.</span><span class="n">LoginReturnUrlParameter</span><span class="p">,</span> <span class="n">returnUrl</span><span class="p">);</span>
+
+<span class="k">return</span> <span class="nf">Redirect</span><span class="p">(</span><span class="n">url</span><span class="p">);</span>
+</pre></div>
+</div>
+<p><strong>Interaction between the login page and current protocol request</strong></p>
+<p>The <code class="docutils literal notranslate"><span class="pre">IIdentityServerInteractionService</span></code> supports turning a protocol return URL into a
+parsed and validated context object:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">context</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_interaction</span><span class="p">.</span><span class="n">GetAuthorizationContextAsync</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>By default the interaction service only understands OpenID Connect protocol messages.
+To extend support, you can write your own <code class="docutils literal notranslate"><span class="pre">IReturnUrlParser</span></code>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">interface</span> <span class="n">IReturnUrlParser</span>
+<span class="p">{</span>
+    <span class="kt">bool</span> <span class="nf">IsValidReturnUrl</span><span class="p">(</span><span class="kt">string</span> <span class="n">returnUrl</span><span class="p">);</span>
+    <span class="n">Task</span><span class="p">&lt;</span><span class="n">AuthorizationRequest</span><span class="p">&gt;</span> <span class="n">ParseAsync</span><span class="p">(</span><span class="kt">string</span> <span class="n">returnUrl</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>..and then register the parser in DI:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">builder</span><span class="p">.</span><span class="n">Services</span><span class="p">.</span><span class="n">AddTransient</span><span class="p">&lt;</span><span class="n">IReturnUrlParser</span><span class="p">,</span> <span class="n">WsFederationReturnUrlParser</span><span class="p">&gt;();</span>
+</pre></div>
+</div>
+<p>This allows the login page to get to information like the client configuration and other
+protocol parameters.</p>
+<p><strong>Access to configuration and key material for creating the protocol response</strong></p>
+<p>By injecting the <code class="docutils literal notranslate"><span class="pre">IKeyMaterialService</span></code> into your code, you get access to the configured
+signing credential and validation keys:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">credential</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_keys</span><span class="p">.</span><span class="n">GetSigningCredentialsAsync</span><span class="p">();</span>
+<span class="kt">var</span> <span class="n">key</span> <span class="p">=</span> <span class="n">credential</span><span class="p">.</span><span class="n">Key</span> <span class="k">as</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">IdentityModel</span><span class="p">.</span><span class="n">Tokens</span><span class="p">.</span><span class="n">X509SecurityKey</span><span class="p">;</span>
+
+<span class="kt">var</span> <span class="n">descriptor</span> <span class="p">=</span> <span class="k">new</span> <span class="n">SecurityTokenDescriptor</span>
+<span class="p">{</span>
+    <span class="n">AppliesToAddress</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">ClientId</span><span class="p">,</span>
+    <span class="n">Lifetime</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Lifetime</span><span class="p">(</span><span class="n">DateTime</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">,</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">UtcNow</span><span class="p">.</span><span class="n">AddSeconds</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">IdentityTokenLifetime</span><span class="p">)),</span>
+    <span class="n">ReplyToAddress</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Client</span><span class="p">.</span><span class="n">RedirectUris</span><span class="p">.</span><span class="n">First</span><span class="p">(),</span>
+    <span class="n">SigningCredentials</span> <span class="p">=</span> <span class="k">new</span> <span class="n">X509SigningCredentials</span><span class="p">(</span><span class="n">key</span><span class="p">.</span><span class="n">Certificate</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">RelyingParty</span><span class="p">.</span><span class="n">SignatureAlgorithm</span><span class="p">,</span> <span class="n">result</span><span class="p">.</span><span class="n">RelyingParty</span><span class="p">.</span><span class="n">DigestAlgorithm</span><span class="p">),</span>
+    <span class="n">Subject</span> <span class="p">=</span> <span class="n">outgoingSubject</span><span class="p">,</span>
+    <span class="n">TokenIssuerName</span> <span class="p">=</span> <span class="n">_contextAccessor</span><span class="p">.</span><span class="n">HttpContext</span><span class="p">.</span><span class="n">GetIdentityServerIssuerUri</span><span class="p">(),</span>
+    <span class="n">TokenType</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">RelyingParty</span><span class="p">.</span><span class="n">TokenType</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tools.html" class="btn btn-neutral float-right" title="Tools" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="add_apis.html" class="btn btn-neutral float-left" title="Adding more API Endpoints" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; 版权所有 2020, Brock Allen &amp; Dominick Baier.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
