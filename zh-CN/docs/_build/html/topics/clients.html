@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Defining Clients &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>定义客户端 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Sign-in" href="signin.html" />
-    <link rel="prev" title="Defining Resources" href="resources.html" /> 
+    <link rel="next" title="登录" href="signin.html" />
+    <link rel="prev" title="定义资源" href="resources.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,19 +111,19 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">使用 ASP.NET Core Identity</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">主题</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Defining Clients</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#defining-a-client-for-server-to-server-communication">Defining a client for server to server communication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#defining-an-interactive-application-for-use-authentication-and-delegated-api-access">Defining an interactive application for use authentication and delegated API access</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#defining-clients-in-appsettings-json">Defining clients in appsettings.json</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">定义资源</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">定义客户端</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">定义服务器到服务器通信的客户端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">定义用于使用身份验证和委托 API 访问的交互式应用程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#appsettings-json">在 appsettings.json 中定义客户端</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
@@ -231,7 +231,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Defining Clients</li>
+      <li>定义客户端</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -250,24 +250,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="defining-clients">
-<h1>Defining Clients<a class="headerlink" href="#defining-clients" title="永久链接至标题">¶</a></h1>
-<p>Clients represent applications that can request tokens from your identityserver.</p>
-<p>The details vary, but you typically define the following common settings for a client:</p>
+  <div class="section" id="id1">
+<h1>定义客户端<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>客户端表示可以从您的 IdentityServer 请求令牌的应用程序。</p>
+<p>详细信息各不相同，但您通常会为客户端定义以下通用设置：</p>
 <ul class="simple">
-<li><p>a unique client ID</p></li>
-<li><p>a secret if needed</p></li>
-<li><p>the allowed interactions with the token service (called a grant type)</p></li>
-<li><p>a network location where identity and/or access token gets sent to (called a redirect URI)</p></li>
-<li><p>a list of scopes (aka resources) the client is allowed to access</p></li>
+<li><p>唯一的客户端 ID</p></li>
+<li><p>密钥（如果需要的话）</p></li>
+<li><p>允许与令牌服务的交互（称为授权类型）</p></li>
+<li><p>身份和/或访问令牌被发送到的网络位置（称为重定向 URI）</p></li>
+<li><p>允许客户端访问的 scopes（又名 resources）列表</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>At runtime, clients are retrieved via an implementation of the <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code>. This allows loading them from arbitrary data sources like config files or databases. For this document we will use the in-memory version of the client store. You can wire up the in-memory store in <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> via the <code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code> extensions method.</p>
+<p>在运行时，通过 <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> 的实现来检索客户端。 这允许从任意数据源（如配置文件或数据库）加载它们。 对于本文档，我们将使用客户端存储的内存版本。 您可以通过 <code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code> 扩展方法在 <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> 中连接内存存储。</p>
 </div>
-<div class="section" id="defining-a-client-for-server-to-server-communication">
-<h2>Defining a client for server to server communication<a class="headerlink" href="#defining-a-client-for-server-to-server-communication" title="永久链接至标题">¶</a></h2>
-<p>In this scenario no interactive user is present - a service (aka client) wants to communicate with an API (aka scope):</p>
+<div class="section" id="id2">
+<h2>定义服务器到服务器通信的客户端<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>在这种情况下，没有交互式用户存在 —— 服务（又名客户端）想要与 API（又名 scope）通信:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">Clients</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Client</span><span class="p">&gt;</span> <span class="n">Get</span><span class="p">()</span>
@@ -288,10 +288,10 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="defining-an-interactive-application-for-use-authentication-and-delegated-api-access">
-<h2>Defining an interactive application for use authentication and delegated API access<a class="headerlink" href="#defining-an-interactive-application-for-use-authentication-and-delegated-api-access" title="永久链接至标题">¶</a></h2>
-<p>Interactive applications (e.g. web applications or native desktop/mobile) applications use the authorization code flow.
-This flow gives you the best security because the access tokens are transmitted via back-channel calls only (and gives you access to refresh tokens):</p>
+<div class="section" id="api">
+<h2>定义用于使用身份验证和委托 API 访问的交互式应用程序<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
+<p>交互式应用程序（例如 Web 应用程序或原生桌面/移动）应用程序使用授权码流程。
+此流程为您提供最佳安全性，因为访问令牌仅通过反向通道调用传输（并允许您访问刷新令牌）:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">interactiveClient</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Client</span>
 <span class="p">{</span>
     <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;interactive&quot;</span><span class="p">,</span>
@@ -317,12 +317,12 @@ This flow gives you the best security because the access tokens are transmitted 
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>see the <a class="reference internal" href="grant_types.html#refgranttypes"><span class="std std-ref">grant types</span></a> topic for more information on choosing the right grant type for your client.</p>
+<p>请参阅 <a class="reference internal" href="grant_types.html#refgranttypes"><span class="std std-ref">grant types</span></a> 主题，了解有关为您的客户端选择正确的授权类型的更多信息。</p>
 </div>
 </div>
-<div class="section" id="defining-clients-in-appsettings-json">
-<h2>Defining clients in appsettings.json<a class="headerlink" href="#defining-clients-in-appsettings-json" title="永久链接至标题">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code> extensions method also supports adding clients from the ASP.NET Core configuration file. This allows you to define static clients directly from the appsettings.json file:</p>
+<div class="section" id="appsettings-json">
+<h2>在 appsettings.json 中定义客户端<a class="headerlink" href="#appsettings-json" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code> 扩展方法还支持从 ASP.NET Core 配置文件添加客户端。 这允许您直接从 appsettings.json 文件定义静态客户端:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="s">&quot;IdentityServer&quot;</span><span class="p">:</span> <span class="p">{</span>
   <span class="s">&quot;IssuerUri&quot;</span><span class="p">:</span> <span class="s">&quot;urn:sso.company.com&quot;</span><span class="p">,</span>
   <span class="s">&quot;Clients&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -330,7 +330,7 @@ This flow gives you the best security because the access tokens are transmitted 
       <span class="s">&quot;Enabled&quot;</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span>
       <span class="s">&quot;ClientId&quot;</span><span class="p">:</span> <span class="s">&quot;local-dev&quot;</span><span class="p">,</span>
       <span class="s">&quot;ClientName&quot;</span><span class="p">:</span> <span class="s">&quot;Local Development&quot;</span><span class="p">,</span>
-      <span class="s">&quot;ClientSecrets&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s">&quot;Value&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;Insert Sha256 hash of the secret encoded as Base64 string&gt;&quot;</span> <span class="p">}</span> <span class="p">],</span>
+      <span class="s">&quot;ClientSecrets&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s">&quot;Value&quot;</span><span class="p">:</span> <span class="s">&quot;&lt;插入编码为 Base64 字符串的密钥的 Sha256 哈希&gt;&quot;</span> <span class="p">}</span> <span class="p">],</span>
       <span class="s">&quot;AllowedGrantTypes&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s">&quot;client_credentials&quot;</span> <span class="p">],</span>
       <span class="s">&quot;AllowedScopes&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="s">&quot;api1&quot;</span> <span class="p">],</span>
     <span class="p">}</span>
@@ -338,7 +338,7 @@ This flow gives you the best security because the access tokens are transmitted 
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Then pass the configuration section to the <code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code> method:</p>
+<p>然后将配置部分传递给 <code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code> 方法:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">AddInMemoryClients</span><span class="p">(</span><span class="n">configuration</span><span class="p">.</span><span class="n">GetSection</span><span class="p">(</span><span class="s">&quot;IdentityServer:Clients&quot;</span><span class="p">))</span>
 </pre></div>
 </div>
@@ -351,8 +351,8 @@ This flow gives you the best security because the access tokens are transmitted 
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="signin.html" class="btn btn-neutral float-right" title="Sign-in" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="resources.html" class="btn btn-neutral float-left" title="Defining Resources" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="signin.html" class="btn btn-neutral float-right" title="登录" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="resources.html" class="btn btn-neutral float-left" title="定义资源" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

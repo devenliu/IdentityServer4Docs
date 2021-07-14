@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sign-in with External Identity Providers &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>使用外部身份提供商登录 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Windows Authentication" href="windows.html" />
-    <link rel="prev" title="Sign-in" href="signin.html" /> 
+    <link rel="prev" title="登录" href="signin.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,20 +111,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">使用 ASP.NET Core Identity</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">主题</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Sign-in with External Identity Providers</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#adding-authentication-handlers-for-external-providers">Adding authentication handlers for external providers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#the-role-of-cookies">The role of cookies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#triggering-the-authentication-handler">Triggering the authentication handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#handling-the-callback-and-signing-in-the-user">Handling the callback and signing in the user</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#state-url-length-and-isecuredataformat">State, URL length, and ISecureDataFormat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">定义资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">定义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">使用外部身份提供商登录</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id3">为外部提供商添加身份验证处理程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cookie">Cookie 的作用</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">触发身份验证处理程序</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">处理回调并登录用户</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#url-isecuredataformat">状态、URL 长度和 ISecureDataFormat</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
@@ -233,7 +233,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Sign-in with External Identity Providers</li>
+      <li>使用外部身份提供商登录</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -252,38 +252,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sign-in-with-external-identity-providers">
-<h1>Sign-in with External Identity Providers<a class="headerlink" href="#sign-in-with-external-identity-providers" title="永久链接至标题">¶</a></h1>
-<p>ASP.NET Core has a flexible way to deal with external authentication. This involves a couple of steps.</p>
+  <div class="section" id="id1">
+<h1>使用外部身份提供商登录<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>ASP.NET Core 有一种灵活的方式来处理外部身份验证。 这涉及几个步骤。</p>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>If you are using ASP.NET Identity, many of the underlying technical details are hidden from you. It is recommended that you also read the Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/">docs</a> and do the ASP.NET Identity <a class="reference internal" href="../quickstarts/6_aspnet_identity.html#refaspnetidentityquickstart"><span class="std std-ref">quickstart</span></a>.</p>
+<p>如果您使用的是 ASP.NET Identity，许多底层技术细节对您来说是隐藏的。 建议您还阅读 Microsoft <a class="reference external" href="https://docs.microsoft.com/zh-cn/aspnet/core/security/authentication/social/">文档</a> 并执行 ASP.NET Identity <a class="reference internal" href="../quickstarts/6_aspnet_identity.html#refaspnetidentityquickstart"><span class="std std-ref">快速入门</span></a>。</p>
 </div>
-<div class="section" id="adding-authentication-handlers-for-external-providers">
-<h2>Adding authentication handlers for external providers<a class="headerlink" href="#adding-authentication-handlers-for-external-providers" title="永久链接至标题">¶</a></h2>
-<p>The protocol implementation that is needed to talk to an external provider is encapsulated in an <em>authentication handler</em>.
-Some providers use proprietary protocols (e.g. social providers like Facebook) and some use standard protocols, e.g. OpenID Connect, WS-Federation or SAML2p.</p>
-<p>See this <a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html#refexternalauthenticationquickstart"><span class="std std-ref">quickstart</span></a> for step-by-step instructions for adding external authentication and configuring it.</p>
+<div class="section" id="id3">
+<h2>为外部提供商添加身份验证处理程序<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>与外部提供者对话所需的协议实现封装在 <em>authentication handler</em> 中。
+一些提供商使用专有协议（例如 Facebook 等社交提供商），一些提供商使用标准协议，例如 OpenID Connect、WS-Federation 或 SAML2p。</p>
+<p>有关添加外部身份验证和配置它的分步说明，请参阅此 <a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html#refexternalauthenticationquickstart"><span class="std std-ref">快速入门</span></a>。</p>
 </div>
-<div class="section" id="the-role-of-cookies">
-<h2>The role of cookies<a class="headerlink" href="#the-role-of-cookies" title="永久链接至标题">¶</a></h2>
-<p>One option on an external authentication handlers is called <code class="docutils literal notranslate"><span class="pre">SignInScheme</span></code>, e.g.:</p>
+<div class="section" id="cookie">
+<h2>Cookie 的作用<a class="headerlink" href="#cookie" title="永久链接至标题">¶</a></h2>
+<p>外部身份验证处理程序的一个选项称为 <code class="docutils literal notranslate"><span class="pre">SignInScheme</span></code>，例如:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
     <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
-        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="s">&quot;scheme of cookie handler to use&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="s">&quot;要使用的 cookie 处理程序方案&quot;</span><span class="p">;</span>
 
         <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
         <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
     <span class="p">})</span>
 </pre></div>
 </div>
-<p>The signin scheme specifies the name of the cookie handler that will temporarily store the outcome of the external authentication,
-e.g. the claims that got sent by the external provider. This is necessary, since there are typically a couple of redirects involved until you are done with the
-external authentication process.</p>
-<p>Given that this is such a common practise, IdentityServer registers a cookie handler specifically for this external provider workflow.
-The scheme is represented via the <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> constant.
-If you were to use our external cookie handler, then for the <code class="docutils literal notranslate"><span class="pre">SignInScheme</span></code> above you'd assign the value to be the <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> constant:</p>
+<p>登录方案指定 将临时存储外部身份验证结果的 cookie 处理程序 的名称，
+例如，由外部提供商发送的声明。
+这是必要的，因为在您完成外部身份验证过程之前，通常会涉及几个重定向。</p>
+<p>鉴于这是一种常见的做法，IdentityServer 专门为此外部提供程序工作流注册了一个 cookie 处理程序。
+该方案通过 <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> 常量表示。
+如果您要使用我们的外部 cookie 处理程序，那么对于上面的 <code class="docutils literal notranslate"><span class="pre">SignInScheme</span></code>，您需要将值分配为 <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.ExternalCookieAuthenticationScheme</span></code> 常量:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
     <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
@@ -294,12 +294,12 @@ If you were to use our external cookie handler, then for the <code class="docuti
     <span class="p">})</span>
 </pre></div>
 </div>
-<p>You can also register your own custom cookie handler instead, like this:</p>
+<p>您也可以注册自己的自定义 cookie 处理程序，如下所示:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
-    <span class="p">.</span><span class="n">AddCookie</span><span class="p">(</span><span class="s">&quot;YourCustomScheme&quot;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">AddCookie</span><span class="p">(</span><span class="s">&quot;你的自定义方案&quot;</span><span class="p">)</span>
     <span class="p">.</span><span class="n">AddGoogle</span><span class="p">(</span><span class="s">&quot;Google&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
-        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="s">&quot;YourCustomScheme&quot;</span><span class="p">;</span>
+        <span class="n">options</span><span class="p">.</span><span class="n">SignInScheme</span> <span class="p">=</span> <span class="s">&quot;你的自定义方案&quot;</span><span class="p">;</span>
 
         <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
         <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">;</span>
@@ -308,13 +308,13 @@ If you were to use our external cookie handler, then for the <code class="docuti
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>For specialized scenarios, you can also short-circuit the external cookie mechanism and forward the external user directly to the main cookie handler. This typically involves handling events on the external handler to make sure you do the correct claims transformation from the external identity source.</p>
+<p>对于特殊场景，您还可以短路外部 cookie 机制，将外部用户直接转发到主 cookie 处理程序。 这通常涉及处理外部处理程序上的事件，以确保您从外部身份源执行正确的声明转换。</p>
 </div>
 </div>
-<div class="section" id="triggering-the-authentication-handler">
-<h2>Triggering the authentication handler<a class="headerlink" href="#triggering-the-authentication-handler" title="永久链接至标题">¶</a></h2>
-<p>You invoke an external authentication handler via the <code class="docutils literal notranslate"><span class="pre">ChallengeAsync</span></code> extension method on the <code class="docutils literal notranslate"><span class="pre">HttpContext</span></code> (or using the MVC <code class="docutils literal notranslate"><span class="pre">ChallengeResult</span></code>).</p>
-<p>You typically want to pass in some options to the challenge operation, e.g. the path to your callback page and the name of the provider for bookkeeping, e.g.:</p>
+<div class="section" id="id4">
+<h2>触发身份验证处理程序<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>您可以通过 HttpContext 上的 <code class="docutils literal notranslate"><span class="pre">ChallengeAsync</span></code> 扩展方法（或使用 MVC <code class="docutils literal notranslate"><span class="pre">ChallengeResult</span></code>）调用外部身份验证处理程序。</p>
+<p>您通常希望将一些选项传递给 challenge 操作，例如 回调页面的路径和簿记提供者的名称，例如:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">callbackUrl</span> <span class="p">=</span> <span class="n">Url</span><span class="p">.</span><span class="n">Action</span><span class="p">(</span><span class="s">&quot;ExternalLoginCallback&quot;</span><span class="p">);</span>
 
 <span class="kt">var</span> <span class="n">props</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AuthenticationProperties</span>
@@ -331,38 +331,38 @@ If you were to use our external cookie handler, then for the <code class="docuti
 </pre></div>
 </div>
 </div>
-<div class="section" id="handling-the-callback-and-signing-in-the-user">
-<h2>Handling the callback and signing in the user<a class="headerlink" href="#handling-the-callback-and-signing-in-the-user" title="永久链接至标题">¶</a></h2>
-<p>On the callback page your typical tasks are:</p>
+<div class="section" id="id5">
+<h2>处理回调并登录用户<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>在回调页面上，您的典型任务是：</p>
 <ul class="simple">
-<li><p>inspect the identity returned by the external provider.</p></li>
-<li><p>make a decision how you want to deal with that user. This might be different based on the fact if this is a new user or a returning user.</p></li>
-<li><p>new users might need additional steps and UI before they are allowed in.</p></li>
-<li><p>probably create a new internal user account that is linked to the external provider.</p></li>
-<li><p>store the external claims that you want to keep.</p></li>
-<li><p>delete the temporary cookie</p></li>
-<li><p>sign-in the user</p></li>
+<li><p>检查外部提供者返回的身份。</p></li>
+<li><p>决定如何与该用户打交道。 根据这是新用户还是回访用户的事实，这可能会有所不同。</p></li>
+<li><p>新用户在被允许进入之前可能需要额外的步骤和 UI。</p></li>
+<li><p>可能会创建一个链接到外部提供商的新内部用户帐户。</p></li>
+<li><p>存储您想要保留的外部声明。</p></li>
+<li><p>删除临时cookie</p></li>
+<li><p>登录用户</p></li>
 </ul>
-<p><strong>Inspecting the external identity</strong>:</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// read external identity from the temporary cookie</span>
+<p><strong>检查外部身份</strong>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 从临时 cookie 中读取外部身份</span>
 <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">?.</span><span class="n">Succeeded</span> <span class="p">!=</span> <span class="k">true</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;External authentication error&quot;</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;外部认证错误&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="c1">// retrieve claims of the external user</span>
+<span class="c1">// 检索外部用户的声明</span>
 <span class="kt">var</span> <span class="n">externalUser</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Principal</span><span class="p">;</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">externalUser</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;External authentication error&quot;</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;外部认证错误&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="c1">// retrieve claims of the external user</span>
+<span class="c1">// 检索外部用户的声明</span>
 <span class="kt">var</span> <span class="n">claims</span> <span class="p">=</span> <span class="n">externalUser</span><span class="p">.</span><span class="n">Claims</span><span class="p">.</span><span class="n">ToList</span><span class="p">();</span>
 
-<span class="c1">// try to determine the unique id of the external user - the most common claim type for that are the sub claim and the NameIdentifier</span>
-<span class="c1">// depending on the external provider, some other claim type might be used</span>
+<span class="c1">// 尝试确定外部用户的唯一 ID —— 最常见的声明类型是 sub 声明和 NameIdentifier，</span>
+<span class="c1">// 具体取决于外部提供者，可能会使用其他一些声明类型</span>
 <span class="kt">var</span> <span class="n">userIdClaim</span> <span class="p">=</span> <span class="n">claims</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Type</span> <span class="p">==</span> <span class="n">JwtClaimTypes</span><span class="p">.</span><span class="n">Subject</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">userIdClaim</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
 <span class="p">{</span>
@@ -370,17 +370,17 @@ If you were to use our external cookie handler, then for the <code class="docuti
 <span class="p">}</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">userIdClaim</span> <span class="p">==</span> <span class="k">null</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;Unknown userid&quot;</span><span class="p">);</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nf">Exception</span><span class="p">(</span><span class="s">&quot;未知 userid&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 
 <span class="kt">var</span> <span class="n">externalUserId</span> <span class="p">=</span> <span class="n">userIdClaim</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
 <span class="kt">var</span> <span class="n">externalProvider</span> <span class="p">=</span> <span class="n">userIdClaim</span><span class="p">.</span><span class="n">Issuer</span><span class="p">;</span>
 
-<span class="c1">// use externalProvider and externalUserId to find your user, or provision a new user</span>
+<span class="c1">// 使用 externalProvider 和 externalUserId 查找您的用户，或配置新用户</span>
 </pre></div>
 </div>
-<p><strong>Clean-up and sign-in</strong>:</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// issue authentication cookie for user</span>
+<p><strong>清理和登录</strong>:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 为用户颁发身份验证 cookie</span>
 <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignInAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">IdentityServerUser</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">SubjectId</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">DisplayName</span> <span class="p">=</span> <span class="n">user</span><span class="p">.</span><span class="n">Username</span><span class="p">,</span>
     <span class="n">IdentityProvider</span> <span class="p">=</span> <span class="n">provider</span><span class="p">,</span>
@@ -388,10 +388,10 @@ If you were to use our external cookie handler, then for the <code class="docuti
     <span class="n">AuthenticationTime</span> <span class="p">=</span> <span class="n">DateTime</span><span class="p">.</span><span class="n">Now</span>
 <span class="p">});</span>
 
-<span class="c1">// delete temporary cookie used during external authentication</span>
+<span class="c1">// 删除外部身份验证期间使用的临时 cookie</span>
 <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignOutAsync</span><span class="p">(</span><span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">ExternalCookieAuthenticationScheme</span><span class="p">);</span>
 
-<span class="c1">// validate return URL and redirect back to authorization endpoint or a local page</span>
+<span class="c1">// 验证返回 URL 并重定向回授权端点或本地页面</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">_interaction</span><span class="p">.</span><span class="n">IsValidReturnUrl</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">)</span> <span class="p">||</span> <span class="n">Url</span><span class="p">.</span><span class="n">IsLocalUrl</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">))</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="nf">Redirect</span><span class="p">(</span><span class="n">returnUrl</span><span class="p">);</span>
@@ -401,21 +401,21 @@ If you were to use our external cookie handler, then for the <code class="docuti
 </pre></div>
 </div>
 </div>
-<div class="section" id="state-url-length-and-isecuredataformat">
-<h2>State, URL length, and ISecureDataFormat<a class="headerlink" href="#state-url-length-and-isecuredataformat" title="永久链接至标题">¶</a></h2>
-<p>When redirecting to an external provider for sign-in, frequently state from the client application must be round-tripped.
-This means that state is captured prior to leaving the client and preserved until the user has returned to the client application.
-Many protocols, including OpenID Connect, allow passing some sort of state as a parameter as part of the request, and the identity provider will return that state on the response.
-The OpenID Connect authentication handler provided by ASP.NET Core utilizes this feature of the protocol, and that is how it implements the <code class="docutils literal notranslate"><span class="pre">returnUrl</span></code> feature mentioned above.</p>
-<p>The problem with storing state in a request parameter is that the request URL can get too large (over the common limit of 2000 characters).
-The OpenID Connect authentication handler does provide an extensibility point to store the state in your server, rather than in the request URL.
-You can implement this yourself by implementing <code class="docutils literal notranslate"><span class="pre">ISecureDataFormat&lt;AuthenticationProperties&gt;</span></code> and configuring it on the <a class="reference external" href="https://github.com/aspnet/AspNetCore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L249">OpenIdConnectOptions</a>.</p>
-<p>Fortunately, IdentityServer provides an implementation of this for you, backed by the <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code> implementation registered in the DI container (e.g. the standard <code class="docutils literal notranslate"><span class="pre">MemoryDistributedCache</span></code>).
-To use the IdentityServer provided secure data format implementation, simply call the <code class="docutils literal notranslate"><span class="pre">AddOidcStateDataFormatterCache</span></code> extension method on the <code class="docutils literal notranslate"><span class="pre">IServiceCollection</span></code> when configuring DI.
-If no parameters are passed, then all OpenID Connect handlers configured will use the IdentityServer provided secure data format implementation:</p>
+<div class="section" id="url-isecuredataformat">
+<h2>状态、URL 长度和 ISecureDataFormat<a class="headerlink" href="#url-isecuredataformat" title="永久链接至标题">¶</a></h2>
+<p>当重定向到外部提供程序进行登录时，来自客户端应用程序的状态必须经常往返。
+这意味着在离开客户端之前捕获状态并保留直到用户返回到客户端应用程序。
+许多协议，包括 OpenID Connect，允许将某种状态作为参数作为请求的一部分传递，身份提供者将在响应中返回该状态。
+ASP.NET Core 提供的 OpenID Connect 身份验证处理程序利用了协议的这一特性，这就是它实现上述 <code class="docutils literal notranslate"><span class="pre">returnUrl</span></code> 特性的方式。</p>
+<p>在请求参数中存储状态的问题是请求 URL 可能变得太大（超过 2000 个字符的常见限制）。
+OpenID Connect 身份验证处理程序确实提供了一个可扩展点来将状态存储在您的服务器中，而不是存储在请求 URL 中。
+您可以通过实现 <code class="docutils literal notranslate"><span class="pre">ISecureDataFormat&lt;AuthenticationProperties&gt;</span></code> 并在 <a class="reference external" href="https://github.com/aspnet/AspNetCore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L249">OpenIdConnectOptions</a> 上配置它来自己实现。</p>
+<p>幸运的是，IdentityServer 为您提供了一个实现，由在 DI 容器中注册的 <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code> 实现支持（例如标准的 <code class="docutils literal notranslate"><span class="pre">MemoryDistributedCache</span></code>）。
+要使用 IdentityServer 提供的安全数据格式实现，只需在配置 DI 时调用 <code class="docutils literal notranslate"><span class="pre">IServiceCollection</span></code> 上的 <code class="docutils literal notranslate"><span class="pre">AddOidcStateDataFormatterCache</span></code> 扩展方法。
+如果没有传递参数，那么所有配置的 OpenID Connect 处理程序将使用 IdentityServer 提供的安全数据格式实现:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// configures the OpenIdConnect handlers to persist the state parameter into the server-side IDistributedCache.</span>
+    <span class="c1">// 配置 OpenIdConnect 处理程序以将状态参数持久化到服务器端 IDistributedCache。</span>
     <span class="n">services</span><span class="p">.</span><span class="n">AddOidcStateDataFormatterCache</span><span class="p">();</span>
 
     <span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
@@ -434,10 +434,10 @@ If no parameters are passed, then all OpenID Connect handlers configured will us
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If only particular schemes are to be configured, then pass those schemes as parameters:</p>
+<p>如果只配置特定的方案，则将这些方案作为参数传递:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// configures the OpenIdConnect handlers to persist the state parameter into the server-side IDistributedCache.</span>
+    <span class="c1">// 配置 OpenIdConnect 处理程序以将状态参数持久化到服务器端 IDistributedCache。</span>
     <span class="n">services</span><span class="p">.</span><span class="n">AddOidcStateDataFormatterCache</span><span class="p">(</span><span class="s">&quot;aad&quot;</span><span class="p">,</span> <span class="s">&quot;demoidsrv&quot;</span><span class="p">);</span>
 
     <span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">()</span>
@@ -466,7 +466,7 @@ If no parameters are passed, then all OpenID Connect handlers configured will us
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="windows.html" class="btn btn-neutral float-right" title="Windows Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="signin.html" class="btn btn-neutral float-left" title="Sign-in" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="signin.html" class="btn btn-neutral float-left" title="登录" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

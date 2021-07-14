@@ -110,7 +110,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">使用 ASP.NET Core 的交互式应用程序</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">添加用户界面</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mvc">创建 MVC 客户端</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#openid-connect">添加对 OpenID Connect 身份作用域的支持</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openid-connect">添加对 OpenID Connect 身份范围的支持</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id3">添加测试用户</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mvc-identityserver">将 MVC 客户端添加到 IdentityServer 配置</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id4">测试客户端</a></li>
@@ -125,14 +125,14 @@
 <li class="toctree-l1"><a class="reference internal" href="3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_javascript_client.html">添加 JavaScript 客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_aspnet_identity.html">使用 ASP.NET Core Identity</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">主题</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../topics/startup.html">Startup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">Defining Resources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">Defining Clients</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/resources.html">定义资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/clients.html">定义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../topics/signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../topics/signin_external_providers.html">Sign-in with External Identity Providers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../topics/windows.html">Windows Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../topics/signout.html">Sign-out</a></li>
@@ -391,11 +391,11 @@ dotnet sln add .\src\MvcClient\MvcClient.csproj
 <p>如果您现在使用浏览器导航到应用程序，则会尝试重定向到 IdentityServer —— 这将导致错误，因为 MVC 客户端尚未注册。</p>
 </div>
 <div class="section" id="openid-connect">
-<h2>添加对 OpenID Connect 身份作用域的支持<a class="headerlink" href="#openid-connect" title="永久链接至标题">¶</a></h2>
-<p>与 OAuth 2.0 类似，OpenID Connect 也使用作用域(scopes)概念。
-同样，作用域代表您想要保护和客户端想要访问的东西。
-与 OAuth 相比，OIDC 中的作用域不代表 API，而是代表用户 ID、姓名或电子邮件地址等身份数据。</p>
-<p>通过修改 <code class="docutils literal notranslate"><span class="pre">Config.cs</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">IdentityResources</span></code> 属性，添加对标准 <code class="docutils literal notranslate"><span class="pre">openid</span></code> （subject id）和 <code class="docutils literal notranslate"><span class="pre">profile</span></code> （名字、姓氏等）作用域的支持:</p>
+<h2>添加对 OpenID Connect 身份范围的支持<a class="headerlink" href="#openid-connect" title="永久链接至标题">¶</a></h2>
+<p>与 OAuth 2.0 类似，OpenID Connect 也使用范围(scopes)概念。
+同样，范围代表您想要保护和客户端想要访问的东西。
+与 OAuth 相比，OIDC 中的范围不代表 API，而是代表用户 ID、姓名或电子邮件地址等身份数据。</p>
+<p>通过修改 <code class="docutils literal notranslate"><span class="pre">Config.cs</span></code> 中的 <code class="docutils literal notranslate"><span class="pre">IdentityResources</span></code> 属性，添加对标准 <code class="docutils literal notranslate"><span class="pre">openid</span></code> （subject id）和 <code class="docutils literal notranslate"><span class="pre">profile</span></code> （名字、姓氏等）范围的支持:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">static</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">IdentityResource</span><span class="p">&gt;</span> <span class="n">IdentityResources</span> <span class="p">=&gt;</span>
     <span class="k">new</span> <span class="n">List</span><span class="p">&lt;</span><span class="n">IdentityResource</span><span class="p">&gt;</span>
     <span class="p">{</span>
@@ -413,7 +413,7 @@ dotnet sln add .\src\MvcClient\MvcClient.csproj
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>所有标准作用域及其相应的声明都可以在 OpenID Connect <a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims">规范</a> 中找到。</p>
+<p>所有标准范围及其相应的声明都可以在 OpenID Connect <a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims">规范</a> 中找到。</p>
 </div>
 </div>
 <div class="section" id="id3">
@@ -445,7 +445,7 @@ dotnet sln add .\src\MvcClient\MvcClient.csproj
             <span class="n">ClientSecrets</span> <span class="p">=</span> <span class="p">{</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">())</span> <span class="p">},</span>
 
             <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">ClientCredentials</span><span class="p">,</span>
-            <span class="c1">// 客户端有权访问的作用域</span>
+            <span class="c1">// 客户端有权访问的范围</span>
             <span class="n">AllowedScopes</span> <span class="p">=</span> <span class="p">{</span> <span class="s">&quot;api1&quot;</span> <span class="p">}</span>
         <span class="p">},</span>
         <span class="c1">// 交互式 ASP.NET Core MVC 客户端</span>
@@ -502,9 +502,9 @@ IdentityServer 将清除其 cookie，然后为用户提供一个链接以返回�
 </div>
 <div class="section" id="userinfo">
 <h2>从 UserInfo 端点获取声明<a class="headerlink" href="#userinfo" title="永久链接至标题">¶</a></h2>
-<p>您可能已经注意到，即使我们已将客户端配置为允许检索 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 身份作用域，与该作用域关联的声明（例如 <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">family_name</span></code>, <code class="docutils literal notranslate"><span class="pre">website</span></code> 等）不会出现在返回的令牌中。
-我们需要告诉客户端应用程序，通过指定需要访问的作用域并设置 <code class="docutils literal notranslate"><span class="pre">GetClaimsFromUserInfoEndpoint</span></code> 选项，来从 <a class="reference external" href="https://identityserver4.readthedocs.io/en/latest/endpoints/userinfo.html">UserInfo</a> 端点中提取剩余声明。
-在以下示例中，我们请求的是 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 作用域，但它可以是客户端有权访问的任何作用域（或多个作用域）:</p>
+<p>您可能已经注意到，即使我们已将客户端配置为允许检索 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 身份范围，与该范围关联的声明（例如 <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">family_name</span></code>, <code class="docutils literal notranslate"><span class="pre">website</span></code> 等）不会出现在返回的令牌中。
+我们需要告诉客户端应用程序，通过指定需要访问的范围并设置 <code class="docutils literal notranslate"><span class="pre">GetClaimsFromUserInfoEndpoint</span></code> 选项，来从 <a class="reference external" href="https://identityserver4.readthedocs.io/en/latest/endpoints/userinfo.html">UserInfo</a> 端点中提取剩余声明。
+在以下示例中，我们请求的是 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 范围，但它可以是客户端有权访问的任何范围（或多个范围）:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="n">AddOpenIdConnect</span><span class="p">(</span><span class="s">&quot;oidc&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
 <span class="p">{</span>
     <span class="c1">// ...</span>
@@ -514,7 +514,7 @@ IdentityServer 将清除其 cookie，然后为用户提供一个链接以返回�
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>重新启动客户端应用程序、注销并重新登录后，您应该会看到与页面上显示的 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 身份作用域关联的其他用户声明。</p>
+<p>重新启动客户端应用程序、注销并重新登录后，您应该会看到与页面上显示的 <code class="docutils literal notranslate"><span class="pre">profile</span></code> 身份范围关联的其他用户声明。</p>
 <img alt="../_images/3_additional_claims.png" src="../_images/3_additional_claims.png" />
 </div>
 <div class="section" id="id7">

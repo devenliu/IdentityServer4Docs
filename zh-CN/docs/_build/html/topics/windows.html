@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Windows Authentication &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>Windows 身份验证 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Sign-out" href="signout.html" />
-    <link rel="prev" title="Sign-in with External Identity Providers" href="signin_external_providers.html" /> 
+    <link rel="prev" title="使用外部身份提供商登录" href="signin_external_providers.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,17 +111,17 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">使用 ASP.NET Core Identity</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">主题</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="startup.html">Startup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Windows Authentication</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#on-windows-using-iis-hosting">On Windows using IIS hosting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">定义资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">定义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Windows 身份验证</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#iis-windows">在使用 IIS 托管的 Windows 上</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
@@ -229,7 +229,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Windows Authentication</li>
+      <li>Windows 身份验证</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -248,33 +248,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="windows-authentication">
-<h1>Windows Authentication<a class="headerlink" href="#windows-authentication" title="永久链接至标题">¶</a></h1>
-<p>There are several ways how you can enable Windows authentication in ASP.NET Core (and thus in IdentityServer).</p>
+  <div class="section" id="windows">
+<h1>Windows 身份验证<a class="headerlink" href="#windows" title="永久链接至标题">¶</a></h1>
+<p>您可以通过多种方式在 ASP.NET Core（以及 IdentityServer）中启用 Windows 身份验证。</p>
 <ul class="simple">
-<li><p>On Windows using IIS hosting (both in- and out-of process)</p></li>
-<li><p>On Windows using HTTP.SYS hosting</p></li>
-<li><p>On any platform using the Negotiate authentication handler (added in ASP.NET Core 3.0)</p></li>
+<li><p>在 Windows 上使用 IIS 托管（进程内和进程外）</p></li>
+<li><p>在 Windows 上使用 HTTP.SYS 托管</p></li>
+<li><p>在任何使用协商身份验证处理程序的平台上（在 ASP.NET Core 3.0 中添加）</p></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>We only have documentation for IIS hosting. If you want to contribute to the docs, please open a PR. thanks!</p>
+<p>我们只有 IIS 托管的文档。 如果您想为文档做出贡献，请打开一个 PR。 谢谢！</p>
 </div>
-<div class="section" id="on-windows-using-iis-hosting">
-<h2>On Windows using IIS hosting<a class="headerlink" href="#on-windows-using-iis-hosting" title="永久链接至标题">¶</a></h2>
-<p>The typical <code class="docutils literal notranslate"><span class="pre">CreateDefaultBuilder</span></code> host setup enables support for IIS-based Windows authentication when hosting in IIS.
-Make sure that Windows authentication is enabled in <code class="docutils literal notranslate"><span class="pre">launchSettings.json</span></code> or your IIS configuration.</p>
-<p>The IIS integration layer will configure a Windows authentication handler into DI that can be invoked via the authentication service.
-Typically in IdentityServer it is advisable to disable the automatic behavior.</p>
-<p>This is done in <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> (details vary depending on in-proc vs out-of-proc hosting):</p>
-<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// configures IIS out-of-proc settings (see https://github.com/aspnet/AspNetCore/issues/14882)</span>
+<div class="section" id="iis-windows">
+<h2>在使用 IIS 托管的 Windows 上<a class="headerlink" href="#iis-windows" title="永久链接至标题">¶</a></h2>
+<p>当托管在 IIS 中时，典型的 <code class="docutils literal notranslate"><span class="pre">CreateDefaultBuilder</span></code> 主机设置支持基于 IIS 的 Windows 身份验证。
+确保在 <code class="docutils literal notranslate"><span class="pre">launchSettings.json</span></code> 或您的 IIS 配置中启用了 Windows 身份验证。</p>
+<p>IIS 集成层会将 Windows 身份验证处理程序配置到可通过身份验证服务调用的 DI 中。
+通常在 IdentityServer 中，建议禁用自动行为。</p>
+<p>这是在 <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> 中完成的（详细信息取决于进程内与进程外托管）:</p>
+<div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="c1">// 配置 IIS 进程外设置（参见 https://github.com/aspnet/AspNetCore/issues/14882）</span>
 <span class="n">services</span><span class="p">.</span><span class="n">Configure</span><span class="p">&lt;</span><span class="n">IISOptions</span><span class="p">&gt;(</span><span class="n">iis</span> <span class="p">=&gt;</span>
 <span class="p">{</span>
     <span class="n">iis</span><span class="p">.</span><span class="n">AuthenticationDisplayName</span> <span class="p">=</span> <span class="s">&quot;Windows&quot;</span><span class="p">;</span>
     <span class="n">iis</span><span class="p">.</span><span class="n">AutomaticAuthentication</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
 <span class="p">});</span>
 
-<span class="c1">// ..or configures IIS in-proc settings</span>
+<span class="c1">// ..或配置 IIS 进程内设置</span>
 <span class="n">services</span><span class="p">.</span><span class="n">Configure</span><span class="p">&lt;</span><span class="n">IISServerOptions</span><span class="p">&gt;(</span><span class="n">iis</span> <span class="p">=&gt;</span>
 <span class="p">{</span>
     <span class="n">iis</span><span class="p">.</span><span class="n">AuthenticationDisplayName</span> <span class="p">=</span> <span class="s">&quot;Windows&quot;</span><span class="p">;</span>
@@ -282,21 +282,20 @@ Typically in IdentityServer it is advisable to disable the automatic behavior.</
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>You trigger Windows authentication by calling <code class="docutils literal notranslate"><span class="pre">ChallengeAsync</span></code> on the <code class="docutils literal notranslate"><span class="pre">Windows</span></code> scheme (or if you want to use a constant: <code class="docutils literal notranslate"><span class="pre">Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme</span></code>).</p>
-<p>This will send the <code class="docutils literal notranslate"><span class="pre">Www-Authenticate</span></code> header back to the browser which will then re-load the current URL including the Windows identity.
-You can tell that Windows authentication was successful, when you call <code class="docutils literal notranslate"><span class="pre">AuthenticateAsync</span></code> on the <code class="docutils literal notranslate"><span class="pre">Windows</span></code> scheme and the principal returned
-is of type <code class="docutils literal notranslate"><span class="pre">WindowsPrincipal</span></code>.</p>
-<p>The principal will have information like user and group SID and the Windows account name. The following snippet shows how to
-trigger authentication, and if successful convert the information into a standard <code class="docutils literal notranslate"><span class="pre">ClaimsPrincipal</span></code> for the temp-Cookie approach:</p>
+<p>您可以通过在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 方案上调用 <code class="docutils literal notranslate"><span class="pre">ChallengeAsync</span></code> 来触发 Windows 身份验证（或者如果您想使用常量：<code class="docutils literal notranslate"><span class="pre">Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme</span></code>）。</p>
+<p>这会将 <code class="docutils literal notranslate"><span class="pre">Www-Authenticate</span></code> 标头发送回浏览器，然后浏览器将重新加载当前的 URL，包括 Windows 身份。
+当您在 <code class="docutils literal notranslate"><span class="pre">Windows</span></code> 方案上调用 <code class="docutils literal notranslate"><span class="pre">AuthenticateAsync</span></code> 并且返回的主体类型为 <code class="docutils literal notranslate"><span class="pre">WindowsPrincipal</span></code> 时，您可以判断 Windows 身份验证成功。</p>
+<p>主体将具有用户和组 SID 以及 Windows 帐户名称等信息。
+以下代码段显示了如何触发身份验证，如果成功，则将信息转换为 temp-Cookie 方法的标准 <code class="docutils literal notranslate"><span class="pre">ClaimsPrincipal</span></code>:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">private</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IActionResult</span><span class="p">&gt;</span> <span class="n">ChallengeWindowsAsync</span><span class="p">(</span><span class="kt">string</span> <span class="n">returnUrl</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// see if windows auth has already been requested and succeeded</span>
+    <span class="c1">// 查看是否已请求 Windows 身份验证并成功</span>
     <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">AuthenticateAsync</span><span class="p">(</span><span class="s">&quot;Windows&quot;</span><span class="p">);</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">result</span><span class="p">?.</span><span class="n">Principal</span> <span class="k">is</span> <span class="n">WindowsPrincipal</span> <span class="n">wp</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="c1">// we will issue the external cookie and then redirect the</span>
-        <span class="c1">// user back to the external callback, in essence, treating windows</span>
-        <span class="c1">// auth the same as any other external authentication mechanism</span>
+        <span class="c1">// 我们将发出外部 cookie，</span>
+        <span class="c1">// 然后将用户重定向回外部回调，</span>
+        <span class="c1">// 本质上，将 windows auth 视为与任何其他外部身份验证机制相同</span>
         <span class="kt">var</span> <span class="n">props</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AuthenticationProperties</span><span class="p">()</span>
         <span class="p">{</span>
             <span class="n">RedirectUri</span> <span class="p">=</span> <span class="n">Url</span><span class="p">.</span><span class="n">Action</span><span class="p">(</span><span class="s">&quot;Callback&quot;</span><span class="p">),</span>
@@ -309,16 +308,16 @@ trigger authentication, and if successful convert the information into a standar
 
         <span class="kt">var</span> <span class="n">id</span> <span class="p">=</span> <span class="k">new</span> <span class="n">ClaimsIdentity</span><span class="p">(</span><span class="s">&quot;Windows&quot;</span><span class="p">);</span>
 
-        <span class="c1">// the sid is a good sub value</span>
+        <span class="c1">// sid 是一个很好的子值</span>
         <span class="n">id</span><span class="p">.</span><span class="n">AddClaim</span><span class="p">(</span><span class="k">new</span> <span class="n">Claim</span><span class="p">(</span><span class="n">JwtClaimTypes</span><span class="p">.</span><span class="n">Subject</span><span class="p">,</span> <span class="n">wp</span><span class="p">.</span><span class="n">FindFirst</span><span class="p">(</span><span class="n">ClaimTypes</span><span class="p">.</span><span class="n">PrimarySid</span><span class="p">).</span><span class="n">Value</span><span class="p">));</span>
 
-        <span class="c1">// the account name is the closest we have to a display name</span>
+        <span class="c1">// 帐户名称是我们最接近显示名称的名称</span>
         <span class="n">id</span><span class="p">.</span><span class="n">AddClaim</span><span class="p">(</span><span class="k">new</span> <span class="n">Claim</span><span class="p">(</span><span class="n">JwtClaimTypes</span><span class="p">.</span><span class="n">Name</span><span class="p">,</span> <span class="n">wp</span><span class="p">.</span><span class="n">Identity</span><span class="p">.</span><span class="n">Name</span><span class="p">));</span>
 
-        <span class="c1">// add the groups as claims -- be careful if the number of groups is too large</span>
+        <span class="c1">// 添加组作为声明 —— 如果组数太大，请小心</span>
         <span class="kt">var</span> <span class="n">wi</span> <span class="p">=</span> <span class="n">wp</span><span class="p">.</span><span class="n">Identity</span> <span class="k">as</span> <span class="n">WindowsIdentity</span><span class="p">;</span>
 
-        <span class="c1">// translate group SIDs to display names</span>
+        <span class="c1">// 将组 SID 转换为显示名称</span>
         <span class="kt">var</span> <span class="n">groups</span> <span class="p">=</span> <span class="n">wi</span><span class="p">.</span><span class="n">Groups</span><span class="p">.</span><span class="n">Translate</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="n">NTAccount</span><span class="p">));</span>
         <span class="kt">var</span> <span class="n">roles</span> <span class="p">=</span> <span class="n">groups</span><span class="p">.</span><span class="n">Select</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="n">Claim</span><span class="p">(</span><span class="n">JwtClaimTypes</span><span class="p">.</span><span class="n">Role</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">Value</span><span class="p">));</span>
         <span class="n">id</span><span class="p">.</span><span class="n">AddClaims</span><span class="p">(</span><span class="n">roles</span><span class="p">);</span>
@@ -332,9 +331,9 @@ trigger authentication, and if successful convert the information into a standar
     <span class="p">}</span>
     <span class="k">else</span>
     <span class="p">{</span>
-        <span class="c1">// trigger windows auth</span>
-        <span class="c1">// since windows auth don&#39;t support the redirect uri,</span>
-        <span class="c1">// this URL is re-triggered when we call challenge</span>
+        <span class="c1">// 触发 windows auth</span>
+        <span class="c1">// 因为 windows auth 不支持重定向 uri，</span>
+        <span class="c1">// 当我们调用 challenge 时会重新触发这个 URL</span>
         <span class="k">return</span> <span class="nf">Challenge</span><span class="p">(</span><span class="s">&quot;Windows&quot;</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -350,7 +349,7 @@ trigger authentication, and if successful convert the information into a standar
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="signout.html" class="btn btn-neutral float-right" title="Sign-out" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="signin_external_providers.html" class="btn btn-neutral float-left" title="Sign-in with External Identity Providers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="signin_external_providers.html" class="btn btn-neutral float-left" title="使用外部身份提供商登录" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

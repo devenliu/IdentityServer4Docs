@@ -1,20 +1,20 @@
-Defining Clients
+定义客户端
 ================
-Clients represent applications that can request tokens from your identityserver.
+客户端表示可以从您的 IdentityServer 请求令牌的应用程序。
 
-The details vary, but you typically define the following common settings for a client:
+详细信息各不相同，但您通常会为客户端定义以下通用设置：
 
-* a unique client ID
-* a secret if needed
-* the allowed interactions with the token service (called a grant type)
-* a network location where identity and/or access token gets sent to (called a redirect URI)
-* a list of scopes (aka resources) the client is allowed to access
+* 唯一的客户端 ID
+* 密钥（如果需要的话）
+* 允许与令牌服务的交互（称为授权类型）
+* 身份和/或访问令牌被发送到的网络位置（称为重定向 URI）
+* 允许客户端访问的 scopes（又名 resources）列表
 
-.. Note:: At runtime, clients are retrieved via an implementation of the ``IClientStore``. This allows loading them from arbitrary data sources like config files or databases. For this document we will use the in-memory version of the client store. You can wire up the in-memory store in ``ConfigureServices`` via the ``AddInMemoryClients`` extensions method.
+.. Note:: 在运行时，通过 ``IClientStore`` 的实现来检索客户端。 这允许从任意数据源（如配置文件或数据库）加载它们。 对于本文档，我们将使用客户端存储的内存版本。 您可以通过 ``AddInMemoryClients`` 扩展方法在 ``ConfigureServices`` 中连接内存存储。
 
-Defining a client for server to server communication
+定义服务器到服务器通信的客户端
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-In this scenario no interactive user is present - a service (aka client) wants to communicate with an API (aka scope)::
+在这种情况下，没有交互式用户存在 —— 服务（又名客户端）想要与 API（又名 scope）通信::
 
     public class Clients
     {
@@ -35,10 +35,10 @@ In this scenario no interactive user is present - a service (aka client) wants t
     }
 
 .. _startClientsMVC:
-Defining an interactive application for use authentication and delegated API access
+定义用于使用身份验证和委托 API 访问的交互式应用程序
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Interactive applications (e.g. web applications or native desktop/mobile) applications use the authorization code flow.
-This flow gives you the best security because the access tokens are transmitted via back-channel calls only (and gives you access to refresh tokens)::
+交互式应用程序（例如 Web 应用程序或原生桌面/移动）应用程序使用授权码流程。
+此流程为您提供最佳安全性，因为访问令牌仅通过反向通道调用传输（并允许您访问刷新令牌）::
 
     var interactiveClient = new Client
     {
@@ -62,12 +62,12 @@ This flow gives you the best security because the access tokens are transmitted 
         },
     };
 
-.. Note:: see the :ref:`grant types <refGrantTypes>` topic for more information on choosing the right grant type for your client.
+.. Note:: 请参阅 :ref:`grant types <refGrantTypes>` 主题，了解有关为您的客户端选择正确的授权类型的更多信息。
 
-Defining clients in appsettings.json
+在 appsettings.json 中定义客户端
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``AddInMemoryClients`` extensions method also supports adding clients from the ASP.NET Core configuration file. This allows you to define static clients directly from the appsettings.json file::
+``AddInMemoryClients`` 扩展方法还支持从 ASP.NET Core 配置文件添加客户端。 这允许您直接从 appsettings.json 文件定义静态客户端::
 
     "IdentityServer": {
       "IssuerUri": "urn:sso.company.com",
@@ -76,13 +76,13 @@ The ``AddInMemoryClients`` extensions method also supports adding clients from t
           "Enabled": true,
           "ClientId": "local-dev",
           "ClientName": "Local Development",
-          "ClientSecrets": [ { "Value": "<Insert Sha256 hash of the secret encoded as Base64 string>" } ],
+          "ClientSecrets": [ { "Value": "<插入编码为 Base64 字符串的密钥的 Sha256 哈希>" } ],
           "AllowedGrantTypes": [ "client_credentials" ],
           "AllowedScopes": [ "api1" ],
         }
       ]
     }
     
-Then pass the configuration section to the ``AddInMemoryClients`` method::
+然后将配置部分传递给 ``AddInMemoryClients`` 方法::
 
     AddInMemoryClients(configuration.GetSection("IdentityServer:Clients"))

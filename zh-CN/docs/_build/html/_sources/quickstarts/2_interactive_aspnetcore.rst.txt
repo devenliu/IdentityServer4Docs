@@ -133,13 +133,13 @@ OpenID Connect 所需的所有协议支持都已内置到 IdentityServer 中。
 
 如果您现在使用浏览器导航到应用程序，则会尝试重定向到 IdentityServer —— 这将导致错误，因为 MVC 客户端尚未注册。
 
-添加对 OpenID Connect 身份作用域的支持
+添加对 OpenID Connect 身份范围的支持
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-与 OAuth 2.0 类似，OpenID Connect 也使用作用域(scopes)概念。
-同样，作用域代表您想要保护和客户端想要访问的东西。
-与 OAuth 相比，OIDC 中的作用域不代表 API，而是代表用户 ID、姓名或电子邮件地址等身份数据。
+与 OAuth 2.0 类似，OpenID Connect 也使用范围(scopes)概念。
+同样，范围代表您想要保护和客户端想要访问的东西。
+与 OAuth 相比，OIDC 中的范围不代表 API，而是代表用户 ID、姓名或电子邮件地址等身份数据。
 
-通过修改 ``Config.cs`` 中的 ``IdentityResources`` 属性，添加对标准 ``openid`` （subject id）和 ``profile`` （名字、姓氏等）作用域的支持::
+通过修改 ``Config.cs`` 中的 ``IdentityResources`` 属性，添加对标准 ``openid`` （subject id）和 ``profile`` （名字、姓氏等）范围的支持::
 
     public static IEnumerable<IdentityResource> IdentityResources =>
         new List<IdentityResource>
@@ -155,7 +155,7 @@ OpenID Connect 所需的所有协议支持都已内置到 IdentityServer 中。
         .AddInMemoryApiScopes(Config.ApiScopes)
         .AddInMemoryClients(Config.Clients);
 
-.. note:: 所有标准作用域及其相应的声明都可以在 OpenID Connect `规范 <https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims>`_ 中找到。
+.. note:: 所有标准范围及其相应的声明都可以在 OpenID Connect `规范 <https://openid.net/specs/openid-connect-core-1_0.html#ScopeClaims>`_ 中找到。
 
 添加测试用户
 ^^^^^^^^^^^^^^^^^
@@ -189,7 +189,7 @@ OpenID Connect 所需的所有协议支持都已内置到 IdentityServer 中。
                 ClientSecrets = { new Secret("secret".Sha256()) },
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
-                // 客户端有权访问的作用域
+                // 客户端有权访问的范围
                 AllowedScopes = { "api1" }
             },
             // 交互式 ASP.NET Core MVC 客户端
@@ -251,9 +251,9 @@ IdentityServer 将清除其 cookie，然后为用户提供一个链接以返回�
 
 从 UserInfo 端点获取声明
 ^^^^^^^^^^^^^^^
-您可能已经注意到，即使我们已将客户端配置为允许检索 ``profile`` 身份作用域，与该作用域关联的声明（例如 ``name``, ``family_name``, ``website`` 等）不会出现在返回的令牌中。 
-我们需要告诉客户端应用程序，通过指定需要访问的作用域并设置 ``GetClaimsFromUserInfoEndpoint`` 选项，来从 `UserInfo <https://identityserver4.readthedocs.io/en/latest/endpoints/userinfo.html>`_ 端点中提取剩余声明。 
-在以下示例中，我们请求的是 ``profile`` 作用域，但它可以是客户端有权访问的任何作用域（或多个作用域）::
+您可能已经注意到，即使我们已将客户端配置为允许检索 ``profile`` 身份范围，与该范围关联的声明（例如 ``name``, ``family_name``, ``website`` 等）不会出现在返回的令牌中。 
+我们需要告诉客户端应用程序，通过指定需要访问的范围并设置 ``GetClaimsFromUserInfoEndpoint`` 选项，来从 `UserInfo <https://identityserver4.readthedocs.io/en/latest/endpoints/userinfo.html>`_ 端点中提取剩余声明。 
+在以下示例中，我们请求的是 ``profile`` 范围，但它可以是客户端有权访问的任何范围（或多个范围）::
 
     .AddOpenIdConnect("oidc", options =>
     {
@@ -263,7 +263,7 @@ IdentityServer 将清除其 cookie，然后为用户提供一个链接以返回�
         // ...
     });
 
-重新启动客户端应用程序、注销并重新登录后，您应该会看到与页面上显示的 ``profile`` 身份作用域关联的其他用户声明。
+重新启动客户端应用程序、注销并重新登录后，您应该会看到与页面上显示的 ``profile`` 身份范围关联的其他用户声明。
 
 .. image:: images/3_additional_claims.png
 

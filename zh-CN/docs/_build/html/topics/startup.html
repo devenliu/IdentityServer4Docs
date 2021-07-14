@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Defining Resources" href="resources.html" />
-    <link rel="prev" title="Using ASP.NET Core Identity" href="../quickstarts/6_aspnet_identity.html" /> 
+    <link rel="next" title="定义资源" href="resources.html" />
+    <link rel="prev" title="使用 ASP.NET Core Identity" href="../quickstarts/6_aspnet_identity.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -111,23 +111,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/3_aspnetcore_and_apis.html">ASP.NET Core 和 API 访问</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/4_javascript_client.html">添加 JavaScript 客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstarts/5_entityframework.html">使用 EntityFramework Core 获取配置和操作数据</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">Using ASP.NET Core Identity</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstarts/6_aspnet_identity.html">使用 ASP.NET Core Identity</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">主题</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Startup</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#configuring-services">Configuring services</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#key-material">Key material</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#in-memory-configuration-stores">In-Memory configuration stores</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#test-stores">Test stores</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#additional-services">Additional services</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#caching">Caching</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuring-the-pipeline">Configuring the pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">配置服务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">密钥材料</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">内存配置存储</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">测试存储</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">额外服务</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">缓存</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">配置管道</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="resources.html">Defining Resources</a></li>
-<li class="toctree-l1"><a class="reference internal" href="clients.html">Defining Clients</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signin.html">Sign-in</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">定义资源</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clients.html">定义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
@@ -256,195 +256,194 @@
             
   <div class="section" id="startup">
 <h1>Startup<a class="headerlink" href="#startup" title="永久链接至标题">¶</a></h1>
-<p>IdentityServer is a combination of middleware and services.
-All configuration is done in your startup class.</p>
-<div class="section" id="configuring-services">
-<h2>Configuring services<a class="headerlink" href="#configuring-services" title="永久链接至标题">¶</a></h2>
-<p>You add the IdentityServer services to the DI system by calling:</p>
+<p>IdentityServer 是中间件和服务的组合。
+所有配置都在您的启动类中完成。</p>
+<div class="section" id="id1">
+<h2>配置服务<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>您可以通过调用将 IdentityServer 服务添加到 DI 系统:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">();</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Optionally you can pass in options into this call. See <a class="reference internal" href="../reference/options.html#refoptions"><span class="std std-ref">here</span></a> for details on options.</p>
-<p>This will return you a builder object that in turn has a number of convenience methods to wire up additional services.</p>
+<p>您可以选择将选项传递到此调用中。 有关选项的详细信息，请参阅 <a class="reference internal" href="../reference/options.html#refoptions"><span class="std std-ref">这里</span></a>。</p>
+<p>这将返回一个 builder 对象，该对象又具有许多连接附加服务的便捷方法。</p>
 </div>
-<div class="section" id="key-material">
-<h2>Key material<a class="headerlink" href="#key-material" title="永久链接至标题">¶</a></h2>
-<p>IdentityServer supports X.509 certificates (both raw files and a reference to the Windows certificate store),
-RSA keys and EC keys for token signatures and validation. Each key can be configured with a (compatible) signing algorithm,
-e.g. RS256, RS384, RS512, PS256, PS384, PS512, ES256, ES384 or ES512.</p>
-<p>You can configure the key material with the following methods:</p>
+<div class="section" id="id2">
+<h2>密钥材料<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer 支持 X.509 证书（原始文件和对 Windows 证书存储的引用）、RSA 密钥和用于令牌签名和验证的 EC 密钥。
+每个密钥都可以配置一个（兼容的）签名算法，例如 RS256、RS384、RS512、PS256、PS384、PS512、ES256、ES384 或 ES512。</p>
+<p>您可以使用以下方法配置密钥材料：</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddSigningCredential</span></code></dt><dd><p>Adds a signing key that provides the specified key material to the various token creation/validation services.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddSigningCredential</span></code></dt><dd><p>添加一个签名密钥，为各种令牌创建/验证服务提供指定的密钥材料。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddDeveloperSigningCredential</span></code></dt><dd><p>Creates temporary key material at startup time. This is for dev scenarios. The generated key will be persisted in the local directory by default.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddDeveloperSigningCredential</span></code></dt><dd><p>在启动时创建临时密钥材料。 这是针对开发场景的。 默认情况下，生成的密钥将持久保存在本地目录中。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddValidationKey</span></code></dt><dd><p>Adds a key for validating tokens. They will be used by the internal token validator and will show up in the discovery document.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddValidationKey</span></code></dt><dd><p>添加用于验证令牌的密钥。 它们将由内部令牌验证器使用，并将显示在发现文档中。</p>
 </dd>
 </dl>
 </li>
 </ul>
 </div>
-<div class="section" id="in-memory-configuration-stores">
-<h2>In-Memory configuration stores<a class="headerlink" href="#in-memory-configuration-stores" title="永久链接至标题">¶</a></h2>
-<p>The various &quot;in-memory&quot; configuration APIs allow for configuring IdentityServer from an in-memory list of configuration objects.
-These &quot;in-memory&quot; collections can be hard-coded in the hosting application, or could be loaded dynamically from a configuration file or a database.
-By design, though, these collections are only created when the hosting application is starting up.</p>
-<p>Use of these configuration APIs are designed for use when prototyping, developing, and/or testing where it is not necessary to dynamically consult database at runtime for the configuration data.
-This style of configuration might also be appropriate for production scenarios if the configuration rarely changes, or it is not inconvenient to require restarting the application if the value must be changed.</p>
+<div class="section" id="id3">
+<h2>内存配置存储<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>各种 “in-memory” 配置 API 允许从内存中的配置对象列表配置 IdentityServer。
+这些 “in-memory” 集合可以在托管应用程序中进行硬编码，也可以从配置文件或数据库中动态加载。
+但是，按照设计，这些集合仅在托管应用程序启动时创建。</p>
+<p>这些配置 API 的使用旨在用于原型设计、开发和/或测试，其中不需要在运行时动态查询数据库以获取配置数据。
+如果配置很少更改，或者在必须更改值时要求重新启动应用程序并不不方便，则这种配置样式也可能适用于生产场景。</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code></dt><dd><p>Registers <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> and <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code> implementations based on the in-memory collection of <code class="docutils literal notranslate"><span class="pre">Client</span></code> configuration objects.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryClients</span></code></dt><dd><p>基于 <code class="docutils literal notranslate"><span class="pre">Client</span></code> 配置对象的内存集合注册 <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code> 实现。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryIdentityResources</span></code></dt><dd><p>Registers <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> implementation based on the in-memory collection of <code class="docutils literal notranslate"><span class="pre">IdentityResource</span></code> configuration objects.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryIdentityResources</span></code></dt><dd><p>基于 <code class="docutils literal notranslate"><span class="pre">IdentityResource</span></code> 配置对象的内存集合注册 <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> 实现。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryApiScopes</span></code></dt><dd><p>Registers <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> implementation based on the in-memory collection of <code class="docutils literal notranslate"><span class="pre">ApiScope</span></code> configuration objects.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryApiScopes</span></code></dt><dd><p>基于 <code class="docutils literal notranslate"><span class="pre">ApiScope</span></code> 配置对象的内存中集合注册 <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> 实现。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryApiResources</span></code></dt><dd><p>Registers <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> implementation based on the in-memory collection of <code class="docutils literal notranslate"><span class="pre">ApiResource</span></code> configuration objects.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryApiResources</span></code></dt><dd><p>基于 <code class="docutils literal notranslate"><span class="pre">ApiResource</span></code> 配置对象的内存集合注册 <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> 实现。</p>
 </dd>
 </dl>
 </li>
 </ul>
 </div>
-<div class="section" id="test-stores">
-<h2>Test stores<a class="headerlink" href="#test-stores" title="永久链接至标题">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">TestUser</span></code> class models a user, their credentials, and claims in IdentityServer.
-Use of <code class="docutils literal notranslate"><span class="pre">TestUser</span></code> is similar to the use of the &quot;in-memory&quot; stores in that it is intended for when prototyping, developing, and/or testing.
-The use of <code class="docutils literal notranslate"><span class="pre">TestUser</span></code> is not recommended in production.</p>
+<div class="section" id="id4">
+<h2>测试存储<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TestUser</span></code> 类在 IdentityServer 中对用户、他们的凭据和声明进行建模。
+<code class="docutils literal notranslate"><span class="pre">TestUser</span></code> 的使用类似于 “in-memory” 存储的使用，因为它用于原型设计、开发和/或测试。
+不建议在生产中使用 <code class="docutils literal notranslate"><span class="pre">TestUser</span></code>。</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddTestUsers</span></code></dt><dd><p>Registers <code class="docutils literal notranslate"><span class="pre">TestUserStore</span></code> based on a collection of <code class="docutils literal notranslate"><span class="pre">TestUser</span></code> objects.
-<code class="docutils literal notranslate"><span class="pre">TestUserStore</span></code> is used by the default quickstart UI.
-Also registers implementations of <code class="docutils literal notranslate"><span class="pre">IProfileService</span></code> and <code class="docutils literal notranslate"><span class="pre">IResourceOwnerPasswordValidator</span></code>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddTestUsers</span></code></dt><dd><p>基于 <code class="docutils literal notranslate"><span class="pre">TestUser</span></code> 对象的集合注册 <code class="docutils literal notranslate"><span class="pre">TestUserStore</span></code>。
+<code class="docutils literal notranslate"><span class="pre">TestUserStore</span></code> 由默认的快速入门 UI 使用。
+还注册了 <code class="docutils literal notranslate"><span class="pre">IProfileService</span></code> 和 <code class="docutils literal notranslate"><span class="pre">IResourceOwnerPasswordValidator</span></code> 的实现。</p>
 </dd>
 </dl>
 </li>
 </ul>
 </div>
-<div class="section" id="additional-services">
-<h2>Additional services<a class="headerlink" href="#additional-services" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h2>额外服务<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
 <ul class="simple">
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddExtensionGrantValidator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">IExtensionGrantValidator</span></code> implementation for use with extension grants.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddExtensionGrantValidator</span></code></dt><dd><p>添加用于扩展授权的 <code class="docutils literal notranslate"><span class="pre">IExtensionGrantValidator</span></code> 实现。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddSecretParser</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">ISecretParser</span></code> implementation for parsing client or API resource credentials.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddSecretParser</span></code></dt><dd><p>添加用于解析客户端或 API 资源凭据的 <code class="docutils literal notranslate"><span class="pre">ISecretParser</span></code> 实现。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddSecretValidator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">ISecretValidator</span></code> implementation for validating client or API resource credentials against a credential store.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddSecretValidator</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">ISecretValidator</span></code> 实现，用于根据凭证存储验证客户端或 API 资源凭证。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddResourceOwnerValidator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">IResourceOwnerPasswordValidator</span></code> implementation for validating user credentials for the resource owner password credentials grant type.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddResourceOwnerValidator</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">IResourceOwnerPasswordValidator</span></code> 实现，用于验证资源所有者密码凭据授予类型的用户凭据。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddProfileService</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">IProfileService</span></code> implementation for connecting to your <a class="reference internal" href="../reference/profileservice.html#refprofileservice"><span class="std std-ref">custom user profile store</span></a>.
-The <code class="docutils literal notranslate"><span class="pre">DefaultProfileService</span></code> class provides the default implementation which relies upon the authentication cookie as the only source of claims for issuing in tokens.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddProfileService</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">IProfileService</span></code> 实现以连接到您的 <a class="reference internal" href="../reference/profileservice.html#refprofileservice"><span class="std std-ref">自定义用户配置文件存储</span></a>。
+<code class="docutils literal notranslate"><span class="pre">DefaultProfileService</span></code> 类提供了默认实现，该实现依赖于身份验证 cookie 作为在令牌中发布的唯一声明来源。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddAuthorizeInteractionResponseGenerator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">IAuthorizeInteractionResponseGenerator</span></code> implementation to customize logic at authorization endpoint for when a user must be shown a UI for error, login, consent, or any other custom page.
-The <code class="docutils literal notranslate"><span class="pre">AuthorizeInteractionResponseGenerator</span></code> class provides a default implementation, so consider deriving from this existing class if you need to augment the existing behavior.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddAuthorizeInteractionResponseGenerator</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">IAuthorizeInteractionResponseGenerator</span></code> 实现，以自定义授权端点的逻辑，以便在必须向用户显示错误、登录、同意或任何其他自定义页面的 UI时使用。
+<code class="docutils literal notranslate"><span class="pre">AuthorizeInteractionResponseGenerator</span></code> 类提供了默认实现，因此如果您需要增强现有行为，请考虑从该现有类派生。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddCustomAuthorizeRequestValidator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">ICustomAuthorizeRequestValidator</span></code> implementation to customize request parameter validation at the authorization endpoint.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddCustomAuthorizeRequestValidator</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">ICustomAuthorizeRequestValidator</span></code> 实现，以在授权端点自定义请求参数验证。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddCustomTokenRequestValidator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">ICustomTokenRequestValidator</span></code> implementation to customize request parameter validation at the token endpoint.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddCustomTokenRequestValidator</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">ICustomTokenRequestValidator</span></code> 实现，以自定义令牌端点处的请求参数验证。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddRedirectUriValidator</span></code></dt><dd><p>Adds <code class="docutils literal notranslate"><span class="pre">IRedirectUriValidator</span></code> implementation to customize redirect URI validation.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddRedirectUriValidator</span></code></dt><dd><p>添加 <code class="docutils literal notranslate"><span class="pre">IRedirectUriValidator</span></code> 实现，以自定义重定向 URI 验证。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddAppAuthRedirectUriValidator</span></code></dt><dd><p>Adds a an &quot;AppAuth&quot; (OAuth 2.0 for Native Apps) compliant redirect URI validator (does strict validation but also allows <a class="reference external" href="http://127.0.0.1">http://127.0.0.1</a> with random port).</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddAppAuthRedirectUriValidator</span></code></dt><dd><p>添加符合 “AppAuth”（原生应用程序的 OAuth 2.0）的重定向 URI 验证器（进行严格验证，但也允许使用随机端口的 <a class="reference external" href="http://127.0.0.1">http://127.0.0.1</a>）。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddJwtBearerClientAuthentication</span></code></dt><dd><p>Adds support for client authentication using JWT bearer assertions.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddJwtBearerClientAuthentication</span></code></dt><dd><p>添加对使用 JWT bearer 断言的客户端身份验证的支持。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddMutualTlsSecretValidators</span></code></dt><dd><p>Adds the X509 secret validators for mutual TLS.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddMutualTlsSecretValidators</span></code></dt><dd><p>为 mutual TLS 添加 X509 密钥验证器。</p>
 </dd>
 </dl>
 </li>
 </ul>
 </div>
-<div class="section" id="caching">
-<h2>Caching<a class="headerlink" href="#caching" title="永久链接至标题">¶</a></h2>
-<p>Client and resource configuration data is used frequently by IdentityServer.
-If this data is being loaded from a database or other external store, then it might be expensive to frequently re-load the same data.</p>
+<div class="section" id="id6">
+<h2>缓存<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer 经常使用客户端和资源配置数据。
+如果这些数据是从数据库或其他外部存储加载的，那么频繁地重新加载相同的数据可能会很昂贵。</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryCaching</span></code></dt><dd><p>To use any of the caches described below, an implementation of <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> must be registered in DI.
-This API registers a default in-memory implementation of <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> that's based on ASP.NET Core's <code class="docutils literal notranslate"><span class="pre">MemoryCache</span></code>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddInMemoryCaching</span></code></dt><dd><p>要使用下面描述的任何缓存，必须在 DI 中注册 <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> 的实现。
+此 API 注册了一个基于 ASP.NET Core 的 <code class="docutils literal notranslate"><span class="pre">MemoryCache</span></code> 的默认内存中实现 <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> 。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddClientStoreCache</span></code></dt><dd><p>Registers a <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> decorator implementation which will maintain an in-memory cache of <code class="docutils literal notranslate"><span class="pre">Client</span></code> configuration objects.
-The cache duration is configurable on the <code class="docutils literal notranslate"><span class="pre">Caching</span></code> configuration options on the <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions</span></code>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddClientStoreCache</span></code></dt><dd><p>注册一个 <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> 装饰器实现，它将维护一个 <code class="docutils literal notranslate"><span class="pre">Client</span></code> 配置对象的内存缓存。
+缓存持续时间可在 <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions``的</span> <span class="pre">``Caching</span></code> 配置选项中配置。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddResourceStoreCache</span></code></dt><dd><p>Registers a <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> decorator implementation which will maintain an in-memory cache of <code class="docutils literal notranslate"><span class="pre">IdentityResource</span></code> and <code class="docutils literal notranslate"><span class="pre">ApiResource</span></code> configuration objects.
-The cache duration is configurable on the <code class="docutils literal notranslate"><span class="pre">Caching</span></code> configuration options on the <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions</span></code>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddResourceStoreCache</span></code></dt><dd><p>注册一个 <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> 装饰器实现，它将维护一个 <code class="docutils literal notranslate"><span class="pre">IdentityResource</span></code> 和 <code class="docutils literal notranslate"><span class="pre">ApiResource</span></code> 配置对象的内存缓存。
+缓存持续时间可在 <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions``的</span> <span class="pre">``Caching</span></code> 配置选项中配置。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">AddCorsPolicyCache</span></code></dt><dd><p>Registers a <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code> decorator implementation which will maintain an in-memory cache of the results of the CORS policy service evaluation.
-The cache duration is configurable on the <code class="docutils literal notranslate"><span class="pre">Caching</span></code> configuration options on the <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions</span></code>.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">AddCorsPolicyCache</span></code></dt><dd><p>注册一个 <code class="docutils literal notranslate"><span class="pre">ICorsPolicyService</span></code> 装饰器实现，它将维护 CORS 策略服务评估结果的内存缓存。
+缓存持续时间可在 <code class="docutils literal notranslate"><span class="pre">IdentityServerOptions``的</span> <span class="pre">``Caching</span></code> 配置选项中配置。</p>
 </dd>
 </dl>
 </li>
 </ul>
-<p>Further customization of the cache is possible:</p>
-<p>The default caching relies upon the <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> implementation.
-If you wish to customize the caching behavior for the specific configuration objects, you can replace this implementation in the dependency injection system.</p>
-<p>The default implementation of the <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> itself relies upon the <code class="docutils literal notranslate"><span class="pre">IMemoryCache</span></code> interface (and <code class="docutils literal notranslate"><span class="pre">MemoryCache</span></code> implementation) provided by .NET.
-If you wish to customize the in-memory caching behavior, you can replace the <code class="docutils literal notranslate"><span class="pre">IMemoryCache</span></code> implementation in the dependency injection system.</p>
+<p>可以进一步自定义缓存：</p>
+<p>默认缓存依赖于 <code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> 实现。
+如果您希望为特定配置对象自定义缓存行为，您可以在依赖注入系统中替换此实现。</p>
+<p><code class="docutils literal notranslate"><span class="pre">ICache&lt;T&gt;</span></code> 本身的默认实现依赖于.NET 提供的 <code class="docutils literal notranslate"><span class="pre">IMemoryCache</span></code> 接口（和 <code class="docutils literal notranslate"><span class="pre">MemoryCache</span></code> 实现）。
+如果您希望自定义内存缓存行为，您可以替换依赖注入系统中的 <code class="docutils literal notranslate"><span class="pre">IMemoryCache</span></code> 实现。</p>
 </div>
-<div class="section" id="configuring-the-pipeline">
-<h2>Configuring the pipeline<a class="headerlink" href="#configuring-the-pipeline" title="永久链接至标题">¶</a></h2>
-<p>You need to add IdentityServer to the pipeline by calling:</p>
+<div class="section" id="id7">
+<h2>配置管道<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>您需要通过调用将 IdentityServer 添加到管道中:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">void</span> <span class="nf">Configure</span><span class="p">(</span><span class="n">IApplicationBuilder</span> <span class="n">app</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">app</span><span class="p">.</span><span class="n">UseIdentityServer</span><span class="p">();</span>
@@ -453,11 +452,11 @@ If you wish to customize the in-memory caching behavior, you can replace the <co
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p><code class="docutils literal notranslate"><span class="pre">UseIdentityServer</span></code> includes a call to <code class="docutils literal notranslate"><span class="pre">UseAuthentication</span></code>, so it's not necessary to have both.</p>
+<p><code class="docutils literal notranslate"><span class="pre">UseIdentityServer</span></code> 包括对 <code class="docutils literal notranslate"><span class="pre">UseAuthentication</span></code> 的调用，因此不必同时具有这两个调用。</p>
 </div>
-<p>There is no additional configuration for the middleware.</p>
-<p>Be aware that order matters in the pipeline.
-For example, you will want to add IdentitySever before the UI framework that implements the login screen.</p>
+<p>中间件没有额外的配置。</p>
+<p>请注意，顺序在管道中很重要。
+例如，您需要在实现登录屏幕的 UI 框架之前添加 IdentitySever。</p>
 </div>
 </div>
 
@@ -467,8 +466,8 @@ For example, you will want to add IdentitySever before the UI framework that imp
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="resources.html" class="btn btn-neutral float-right" title="Defining Resources" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="../quickstarts/6_aspnet_identity.html" class="btn btn-neutral float-left" title="Using ASP.NET Core Identity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="resources.html" class="btn btn-neutral float-right" title="定义资源" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../quickstarts/6_aspnet_identity.html" class="btn btn-neutral float-left" title="使用 ASP.NET Core Identity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

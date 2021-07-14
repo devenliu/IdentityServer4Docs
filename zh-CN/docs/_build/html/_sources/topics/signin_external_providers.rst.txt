@@ -1,38 +1,38 @@
 .. _refExternalIdentityProviders:
-Sign-in with External Identity Providers
+使用外部身份提供商登录
 ========================================
 
-ASP.NET Core has a flexible way to deal with external authentication. This involves a couple of steps.
+ASP.NET Core 有一种灵活的方式来处理外部身份验证。 这涉及几个步骤。
 
-.. Note:: If you are using ASP.NET Identity, many of the underlying technical details are hidden from you. It is recommended that you also read the Microsoft `docs <https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/>`_ and do the ASP.NET Identity :ref:`quickstart <refAspNetIdentityQuickstart>`.
+.. Note:: 如果您使用的是 ASP.NET Identity，许多底层技术细节对您来说是隐藏的。 建议您还阅读 Microsoft `文档 <https://docs.microsoft.com/zh-cn/aspnet/core/security/authentication/social/>`_ 并执行 ASP.NET Identity :ref:`快速入门 <refAspNetIdentityQuickstart>`。
 
-Adding authentication handlers for external providers
+为外部提供商添加身份验证处理程序
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The protocol implementation that is needed to talk to an external provider is encapsulated in an *authentication handler*.
-Some providers use proprietary protocols (e.g. social providers like Facebook) and some use standard protocols, e.g. OpenID Connect, WS-Federation or SAML2p.
+与外部提供者对话所需的协议实现封装在 *authentication handler* 中。
+一些提供商使用专有协议（例如 Facebook 等社交提供商），一些提供商使用标准协议，例如 OpenID Connect、WS-Federation 或 SAML2p。
 
-See this :ref:`quickstart <refExternalAuthenticationQuickstart>` for step-by-step instructions for adding external authentication and configuring it.
+有关添加外部身份验证和配置它的分步说明，请参阅此 :ref:`快速入门 <refExternalAuthenticationQuickstart>`。
 
-The role of cookies
+Cookie 的作用
 ^^^^^^^^^^^^^^^^^^^
-One option on an external authentication handlers is called ``SignInScheme``, e.g.::
+外部身份验证处理程序的一个选项称为 ``SignInScheme``，例如::
 
     services.AddAuthentication()
         .AddGoogle("Google", options =>
         {
-            options.SignInScheme = "scheme of cookie handler to use";
+            options.SignInScheme = "要使用的 cookie 处理程序方案";
 
             options.ClientId = "...";
             options.ClientSecret = "...";
         })
 
-The signin scheme specifies the name of the cookie handler that will temporarily store the outcome of the external authentication, 
-e.g. the claims that got sent by the external provider. This is necessary, since there are typically a couple of redirects involved until you are done with the 
-external authentication process.
+登录方案指定 将临时存储外部身份验证结果的 cookie 处理程序 的名称，
+例如，由外部提供商发送的声明。 
+这是必要的，因为在您完成外部身份验证过程之前，通常会涉及几个重定向。
 
-Given that this is such a common practise, IdentityServer registers a cookie handler specifically for this external provider workflow.
-The scheme is represented via the ``IdentityServerConstants.ExternalCookieAuthenticationScheme`` constant.
-If you were to use our external cookie handler, then for the ``SignInScheme`` above you'd assign the value to be the ``IdentityServerConstants.ExternalCookieAuthenticationScheme`` constant::
+鉴于这是一种常见的做法，IdentityServer 专门为此外部提供程序工作流注册了一个 cookie 处理程序。
+该方案通过 ``IdentityServerConstants.ExternalCookieAuthenticationScheme`` 常量表示。
+如果您要使用我们的外部 cookie 处理程序，那么对于上面的 ``SignInScheme``，您需要将值分配为 ``IdentityServerConstants.ExternalCookieAuthenticationScheme`` 常量::
 
     services.AddAuthentication()
         .AddGoogle("Google", options =>
@@ -43,25 +43,25 @@ If you were to use our external cookie handler, then for the ``SignInScheme`` ab
             options.ClientSecret = "...";
         })
 
-You can also register your own custom cookie handler instead, like this::
+您也可以注册自己的自定义 cookie 处理程序，如下所示::
 
     services.AddAuthentication()
-        .AddCookie("YourCustomScheme")
+        .AddCookie("你的自定义方案")
         .AddGoogle("Google", options =>
         {
-            options.SignInScheme = "YourCustomScheme";
+            options.SignInScheme = "你的自定义方案";
 
             options.ClientId = "...";
             options.ClientSecret = "...";
         })
 
-.. Note:: For specialized scenarios, you can also short-circuit the external cookie mechanism and forward the external user directly to the main cookie handler. This typically involves handling events on the external handler to make sure you do the correct claims transformation from the external identity source.
+.. Note:: 对于特殊场景，您还可以短路外部 cookie 机制，将外部用户直接转发到主 cookie 处理程序。 这通常涉及处理外部处理程序上的事件，以确保您从外部身份源执行正确的声明转换。
 
-Triggering the authentication handler
+触发身份验证处理程序
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-You invoke an external authentication handler via the ``ChallengeAsync`` extension method on the ``HttpContext`` (or using the MVC ``ChallengeResult``).
+您可以通过 HttpContext 上的 ``ChallengeAsync`` 扩展方法（或使用 MVC ``ChallengeResult``）调用外部身份验证处理程序。
 
-You typically want to pass in some options to the challenge operation, e.g. the path to your callback page and the name of the provider for bookkeeping, e.g.::
+您通常希望将一些选项传递给 challenge 操作，例如 回调页面的路径和簿记提供者的名称，例如::
 
     var callbackUrl = Url.Action("ExternalLoginCallback");
     
@@ -77,39 +77,39 @@ You typically want to pass in some options to the challenge operation, e.g. the 
     
     return Challenge(provider, props);
 
-Handling the callback and signing in the user
+处理回调并登录用户
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-On the callback page your typical tasks are:
+在回调页面上，您的典型任务是：
 
-* inspect the identity returned by the external provider.
-* make a decision how you want to deal with that user. This might be different based on the fact if this is a new user or a returning user.
-* new users might need additional steps and UI before they are allowed in.
-* probably create a new internal user account that is linked to the external provider.
-* store the external claims that you want to keep.
-* delete the temporary cookie
-* sign-in the user
+* 检查外部提供者返回的身份。
+* 决定如何与该用户打交道。 根据这是新用户还是回访用户的事实，这可能会有所不同。
+* 新用户在被允许进入之前可能需要额外的步骤和 UI。
+* 可能会创建一个链接到外部提供商的新内部用户帐户。
+* 存储您想要保留的外部声明。
+* 删除临时cookie
+* 登录用户
 
-**Inspecting the external identity**::
+**检查外部身份**::
 
-    // read external identity from the temporary cookie
+    // 从临时 cookie 中读取外部身份
     var result = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
     if (result?.Succeeded != true)
     {
-        throw new Exception("External authentication error");
+        throw new Exception("外部认证错误");
     }
 
-    // retrieve claims of the external user
+    // 检索外部用户的声明
     var externalUser = result.Principal;
     if (externalUser == null)
     {
-        throw new Exception("External authentication error");
+        throw new Exception("外部认证错误");
     }
 
-    // retrieve claims of the external user
+    // 检索外部用户的声明
     var claims = externalUser.Claims.ToList();
 
-    // try to determine the unique id of the external user - the most common claim type for that are the sub claim and the NameIdentifier
-    // depending on the external provider, some other claim type might be used
+    // 尝试确定外部用户的唯一 ID —— 最常见的声明类型是 sub 声明和 NameIdentifier，
+    // 具体取决于外部提供者，可能会使用其他一些声明类型
     var userIdClaim = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Subject);
     if (userIdClaim == null)
     {
@@ -117,17 +117,17 @@ On the callback page your typical tasks are:
     }
     if (userIdClaim == null)
     {
-        throw new Exception("Unknown userid");
+        throw new Exception("未知 userid");
     }
     
     var externalUserId = userIdClaim.Value;
     var externalProvider = userIdClaim.Issuer;
 
-    // use externalProvider and externalUserId to find your user, or provision a new user
+    // 使用 externalProvider 和 externalUserId 查找您的用户，或配置新用户
 
-**Clean-up and sign-in**::
+**清理和登录**::
 
-    // issue authentication cookie for user
+    // 为用户颁发身份验证 cookie
     await HttpContext.SignInAsync(new IdentityServerUser(user.SubjectId) {
         DisplayName = user.Username,
         IdentityProvider = provider,
@@ -135,10 +135,10 @@ On the callback page your typical tasks are:
         AuthenticationTime = DateTime.Now
     });
 
-    // delete temporary cookie used during external authentication
+    // 删除外部身份验证期间使用的临时 cookie
     await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
-    // validate return URL and redirect back to authorization endpoint or a local page
+    // 验证返回 URL 并重定向回授权端点或本地页面
     if (_interaction.IsValidReturnUrl(returnUrl) || Url.IsLocalUrl(returnUrl))
     {
         return Redirect(returnUrl);
@@ -146,24 +146,24 @@ On the callback page your typical tasks are:
 
     return Redirect("~/");
 
-State, URL length, and ISecureDataFormat
+状态、URL 长度和 ISecureDataFormat
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When redirecting to an external provider for sign-in, frequently state from the client application must be round-tripped.
-This means that state is captured prior to leaving the client and preserved until the user has returned to the client application.
-Many protocols, including OpenID Connect, allow passing some sort of state as a parameter as part of the request, and the identity provider will return that state on the response.
-The OpenID Connect authentication handler provided by ASP.NET Core utilizes this feature of the protocol, and that is how it implements the ``returnUrl`` feature mentioned above.
+当重定向到外部提供程序进行登录时，来自客户端应用程序的状态必须经常往返。
+这意味着在离开客户端之前捕获状态并保留直到用户返回到客户端应用程序。
+许多协议，包括 OpenID Connect，允许将某种状态作为参数作为请求的一部分传递，身份提供者将在响应中返回该状态。
+ASP.NET Core 提供的 OpenID Connect 身份验证处理程序利用了协议的这一特性，这就是它实现上述 ``returnUrl`` 特性的方式。
 
-The problem with storing state in a request parameter is that the request URL can get too large (over the common limit of 2000 characters).
-The OpenID Connect authentication handler does provide an extensibility point to store the state in your server, rather than in the request URL. 
-You can implement this yourself by implementing ``ISecureDataFormat<AuthenticationProperties>`` and configuring it on the `OpenIdConnectOptions <https://github.com/aspnet/AspNetCore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L249>`_.
+在请求参数中存储状态的问题是请求 URL 可能变得太大（超过 2000 个字符的常见限制）。
+OpenID Connect 身份验证处理程序确实提供了一个可扩展点来将状态存储在您的服务器中，而不是存储在请求 URL 中。 
+您可以通过实现 ``ISecureDataFormat<AuthenticationProperties>`` 并在 `OpenIdConnectOptions <https://github.com/aspnet/AspNetCore/blob/main/src/Security/Authentication/OpenIdConnect/src/OpenIdConnectOptions.cs#L249>`_ 上配置它来自己实现。
 
-Fortunately, IdentityServer provides an implementation of this for you, backed by the ``IDistributedCache`` implementation registered in the DI container (e.g. the standard ``MemoryDistributedCache``).
-To use the IdentityServer provided secure data format implementation, simply call the ``AddOidcStateDataFormatterCache`` extension method on the ``IServiceCollection`` when configuring DI.
-If no parameters are passed, then all OpenID Connect handlers configured will use the IdentityServer provided secure data format implementation::
+幸运的是，IdentityServer 为您提供了一个实现，由在 DI 容器中注册的 ``IDistributedCache`` 实现支持（例如标准的 ``MemoryDistributedCache``）。
+要使用 IdentityServer 提供的安全数据格式实现，只需在配置 DI 时调用 ``IServiceCollection`` 上的 ``AddOidcStateDataFormatterCache`` 扩展方法。
+如果没有传递参数，那么所有配置的 OpenID Connect 处理程序将使用 IdentityServer 提供的安全数据格式实现::
 
     public void ConfigureServices(IServiceCollection services)
     {
-        // configures the OpenIdConnect handlers to persist the state parameter into the server-side IDistributedCache.
+        // 配置 OpenIdConnect 处理程序以将状态参数持久化到服务器端 IDistributedCache。
         services.AddOidcStateDataFormatterCache();
 
         services.AddAuthentication()
@@ -182,11 +182,11 @@ If no parameters are passed, then all OpenID Connect handlers configured will us
     }
 
 
-If only particular schemes are to be configured, then pass those schemes as parameters::
+如果只配置特定的方案，则将这些方案作为参数传递::
 
     public void ConfigureServices(IServiceCollection services)
     {
-        // configures the OpenIdConnect handlers to persist the state parameter into the server-side IDistributedCache.
+        // 配置 OpenIdConnect 处理程序以将状态参数持久化到服务器端 IDistributedCache。
         services.AddOidcStateDataFormatterCache("aad", "demoidsrv");
 
         services.AddAuthentication()

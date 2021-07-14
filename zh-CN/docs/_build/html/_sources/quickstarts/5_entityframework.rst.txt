@@ -2,7 +2,7 @@
 使用 EntityFramework Core 获取配置和操作数据
 =================================================================
 
-在之前的快速入门中，我们在代码中创建了客户端和作用域数据。
+在之前的快速入门中，我们在代码中创建了客户端和范围数据。
 在启动时，IdentityServer 将此配置数据加载到内存中。
 如果我们想修改这个配置数据，我们必须停止和启动 IdentityServer。
 
@@ -17,7 +17,7 @@ IdentityServer4.EntityFramework
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ``IdentityServer4.EntityFramework`` 使用以下 DbContext 实现所需的存储和服务：
 
-    * ConfigurationDbContext —— 用于配置数据，例如客户端、资源和作用域
+    * ConfigurationDbContext —— 用于配置数据，例如客户端、资源和范围
     * PersistedGrantDbContext —— 用于临时操作数据，例如授权码和刷新令牌
 
 这些 context 适用于任何 Entity Framework Core 兼容的关系数据库。

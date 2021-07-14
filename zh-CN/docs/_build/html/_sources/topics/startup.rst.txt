@@ -2,152 +2,151 @@
 Startup
 =======
 
-IdentityServer is a combination of middleware and services.
-All configuration is done in your startup class.
+IdentityServer 是中间件和服务的组合。
+所有配置都在您的启动类中完成。
 
-Configuring services
+配置服务
 ^^^^^^^^^^^^^^^^^^^^
-You add the IdentityServer services to the DI system by calling::
+您可以通过调用将 IdentityServer 服务添加到 DI 系统::
 
     public void ConfigureServices(IServiceCollection services)
     {
         var builder = services.AddIdentityServer();
     }
 
-Optionally you can pass in options into this call. See :ref:`here <refOptions>` for details on options.
+您可以选择将选项传递到此调用中。 有关选项的详细信息，请参阅 :ref:`这里 <refOptions>`。
 
-This will return you a builder object that in turn has a number of convenience methods to wire up additional services.
+这将返回一个 builder 对象，该对象又具有许多连接附加服务的便捷方法。
 
 .. _refStartupKeyMaterial:
-Key material
+密钥材料
 ^^^^^^^^^^^^
-IdentityServer supports X.509 certificates (both raw files and a reference to the Windows certificate store), 
-RSA keys and EC keys for token signatures and validation. Each key can be configured with a (compatible) signing algorithm, 
-e.g. RS256, RS384, RS512, PS256, PS384, PS512, ES256, ES384 or ES512.
+IdentityServer 支持 X.509 证书（原始文件和对 Windows 证书存储的引用）、RSA 密钥和用于令牌签名和验证的 EC 密钥。 
+每个密钥都可以配置一个（兼容的）签名算法，例如 RS256、RS384、RS512、PS256、PS384、PS512、ES256、ES384 或 ES512。
 
-You can configure the key material with the following methods:
+您可以使用以下方法配置密钥材料：
 
 * ``AddSigningCredential``
-    Adds a signing key that provides the specified key material to the various token creation/validation services.
+    添加一个签名密钥，为各种令牌创建/验证服务提供指定的密钥材料。
 * ``AddDeveloperSigningCredential``
-    Creates temporary key material at startup time. This is for dev scenarios. The generated key will be persisted in the local directory by default.
+    在启动时创建临时密钥材料。 这是针对开发场景的。 默认情况下，生成的密钥将持久保存在本地目录中。
 * ``AddValidationKey``
-    Adds a key for validating tokens. They will be used by the internal token validator and will show up in the discovery document.
+    添加用于验证令牌的密钥。 它们将由内部令牌验证器使用，并将显示在发现文档中。
 
-In-Memory configuration stores
+内存配置存储
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The various "in-memory" configuration APIs allow for configuring IdentityServer from an in-memory list of configuration objects.
-These "in-memory" collections can be hard-coded in the hosting application, or could be loaded dynamically from a configuration file or a database.
-By design, though, these collections are only created when the hosting application is starting up.
+各种 “in-memory” 配置 API 允许从内存中的配置对象列表配置 IdentityServer。
+这些 “in-memory” 集合可以在托管应用程序中进行硬编码，也可以从配置文件或数据库中动态加载。
+但是，按照设计，这些集合仅在托管应用程序启动时创建。
 
-Use of these configuration APIs are designed for use when prototyping, developing, and/or testing where it is not necessary to dynamically consult database at runtime for the configuration data.
-This style of configuration might also be appropriate for production scenarios if the configuration rarely changes, or it is not inconvenient to require restarting the application if the value must be changed.
+这些配置 API 的使用旨在用于原型设计、开发和/或测试，其中不需要在运行时动态查询数据库以获取配置数据。
+如果配置很少更改，或者在必须更改值时要求重新启动应用程序并不不方便，则这种配置样式也可能适用于生产场景。
 
 * ``AddInMemoryClients``
-    Registers ``IClientStore`` and ``ICorsPolicyService`` implementations based on the in-memory collection of ``Client`` configuration objects.
+    基于 ``Client`` 配置对象的内存集合注册 ``IClientStore`` 和 ``ICorsPolicyService`` 实现。
 * ``AddInMemoryIdentityResources``
-    Registers ``IResourceStore`` implementation based on the in-memory collection of ``IdentityResource`` configuration objects.
+    基于 ``IdentityResource`` 配置对象的内存集合注册 ``IResourceStore`` 实现。
 * ``AddInMemoryApiScopes``
-    Registers ``IResourceStore`` implementation based on the in-memory collection of ``ApiScope`` configuration objects.
+    基于 ``ApiScope`` 配置对象的内存中集合注册 ``IResourceStore`` 实现。
 * ``AddInMemoryApiResources``
-    Registers ``IResourceStore`` implementation based on the in-memory collection of ``ApiResource`` configuration objects.
+    基于 ``ApiResource`` 配置对象的内存集合注册 ``IResourceStore`` 实现。
 
-Test stores
+测试存储
 ^^^^^^^^^^^
 
-The ``TestUser`` class models a user, their credentials, and claims in IdentityServer. 
-Use of ``TestUser`` is similar to the use of the "in-memory" stores in that it is intended for when prototyping, developing, and/or testing.
-The use of ``TestUser`` is not recommended in production.
+``TestUser`` 类在 IdentityServer 中对用户、他们的凭据和声明进行建模。
+``TestUser`` 的使用类似于 “in-memory” 存储的使用，因为它用于原型设计、开发和/或测试。
+不建议在生产中使用 ``TestUser``。
 
 * ``AddTestUsers``
-    Registers ``TestUserStore`` based on a collection of ``TestUser`` objects.
-    ``TestUserStore`` is used by the default quickstart UI.
-    Also registers implementations of ``IProfileService`` and ``IResourceOwnerPasswordValidator``.
+    基于 ``TestUser`` 对象的集合注册 ``TestUserStore``。
+    ``TestUserStore`` 由默认的快速入门 UI 使用。
+    还注册了 ``IProfileService`` 和 ``IResourceOwnerPasswordValidator`` 的实现。
 
-Additional services
+额外服务
 ^^^^^^^^^^^^^^^^^^^
 
 * ``AddExtensionGrantValidator``
-    Adds ``IExtensionGrantValidator`` implementation for use with extension grants.
+    添加用于扩展授权的 ``IExtensionGrantValidator`` 实现。
 
 * ``AddSecretParser``
-    Adds ``ISecretParser`` implementation for parsing client or API resource credentials.
+    添加用于解析客户端或 API 资源凭据的 ``ISecretParser`` 实现。
 
 * ``AddSecretValidator``
-    Adds ``ISecretValidator`` implementation for validating client or API resource credentials against a credential store.
+    添加 ``ISecretValidator`` 实现，用于根据凭证存储验证客户端或 API 资源凭证。
 
 * ``AddResourceOwnerValidator``
-    Adds ``IResourceOwnerPasswordValidator`` implementation for validating user credentials for the resource owner password credentials grant type.
+    添加 ``IResourceOwnerPasswordValidator`` 实现，用于验证资源所有者密码凭据授予类型的用户凭据。
 
 * ``AddProfileService``
-    Adds ``IProfileService`` implementation for connecting to your :ref:`custom user profile store<refProfileService>`.
-    The ``DefaultProfileService`` class provides the default implementation which relies upon the authentication cookie as the only source of claims for issuing in tokens.
+    添加 ``IProfileService`` 实现以连接到您的 :ref:`自定义用户配置文件存储 <refProfileService>`。
+    ``DefaultProfileService`` 类提供了默认实现，该实现依赖于身份验证 cookie 作为在令牌中发布的唯一声明来源。
 
 * ``AddAuthorizeInteractionResponseGenerator``
-    Adds ``IAuthorizeInteractionResponseGenerator`` implementation to customize logic at authorization endpoint for when a user must be shown a UI for error, login, consent, or any other custom page.
-    The ``AuthorizeInteractionResponseGenerator`` class provides a default implementation, so consider deriving from this existing class if you need to augment the existing behavior.
+    添加 ``IAuthorizeInteractionResponseGenerator`` 实现，以自定义授权端点的逻辑，以便在必须向用户显示错误、登录、同意或任何其他自定义页面的 UI时使用。
+    ``AuthorizeInteractionResponseGenerator`` 类提供了默认实现，因此如果您需要增强现有行为，请考虑从该现有类派生。
 
 * ``AddCustomAuthorizeRequestValidator``
-    Adds ``ICustomAuthorizeRequestValidator`` implementation to customize request parameter validation at the authorization endpoint.
+    添加 ``ICustomAuthorizeRequestValidator`` 实现，以在授权端点自定义请求参数验证。
 
 * ``AddCustomTokenRequestValidator``
-    Adds ``ICustomTokenRequestValidator`` implementation to customize request parameter validation at the token endpoint.
+    添加 ``ICustomTokenRequestValidator`` 实现，以自定义令牌端点处的请求参数验证。
 
 * ``AddRedirectUriValidator``
-    Adds ``IRedirectUriValidator`` implementation to customize redirect URI validation.
+    添加 ``IRedirectUriValidator`` 实现，以自定义重定向 URI 验证。
 
 * ``AddAppAuthRedirectUriValidator``
-    Adds a an "AppAuth" (OAuth 2.0 for Native Apps) compliant redirect URI validator (does strict validation but also allows http://127.0.0.1 with random port).
+    添加符合 “AppAuth”（原生应用程序的 OAuth 2.0）的重定向 URI 验证器（进行严格验证，但也允许使用随机端口的 http://127.0.0.1）。
 
 * ``AddJwtBearerClientAuthentication``
-    Adds support for client authentication using JWT bearer assertions.
+    添加对使用 JWT bearer 断言的客户端身份验证的支持。
 
 * ``AddMutualTlsSecretValidators``
-    Adds the X509 secret validators for mutual TLS.
+    为 mutual TLS 添加 X509 密钥验证器。
 
-Caching
+缓存
 ^^^^^^^
 
-Client and resource configuration data is used frequently by IdentityServer.
-If this data is being loaded from a database or other external store, then it might be expensive to frequently re-load the same data.
+IdentityServer 经常使用客户端和资源配置数据。
+如果这些数据是从数据库或其他外部存储加载的，那么频繁地重新加载相同的数据可能会很昂贵。
 
 * ``AddInMemoryCaching``
-    To use any of the caches described below, an implementation of ``ICache<T>`` must be registered in DI.
-    This API registers a default in-memory implementation of ``ICache<T>`` that's based on ASP.NET Core's ``MemoryCache``.
+    要使用下面描述的任何缓存，必须在 DI 中注册 ``ICache<T>`` 的实现。
+    此 API 注册了一个基于 ASP.NET Core 的 ``MemoryCache`` 的默认内存中实现 ``ICache<T>`` 。
 
 * ``AddClientStoreCache``
-    Registers a ``IClientStore`` decorator implementation which will maintain an in-memory cache of ``Client`` configuration objects.
-    The cache duration is configurable on the ``Caching`` configuration options on the ``IdentityServerOptions``.
+    注册一个 ``IClientStore`` 装饰器实现，它将维护一个 ``Client`` 配置对象的内存缓存。
+    缓存持续时间可在 ``IdentityServerOptions``的 ``Caching`` 配置选项中配置。
 
 * ``AddResourceStoreCache``
-    Registers a ``IResourceStore`` decorator implementation which will maintain an in-memory cache of ``IdentityResource`` and ``ApiResource`` configuration objects.
-    The cache duration is configurable on the ``Caching`` configuration options on the ``IdentityServerOptions``.
+    注册一个 ``IResourceStore`` 装饰器实现，它将维护一个 ``IdentityResource`` 和 ``ApiResource`` 配置对象的内存缓存。
+    缓存持续时间可在 ``IdentityServerOptions``的 ``Caching`` 配置选项中配置。
 
 * ``AddCorsPolicyCache``
-    Registers a ``ICorsPolicyService`` decorator implementation which will maintain an in-memory cache of the results of the CORS policy service evaluation.
-    The cache duration is configurable on the ``Caching`` configuration options on the ``IdentityServerOptions``.
+    注册一个 ``ICorsPolicyService`` 装饰器实现，它将维护 CORS 策略服务评估结果的内存缓存。
+    缓存持续时间可在 ``IdentityServerOptions``的 ``Caching`` 配置选项中配置。
 
-Further customization of the cache is possible:
+可以进一步自定义缓存：
 
-The default caching relies upon the ``ICache<T>`` implementation.
-If you wish to customize the caching behavior for the specific configuration objects, you can replace this implementation in the dependency injection system.
+默认缓存依赖于 ``ICache<T>`` 实现。
+如果您希望为特定配置对象自定义缓存行为，您可以在依赖注入系统中替换此实现。
 
-The default implementation of the ``ICache<T>`` itself relies upon the ``IMemoryCache`` interface (and ``MemoryCache`` implementation) provided by .NET.
-If you wish to customize the in-memory caching behavior, you can replace the ``IMemoryCache`` implementation in the dependency injection system.
+``ICache<T>`` 本身的默认实现依赖于.NET 提供的 ``IMemoryCache`` 接口（和 ``MemoryCache`` 实现）。
+如果您希望自定义内存缓存行为，您可以替换依赖注入系统中的 ``IMemoryCache`` 实现。
 
-Configuring the pipeline
+配置管道
 ^^^^^^^^^^^^^^^^^^^^^^^^
-You need to add IdentityServer to the pipeline by calling::
+您需要通过调用将 IdentityServer 添加到管道中::
 
     public void Configure(IApplicationBuilder app)
     {
         app.UseIdentityServer();
     }
 
-.. note:: ``UseIdentityServer`` includes a call to ``UseAuthentication``, so it's not necessary to have both.
+.. note:: ``UseIdentityServer`` 包括对 ``UseAuthentication`` 的调用，因此不必同时具有这两个调用。
 
-There is no additional configuration for the middleware.
+中间件没有额外的配置。
 
-Be aware that order matters in the pipeline. 
-For example, you will want to add IdentitySever before the UI framework that implements the login screen.
+请注意，顺序在管道中很重要。
+例如，您需要在实现登录屏幕的 UI 框架之前添加 IdentitySever。
