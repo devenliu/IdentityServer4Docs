@@ -13,7 +13,6 @@ IdentityServer4 是用于 ASP.NET Core 的 OpenID Connect 和 OAuth 2.0 框架�
    开发和测试始终免费。
    `联系 <https://duendesoftware.com/contact>`_ 了解更多信息。
    
-   IdentityServer4 will be maintained with bug fixes and security updates until November 2022.
    IdentityServer4将在2022年11月之前进行错误修复和安全更新。 
 
 

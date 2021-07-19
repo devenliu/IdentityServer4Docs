@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sign-out &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>注销 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Sign-out of External Identity Providers" href="signout_external_providers.html" />
-    <link rel="prev" title="Windows Authentication" href="windows.html" /> 
+    <link rel="prev" title="Windows 身份验证" href="windows.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -119,12 +119,12 @@
 <li class="toctree-l1"><a class="reference internal" href="resources.html">定义资源</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clients.html">定义客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Sign-out</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#removing-the-authentication-cookie">Removing the authentication cookie</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#notifying-clients-that-the-user-has-signed-out">Notifying clients that the user has signed-out</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sign-out-initiated-by-a-client-application">Sign-out initiated by a client application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">注销</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cookie">删除身份验证 cookie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">通知客户端用户已注销</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">由客户端应用程序发起的注销</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
@@ -231,7 +231,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Sign-out</li>
+      <li>注销</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -250,54 +250,53 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sign-out">
-<h1>Sign-out<a class="headerlink" href="#sign-out" title="永久链接至标题">¶</a></h1>
-<p>Signing out of IdentityServer is as simple as removing the authentication cookie,
-but for doing a complete federated sign-out, we must consider signing the user out of the client applications (and maybe even up-stream identity providers) as well.</p>
-<div class="section" id="removing-the-authentication-cookie">
-<h2>Removing the authentication cookie<a class="headerlink" href="#removing-the-authentication-cookie" title="永久链接至标题">¶</a></h2>
-<p>To remove the authentication cookie, simply use the <code class="docutils literal notranslate"><span class="pre">SignOutAsync</span></code> extension method on the <code class="docutils literal notranslate"><span class="pre">HttpContext</span></code>.
-You will need to pass the scheme used (which is provided by <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.DefaultCookieAuthenticationScheme</span></code> unless you have changed it):</p>
+  <div class="section" id="id1">
+<h1>注销<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>注销 IdentityServer 就像删除身份验证 cookie 一样简单，但是要进行完整的联合注销，我们还必须考虑将用户从客户端应用程序（甚至可能是上游身份提供商）中注销。</p>
+<div class="section" id="cookie">
+<h2>删除身份验证 cookie<a class="headerlink" href="#cookie" title="永久链接至标题">¶</a></h2>
+<p>要删除身份验证 cookie，只需在 <code class="docutils literal notranslate"><span class="pre">HttpContext</span></code> 上使用 <code class="docutils literal notranslate"><span class="pre">SignOutAsync</span></code> 扩展方法。
+您将需要传递使用的方案（由 <code class="docutils literal notranslate"><span class="pre">IdentityServerConstants.DefaultCookieAuthenticationScheme</span></code> 提供，除非您已更改它）:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignOutAsync</span><span class="p">(</span><span class="n">IdentityServerConstants</span><span class="p">.</span><span class="n">DefaultCookieAuthenticationScheme</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Or you can use the convenience extension method that is provided by IdentityServer:</p>
+<p>或者您可以使用 IdentityServer 提供的便捷扩展方法:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignOutAsync</span><span class="p">();</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>Typically you should prompt the user for signout (meaning require a POST), otherwise an attacker could hotlink to your logout page causing the user to be automatically logged out.</p>
+<p>通常，您应该提示用户注销（意味着需要 POST），否则攻击者可能会热链接到您的注销页面，从而导致用户自动注销。</p>
 </div>
 </div>
-<div class="section" id="notifying-clients-that-the-user-has-signed-out">
-<h2>Notifying clients that the user has signed-out<a class="headerlink" href="#notifying-clients-that-the-user-has-signed-out" title="永久链接至标题">¶</a></h2>
-<p>As part of the signout process you will want to ensure client applications are informed that the user has signed out.
-IdentityServer supports the <a class="reference external" href="https://openid.net/specs/openid-connect-frontchannel-1_0.html">front-channel</a> specification for server-side clients (e.g. MVC),
-the <a class="reference external" href="https://openid.net/specs/openid-connect-backchannel-1_0.html">back-channel</a>  specification for server-side clients (e.g. MVC),
-and the <a class="reference external" href="https://openid.net/specs/openid-connect-session-1_0.html">session management</a> specification for browser-based JavaScript clients (e.g. SPA, React, Angular, etc.).</p>
-<p><strong>Front-channel server-side clients</strong></p>
-<p>To signout the user from the server-side client applications via the front-channel spec, the &quot;logged out&quot; page in IdentityServer must render an <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> to notify the clients that the user has signed out.
-Clients that wish to be notified must have the <code class="docutils literal notranslate"><span class="pre">FrontChannelLogoutUri</span></code> configuration value set.
-IdentityServer tracks which clients the user has signed into, and provides an API called <code class="docutils literal notranslate"><span class="pre">GetLogoutContextAsync</span></code> on the <code class="docutils literal notranslate"><span class="pre">IIdentityServerInteractionService</span></code> (<a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">details</span></a>).
-This API returns a <code class="docutils literal notranslate"><span class="pre">LogoutRequest</span></code> object with a <code class="docutils literal notranslate"><span class="pre">SignOutIFrameUrl</span></code> property that your logged out page must render into an <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code>.</p>
-<p><strong>Back-channel server-side clients</strong></p>
-<p>To signout the user from the server-side client applications via the back-channel spec the <code class="docutils literal notranslate"><span class="pre">IBackChannelLogoutService</span></code> service can be used.
-IdentityServer will automatically use this service when your logout page removes the user's authentication cookie via a call to <code class="docutils literal notranslate"><span class="pre">HttpContext.SignOutAsync</span></code>.
-Clients that wish to be notified must have the <code class="docutils literal notranslate"><span class="pre">BackChannelLogoutUri</span></code> configuration value set.</p>
-<p><strong>Browser-based JavaScript clients</strong></p>
-<p>Given how the <a class="reference external" href="https://openid.net/specs/openid-connect-session-1_0.html">session management</a> specification is designed, there is nothing special in IdentityServer that you need to do to notify these clients that the user has signed out.
-The clients, though, must perform monitoring on the <cite>check_session_iframe</cite>, and this is implemented by the <a class="reference external" href="https://github.com/IdentityModel/oidc-client-js/">oidc-client JavaScript library</a>.</p>
+<div class="section" id="id2">
+<h2>通知客户端用户已注销<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>作为注销过程的一部分，您需要确保通知客户端应用程序用户已注销。
+IdentityServer 支持服务器测客户端（例如 MVC）的 <a class="reference external" href="https://openid.net/specs/openid-connect-frontchannel-1_0.html">前端通道</a> 规范，
+服务器端客户端（例如 MVC）的 <a class="reference external" href="https://openid.net/specs/openid-connect-backchannel-1_0.html">后端通道</a> 规范，
+以及基于浏览器的 JavaScript 客户端（例如 SPA、React、Angular 等）的 <a class="reference external" href="https://openid.net/specs/openid-connect-session-1_0.html">会话管理</a> 规范。</p>
+<p><strong>前端通道 服务器端客户端</strong></p>
+<p>要通过前端通道规范从服务器端客户端应用程序中注销用户，IdentityServer 中的 <code class="docutils literal notranslate"><span class="pre">注销</span></code> 页面必须呈现一个 <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> 以通知客户端用户已注销。
+希望收到通知的客户端必须设置 <code class="docutils literal notranslate"><span class="pre">FrontChannelLogoutUri</span></code> 配置值。
+IdentityServer 跟踪用户登录了哪些客户端，并在 <code class="docutils literal notranslate"><span class="pre">IIdentityServerInteractionService</span></code> （<a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">详情</span></a>）上提供了一个名为 <code class="docutils literal notranslate"><span class="pre">GetLogoutContextAsync</span></code> 的 API。
+此 API 返回一个带有 <code class="docutils literal notranslate"><span class="pre">SignOutIFrameUrl</span></code> 属性的 <code class="docutils literal notranslate"><span class="pre">LogoutRequest</span></code> 对象，您的注销页面必须将其呈现到 <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> 中。</p>
+<p><strong>后端通道 服务器端客户端</strong></p>
+<p>要通过后端通道规范从服务器端客户端应用程序注销用户，可以使用 <code class="docutils literal notranslate"><span class="pre">IBackChannelLogoutService</span></code> 服务。
+当您的注销页面通过调用 <code class="docutils literal notranslate"><span class="pre">HttpContext.SignOutAsync</span></code> 删除用户的身份验证 cookie 时，IdentityServer 将自动使用此服务。
+希望收到通知的客户端必须设置 <code class="docutils literal notranslate"><span class="pre">BackChannelLogoutUri</span></code> 配置值。</p>
+<p><strong>基于浏览器的 JavaScript 客户端</strong></p>
+<p>鉴于 <a class="reference external" href="https://openid.net/specs/openid-connect-session-1_0.html">会话管理</a>  规范是如何设计的，在 IdentityServer 中，您不需要做什么特殊的事情来通知这些客户端用户已注销。
+但是，客户端必须对 <cite>check_session_iframe</cite> 执行监控，这是由 <a class="reference external" href="https://github.com/IdentityModel/oidc-client-js/">oidc-client JavaScript 库</a> 实现的。</p>
 </div>
-<div class="section" id="sign-out-initiated-by-a-client-application">
-<h2>Sign-out initiated by a client application<a class="headerlink" href="#sign-out-initiated-by-a-client-application" title="永久链接至标题">¶</a></h2>
-<p>If sign-out was initiated by a client application, then the client first redirected the user to the <a class="reference internal" href="../endpoints/endsession.html#refendsession"><span class="std std-ref">end session endpoint</span></a>.
-Processing at the end session endpoint might require some temporary state to be maintained (e.g. the client's post logout redirect uri) across the redirect to the logout page.
-This state might be of use to the logout page, and the identifier for the state is passed via a <cite>logoutId</cite> parameter to the logout page.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">GetLogoutContextAsync</span></code> API on the <a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">interaction service</span></a> can be used to load the state.
-Of interest on the <code class="docutils literal notranslate"><span class="pre">LogoutRequest</span></code> model context class is the <code class="docutils literal notranslate"><span class="pre">ShowSignoutPrompt</span></code> which indicates if the request for sign-out has been authenticated, and therefore it's safe to not prompt the user for sign-out.</p>
-<p>By default this state is managed as a protected data structure passed via the <cite>logoutId</cite> value.
-If you wish to use some other persistence between the end session endpoint and the logout page, then you can implement <code class="docutils literal notranslate"><span class="pre">IMessageStore&lt;LogoutMessage&gt;</span></code> and register the implementation in DI.</p>
+<div class="section" id="id7">
+<h2>由客户端应用程序发起的注销<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>如果注销是由客户端应用程序发起的，那么客户端首先将用户重定向到 <a class="reference internal" href="../endpoints/endsession.html#refendsession"><span class="std std-ref">结束会话端点</span></a>。
+结束会话端点的处理可能需要在重定向到注销页面的过程中维护一些临时状态（例如，客户端的注销后重定向 uri）。
+此状态可能对注销页面有用，并且该状态的标识符通过 <cite>logoutId</cite> 参数传递到注销页面。</p>
+<p><a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">交互服务</span></a> 上的 <code class="docutils literal notranslate"><span class="pre">GetLogoutContextAsync</span></code> API 可用于加载状态。
+对 <code class="docutils literal notranslate"><span class="pre">LogoutRequest</span></code> 模型上下文类感兴趣的是 <code class="docutils literal notranslate"><span class="pre">ShowSignoutPrompt</span></code>，它指示注销请求是否已通过身份验证，因此不提示用户注销是安全的。</p>
+<p>默认情况下，此状态作为通过 <code class="docutils literal notranslate"><span class="pre">logoutId</span></code> 值传递的受保护数据结构进行管理。
+如果您希望在结束会话端点和注销页面之间使用其他持久性，那么您可以实现 <code class="docutils literal notranslate"><span class="pre">IMessageStore&lt;LogoutMessage&gt;</span></code> 并在 DI 中注册实现。</p>
 </div>
 </div>
 
@@ -308,7 +307,7 @@ If you wish to use some other persistence between the end session endpoint and t
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="signout_external_providers.html" class="btn btn-neutral float-right" title="Sign-out of External Identity Providers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="windows.html" class="btn btn-neutral float-left" title="Windows Authentication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="windows.html" class="btn btn-neutral float-left" title="Windows 身份验证" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

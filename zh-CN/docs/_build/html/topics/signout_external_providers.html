@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Sign-out of External Identity Providers &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>注销外部身份提供商 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Federated Sign-out" href="signout_federated.html" />
-    <link rel="prev" title="Sign-out" href="signout.html" /> 
+    <link rel="prev" title="注销" href="signout.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -119,10 +119,10 @@
 <li class="toctree-l1"><a class="reference internal" href="resources.html">定义资源</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clients.html">定义客户端</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">Sign-in with External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows Authentication</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Sign-out of External Identity Providers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
+<li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">注销</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">注销外部身份提供商</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
 <li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
 <li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
@@ -226,7 +226,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Sign-out of External Identity Providers</li>
+      <li>注销外部身份提供商</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -245,45 +245,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sign-out-of-external-identity-providers">
-<h1>Sign-out of External Identity Providers<a class="headerlink" href="#sign-out-of-external-identity-providers" title="永久链接至标题">¶</a></h1>
-<p>When a user is <a class="reference internal" href="signout.html#refsignout"><span class="std std-ref">signing-out</span></a> of IdentityServer, and they have used an <a class="reference internal" href="signin_external_providers.html#refexternalidentityproviders"><span class="std std-ref">external identity provider</span></a> to sign-in then it is likely that they should be redirected to also sign-out of the external provider.
-Not all external providers support sign-out, as it depends on the protocol and features they support.</p>
-<p>To detect that a user must be redirected to an external identity provider for sign-out is typically done by using a <code class="docutils literal notranslate"><span class="pre">idp</span></code> claim issued into the cookie at IdentityServer.
-The value set into this claim is the <code class="docutils literal notranslate"><span class="pre">AuthenticationScheme</span></code> of the corresponding authentication middleware.
-At sign-out time this claim is consulted to know if an external sign-out is required.</p>
-<p>Redirecting the user to an external identity provider is problematic due to the cleanup and state management already required by the normal sign-out workflow.
-The only way to then complete the normal sign-out and cleanup process at IdentityServer is to then request from the external identity provider that after its logout that the user be redirected back to IdentityServer.
-Not all external providers support post-logout redirects, as it depends on the protocol and features they support.</p>
-<p>The workflow at sign-out is then to revoke IdentityServer's authentication cookie, and then redirect to the external provider requesting a post-logout redirect.
-The post-logout redirect should maintain the necessary sign-out state described <a class="reference internal" href="signout.html#refsignout"><span class="std std-ref">here</span></a> (i.e. the <code class="docutils literal notranslate"><span class="pre">logoutId</span></code> parameter value).
-To redirect back to IdentityServer after the external provider sign-out, the <code class="docutils literal notranslate"><span class="pre">RedirectUri</span></code> should be used on the <code class="docutils literal notranslate"><span class="pre">AuthenticationProperties</span></code> when using ASP.NET Core's <code class="docutils literal notranslate"><span class="pre">SignOutAsync</span></code> API, for example:</p>
+  <div class="section" id="id1">
+<h1>注销外部身份提供商<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>当用户从 IdentityServer <a class="reference internal" href="signout.html#refsignout"><span class="std std-ref">注销</span></a> 时，如果他们使用了 <a class="reference internal" href="signin_external_providers.html#refexternalidentityproviders"><span class="std std-ref">外部身份提供商</span></a> 登录，则很可能还应该将他们重定向到注销外部提供商。
+并非所有外部提供商都支持注销，因为这取决于他们支持的协议和功能。</p>
+<p>检测用户是否必须重定向到外部身份提供商以进行注销，通常是通过使用在 IdentityServer 的 cookie 中发出的 <code class="docutils literal notranslate"><span class="pre">idp</span></code> 声明来完成的。
+设置到此声明中的值是相应身份验证中间件的 <code class="docutils literal notranslate"><span class="pre">AuthenticationScheme</span></code>。
+在注销时，将咨询此声明以了解是否需要外部注销。</p>
+<p>由于正常注销工作流已经需要清理和状态管理，因此将用户重定向到外部身份提供者是有问题的。
+完成 IdentityServer 的正常注销和清理过程的唯一方法是，从外部身份提供商请求在其注销后，将用户重定向回 IdentityServer。
+并非所有外部提供商都支持注销后重定向，因为这取决于它们支持的协议和功能。</p>
+<p>注销时的工作流程是撤销 IdentityServer 的身份验证 cookie，然后重定向到请求注销后重定向的外部提供商。
+注销后重定向应保持 <a class="reference internal" href="signout.html#refsignout"><span class="std std-ref">此处</span></a> 描述的必要注销状态（即 <code class="docutils literal notranslate"><span class="pre">logoutId</span></code> 参数值）。
+要在外部提供商注销后重定向回 IdentityServer，例如，当使用 ASP.NET Core 的 <code class="docutils literal notranslate"><span class="pre">SignOutAsync</span></code> API 时，应在 <code class="docutils literal notranslate"><span class="pre">AuthenticationProperties</span></code> 上使用 <code class="docutils literal notranslate"><span class="pre">RedirectUri</span></code>:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="na">[HttpPost]</span>
 <span class="na">[ValidateAntiForgeryToken]</span>
 <span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IActionResult</span><span class="p">&gt;</span> <span class="n">Logout</span><span class="p">(</span><span class="n">LogoutInputModel</span> <span class="n">model</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="c1">// build a model so the logged out page knows what to display</span>
+    <span class="c1">// 建立一个模型，以便注销页面知道要显示什么</span>
     <span class="kt">var</span> <span class="n">vm</span> <span class="p">=</span> <span class="k">await</span> <span class="n">_account</span><span class="p">.</span><span class="n">BuildLoggedOutViewModelAsync</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">LogoutId</span><span class="p">);</span>
 
     <span class="kt">var</span> <span class="n">user</span> <span class="p">=</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">User</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">user</span><span class="p">?.</span><span class="n">Identity</span><span class="p">.</span><span class="n">IsAuthenticated</span> <span class="p">==</span> <span class="k">true</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="c1">// delete local authentication cookie</span>
+        <span class="c1">// 删除本地认证cookie</span>
         <span class="k">await</span> <span class="n">HttpContext</span><span class="p">.</span><span class="n">SignOutAsync</span><span class="p">();</span>
 
-        <span class="c1">// raise the logout event</span>
+        <span class="c1">// 引发注销事件</span>
         <span class="k">await</span> <span class="n">_events</span><span class="p">.</span><span class="n">RaiseAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">UserLogoutSuccessEvent</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">GetSubjectId</span><span class="p">(),</span> <span class="n">user</span><span class="p">.</span><span class="n">GetName</span><span class="p">()));</span>
     <span class="p">}</span>
 
-    <span class="c1">// check if we need to trigger sign-out at an upstream identity provider</span>
+    <span class="c1">// 检查我们是否需要在上游身份提供商处触发注销</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">vm</span><span class="p">.</span><span class="n">TriggerExternalSignout</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="c1">// build a return URL so the upstream provider will redirect back</span>
-        <span class="c1">// to us after the user has logged out. this allows us to then</span>
-        <span class="c1">// complete our single sign-out processing.</span>
+        <span class="c1">// 构建一个返回 URL，以便上游提供商在用户注销后重定向回我们。</span>
+        <span class="c1">// 这样我们就可以完成单点注销处理。</span>
         <span class="kt">string</span> <span class="n">url</span> <span class="p">=</span> <span class="n">Url</span><span class="p">.</span><span class="n">Action</span><span class="p">(</span><span class="s">&quot;Logout&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="p">{</span> <span class="n">logoutId</span> <span class="p">=</span> <span class="n">vm</span><span class="p">.</span><span class="n">LogoutId</span> <span class="p">});</span>
 
-        <span class="c1">// this triggers a redirect to the external provider for sign-out</span>
+        <span class="c1">// 这将触发重定向到外部提供商以进行注销</span>
         <span class="k">return</span> <span class="nf">SignOut</span><span class="p">(</span><span class="k">new</span> <span class="n">AuthenticationProperties</span> <span class="p">{</span> <span class="n">RedirectUri</span> <span class="p">=</span> <span class="n">url</span> <span class="p">},</span> <span class="n">vm</span><span class="p">.</span><span class="n">ExternalAuthenticationScheme</span><span class="p">);</span>
     <span class="p">}</span>
 
@@ -291,7 +290,7 @@ To redirect back to IdentityServer after the external provider sign-out, the <co
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Once the user is signed-out of the external provider and then redirected back, the normal sign-out processing at IdentityServer should execute which involves processing the <code class="docutils literal notranslate"><span class="pre">logoutId</span></code> and doing all necessary cleanup.</p>
+<p>一旦用户从外部提供商注销，然后重定向回来，IdentityServer 上的正常注销处理就应该执行，这包括处理 <code class="docutils literal notranslate"><span class="pre">logoutId</span></code> 并进行所有必要的清理。</p>
 </div>
 
 
@@ -301,7 +300,7 @@ To redirect back to IdentityServer after the external provider sign-out, the <co
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="signout_federated.html" class="btn btn-neutral float-right" title="Federated Sign-out" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="signout.html" class="btn btn-neutral float-left" title="Sign-out" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="signout.html" class="btn btn-neutral float-left" title="注销" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
