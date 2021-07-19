@@ -1,59 +1,58 @@
 .. _refSignOut:
-Sign-out
+注销
 ========
 
-Signing out of IdentityServer is as simple as removing the authentication cookie, 
-but for doing a complete federated sign-out, we must consider signing the user out of the client applications (and maybe even up-stream identity providers) as well.
+注销 IdentityServer 就像删除身份验证 cookie 一样简单，但是要进行完整的联合注销，我们还必须考虑将用户从客户端应用程序（甚至可能是上游身份提供商）中注销。
 
-Removing the authentication cookie
+删除身份验证 cookie
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To remove the authentication cookie, simply use the ``SignOutAsync`` extension method on the ``HttpContext``.
-You will need to pass the scheme used (which is provided by ``IdentityServerConstants.DefaultCookieAuthenticationScheme`` unless you have changed it)::
+要删除身份验证 cookie，只需在 ``HttpContext`` 上使用 ``SignOutAsync`` 扩展方法。
+您将需要传递使用的方案（由 ``IdentityServerConstants.DefaultCookieAuthenticationScheme`` 提供，除非您已更改它）::
 
     await HttpContext.SignOutAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme);
 
-Or you can use the convenience extension method that is provided by IdentityServer::
+或者您可以使用 IdentityServer 提供的便捷扩展方法::
 
     await HttpContext.SignOutAsync();
 
-.. Note:: Typically you should prompt the user for signout (meaning require a POST), otherwise an attacker could hotlink to your logout page causing the user to be automatically logged out.
+.. Note:: 通常，您应该提示用户注销（意味着需要 POST），否则攻击者可能会热链接到您的注销页面，从而导致用户自动注销。
 
-Notifying clients that the user has signed-out
+通知客户端用户已注销
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-As part of the signout process you will want to ensure client applications are informed that the user has signed out.
-IdentityServer supports the `front-channel <https://openid.net/specs/openid-connect-frontchannel-1_0.html>`_ specification for server-side clients (e.g. MVC),
-the `back-channel <https://openid.net/specs/openid-connect-backchannel-1_0.html>`_  specification for server-side clients (e.g. MVC),
-and the `session management <https://openid.net/specs/openid-connect-session-1_0.html>`_ specification for browser-based JavaScript clients (e.g. SPA, React, Angular, etc.).
+作为注销过程的一部分，您需要确保通知客户端应用程序用户已注销。
+IdentityServer 支持服务器测客户端（例如 MVC）的 `前端通道 <https://openid.net/specs/openid-connect-frontchannel-1_0.html>`_ 规范，
+服务器端客户端（例如 MVC）的 `后端通道 <https:/ /openid.net/specs/openid-connect-backchannel-1_0.html>`_ 规范，
+以及基于浏览器的 JavaScript 客户端（例如 SPA、React、Angular 等）的 `会话管理 <https://openid.net/specs/openid-connect-session-1_0.html>`_ 规范。
 
-**Front-channel server-side clients**
+**前端通道 服务器端客户端**
 
-To signout the user from the server-side client applications via the front-channel spec, the "logged out" page in IdentityServer must render an ``<iframe>`` to notify the clients that the user has signed out.
-Clients that wish to be notified must have the ``FrontChannelLogoutUri`` configuration value set.
-IdentityServer tracks which clients the user has signed into, and provides an API called ``GetLogoutContextAsync`` on the ``IIdentityServerInteractionService`` (:ref:`details <refInteractionService>`). 
-This API returns a ``LogoutRequest`` object with a ``SignOutIFrameUrl`` property that your logged out page must render into an ``<iframe>``.
+要通过前端通道规范从服务器端客户端应用程序中注销用户，IdentityServer 中的 ``注销`` 页面必须呈现一个 ``<iframe>`` 以通知客户端用户已注销。
+希望收到通知的客户端必须设置 ``FrontChannelLogoutUri`` 配置值。
+IdentityServer 跟踪用户登录了哪些客户端，并在 ``IIdentityServerInteractionService`` （:ref:`详情 <refInteractionService>`）上提供了一个名为 ``GetLogoutContextAsync`` 的 API。
+此 API 返回一个带有 ``SignOutIFrameUrl`` 属性的 ``LogoutRequest`` 对象，您的注销页面必须将其呈现到 ``<iframe>`` 中。
 
-**Back-channel server-side clients**
+**后端通道 服务器端客户端**
 
-To signout the user from the server-side client applications via the back-channel spec the ``IBackChannelLogoutService`` service can be used. 
-IdentityServer will automatically use this service when your logout page removes the user's authentication cookie via a call to ``HttpContext.SignOutAsync``.
-Clients that wish to be notified must have the ``BackChannelLogoutUri`` configuration value set.
+要通过后端通道规范从服务器端客户端应用程序注销用户，可以使用 ``IBackChannelLogoutService`` 服务。 
+当您的注销页面通过调用 ``HttpContext.SignOutAsync`` 删除用户的身份验证 cookie 时，IdentityServer 将自动使用此服务。
+希望收到通知的客户端必须设置 ``BackChannelLogoutUri`` 配置值。
 
-**Browser-based JavaScript clients**
+**基于浏览器的 JavaScript 客户端**
 
-Given how the `session management <https://openid.net/specs/openid-connect-session-1_0.html>`_ specification is designed, there is nothing special in IdentityServer that you need to do to notify these clients that the user has signed out.
-The clients, though, must perform monitoring on the `check_session_iframe`, and this is implemented by the `oidc-client JavaScript library <https://github.com/IdentityModel/oidc-client-js/>`_.
+鉴于 `会话管理 <https://openid.net/specs/openid-connect-session-1_0.html>`_  规范是如何设计的，在 IdentityServer 中，您不需要做什么特殊的事情来通知这些客户端用户已注销。
+但是，客户端必须对 `check_session_iframe` 执行监控，这是由 `oidc-client JavaScript 库 <https://github.com/IdentityModel/oidc-client-js/>`_ 实现的。
 
-Sign-out initiated by a client application
+由客户端应用程序发起的注销
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If sign-out was initiated by a client application, then the client first redirected the user to the :ref:`end session endpoint <refEndSession>`.
-Processing at the end session endpoint might require some temporary state to be maintained (e.g. the client's post logout redirect uri) across the redirect to the logout page.
-This state might be of use to the logout page, and the identifier for the state is passed via a `logoutId` parameter to the logout page.
+如果注销是由客户端应用程序发起的，那么客户端首先将用户重定向到 :ref:`结束会话端点  <refEndSession>`。
+结束会话端点的处理可能需要在重定向到注销页面的过程中维护一些临时状态（例如，客户端的注销后重定向 uri）。
+此状态可能对注销页面有用，并且该状态的标识符通过 `logoutId` 参数传递到注销页面。
 
-The ``GetLogoutContextAsync`` API on the :ref:`interaction service <refInteractionService>` can be used to load the state.
-Of interest on the ``LogoutRequest`` model context class is the ``ShowSignoutPrompt`` which indicates if the request for sign-out has been authenticated, and therefore it's safe to not prompt the user for sign-out.
+:ref:`交互服务 <refInteractionService>` 上的 ``GetLogoutContextAsync`` API 可用于加载状态。
+对 ``LogoutRequest`` 模型上下文类感兴趣的是 ``ShowSignoutPrompt``，它指示注销请求是否已通过身份验证，因此不提示用户注销是安全的。
 
-By default this state is managed as a protected data structure passed via the `logoutId` value.
-If you wish to use some other persistence between the end session endpoint and the logout page, then you can implement ``IMessageStore<LogoutMessage>`` and register the implementation in DI.
+默认情况下，此状态作为通过 ``logoutId`` 值传递的受保护数据结构进行管理。
+如果您希望在结束会话端点和注销页面之间使用其他持久性，那么您可以实现 ``IMessageStore<LogoutMessage>`` 并在 DI 中注册实现。

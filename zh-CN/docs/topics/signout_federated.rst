@@ -1,22 +1,22 @@
 .. _refSignOutFederated:
-Federated Sign-out
+联合注销
 ==================
 
-Federated sign-out is the situation where a user has used an external identity provider to log into IdentityServer, and then the user logs out of that external identity provider via a workflow unknown to IdentityServer.
-When the user signs out, it will be useful for IdentityServer to be notified so that it can sign the user out of IdentityServer and all of the applications that use IdentityServer.
+联合注销是指用户使用外部身份提供商登录 IdentityServer，然后用户通过 IdentityServer 未知的工作流注销该外部身份提供商的情景。
+当用户退出时，IdentityServer 会收到通知，以便它可以让用户注销 IdentityServer 和所有使用 IdentityServer 的应用程序。
 
-Not all external identity providers support federated sign-out, but those that do will provide a mechanism to notify clients that the user has signed out.
-This notification usually comes in the form of a request in an ``<iframe>`` from the external identity provider's "logged out" page.
-IdentityServer must then notify all of its clients (as discussed :ref:`here <refSignOut>`), also typically in the form of a request in an ``<iframe>`` from within the external identity provider's ``<iframe>``.
+并非所有外部身份提供商都支持联合注销，但支持联合注销的提供商将提供一种机制来通知客户端用户已注销。
+此通知通常以来请求的形式出现在外部身份提供商的 ``注销`` 页面的 ``<iframe>`` 中。
+IdentityServer 随后必须通知它的所有客户端（如 :ref:`此处 <refSignOut>` 所述），通常也是以来请求的形式从外部身份提供商的 ``<iframe>`` 中的发出通知。
 
-What makes federated sign-out a special case (when compared to a normal :ref:`sign-out <refSignOut>`) is that the federated sign-out request is not to the normal sign-out endpoint in IdentityServer.
-In fact, each external IdentityProvider will have a different endpoint into your IdentityServer host. 
-This is due to that fact that each external identity provider might use a different protocol, and each middleware listens on different endpoints.
+使联合注销成为一种特殊情况（与正常的 :ref:`注销 <refSignOut>` 相比）的原因是，联合注销请求不属于 IdentityServer 中的正常注销端点。
+事实上，每个外部 IdentityProvider 在您的 IdentityServer 主机中都有一个不同的端点。 
+这是因为每个外部身份提供商可能使用不同的协议，并且每个中间件侦听不同的端点。
 
-The net effect of all of these factors is that there is no "logged out" page being rendered as we would on the normal sign-out workflow, 
-which means we are missing the sign-out notifications to IdentityServer's clients.
-We must add code for each of these federated sign-out endpoints to render the necessary notifications to achieve federated sign-out.
+所有这些因素的最终效果是，没有像我们在正常注销工作流中那样呈现 ``注销`` 页面，
+这意味着我们错过了 IdentityServer 客户端的注销通知。
+我们必须为每个联合注销端点添加代码，以呈现实现联合注销所需的通知。
 
-Fortunately IdentityServer already contains this code. 
-When requests come into IdentityServer and invoke the handlers for external authentication providers, IdentityServer detects if these are federated signout requests and if they are it will automatically render the same ``<iframe>`` as :ref:`described here for signout <refSignOut>`.
-In short, federated signout is automatically supported.
+幸运的是 IdentityServer 已经包含了此代码。
+当请求进入 IdentityServer 并调用外部身份验证提供商的处理程序时，IdentityServer 会检测这些是否是联合注销请求，如果是，它将自动呈现与 :ref:`此处描述的注销 <refSignOut>` 相同的 ``<iframe>``。
+简而言之，自动支持联合注销。
