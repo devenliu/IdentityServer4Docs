@@ -1,21 +1,21 @@
 
-Logging
+日志
 =======
-IdentityServer uses the standard logging facilities provided by ASP.NET Core.
-The Microsoft `documentation <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging>`_ has a good intro and a description of the built-in logging providers.
+IdentityServer 使用 ASP.NET Core 提供的标准日志记录工具。
+Microsoft `文档 <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging>`_ 有一个很好的介绍和内置日志提供程序的描述。
 
-We are roughly following the Microsoft guidelines for usage of log levels:
+我们大致遵循 Microsoft 的日志级别使用指南：
 
-* ``Trace`` For information that is valuable only to a developer troubleshooting an issue. These messages may contain sensitive application data like tokens and should not be enabled in a production environment.
-* ``Debug`` For following the internal flow and understanding why certain decisions are made. Has short-term usefulness during development and debugging.
-* ``Information`` For tracking the general flow of the application. These logs typically have some long-term value.
-* ``Warning`` For abnormal or unexpected events in the application flow. These may include errors or other conditions that do not cause the application to stop, but which may need to be investigated.
-* ``Error`` For errors and exceptions that cannot be handled. Examples: failed validation of a protocol request.
-* ``Critical`` For failures that require immediate attention. Examples: missing store implementation, invalid key material...
+* ``Trace`` 用于仅对开发人员解决问题有价值的信息。 这些消息可能包含敏感的应用程序数据，如令牌，不应在生产环境中启用。
+* ``Debug`` 用于遵循内部流程并理解做出某些决定的原因。 在开发和调试期间有短期的用处。
+* ``Information`` 用于跟踪应用程序的一般流程。 这些日志通常具有一些长期价值。
+* ``Warning`` 用于应用程序流中的异常或意外事件。 这些可能包括不会导致应用程序停止但可能需要调查的错误或其他情况。
+* ``Error`` 用于无法处理的错误和异常。 示例：协议请求验证失败。
+* ``Critical`` 用于需要立即关注的故障。 示例：缺少存储实现、无效的密钥材料...
 
-Setup for Serilog
+Serilog 的设置
 ^^^^^^^^^^^^^^^^^
-We personally like `Serilog <https://serilog.net/>`_ and the ``Serilog.AspNetCore`` package a lot. Give it a try::
+我们个人非常喜欢 `Serilog <https://serilog.net/>`_ 和 ``Serilog.AspNetCore`` 包。 试一试::
 
     public class Program
     {

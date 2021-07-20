@@ -1,67 +1,67 @@
-Deployment
+部署
 ==========
-Your identity server is `just` a standard ASP.NET Core application including the IdentityServer middleware.
-Read the official Microsoft `documentation <https://docs.microsoft.com/en-us/aspnet/core/publishing>`_ on publishing and deployment first
-(and especially the `section <https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2#scenarios-and-use-cases>`_ about load balancers and proxies).
+您的身份服务器 `只是` 一个包含 IdentityServer 中间件的标准 ASP.NET Core 应用程序。
+请先阅读有关发布和部署的 Microsoft 官方 `文档 <https://docs.microsoft.com/en-us/aspnet/core/publishing>`_
+（尤其是有关负载平衡器和代理的 `部分 <https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2#scenarios-and-use-cases>`_）。
 
-Typical architecture
+典型架构
 ^^^^^^^^^^^^^^^^^^^^
-Typically you will design your IdentityServer deployment for high availability:
+通常，您将设计 IdentityServer 部署以实现高可用性:
 
 .. image:: images/deployment.png
 
-IdentityServer itself is stateless and does not require server affinity - but there is data that needs to be shared between the instances.
+IdentityServer 本身是无状态的，不需要服务器关联 —— 但需要在实例之间共享数据。
 
-Configuration data
+配置数据
 ^^^^^^^^^^^^^^^^^^
-This typically includes:
+这通常包括:
 
-* resources
-* clients
-* startup configuration, e.g. key material, external provider settings etc...
+* 资源
+* 客户端
+* 启动配置，例如 密钥材料、外部供应商设置等...
 
-The way you store that data depends on your environment. In situations where configuration data rarely changes we recommend using the in-memory stores and code or configuration files.
+您存储该数据的方式取决于您的环境。 在配置数据很少更改的情况下，我们建议使用内存存储和代码或配置文件。
 
-In highly dynamic environments (e.g. Saas) we recommend using a database or configuration service to load configuration dynamically.
+在高度动态的环境（例如 Saas）中，我们建议使用数据库或配置服务来动态加载配置。
 
-IdentityServer supports code configuration and configuration files (see `here <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration>`_) out of the box.
-For databases we provide support for `Entity Framework Core <https://github.com/IdentityServer/IdentityServer4.EntityFramework>`_ based databases.
+IdentityServer 支持开箱即用的代码配置和配置文件（参见 `此处 <https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration>`_）。
+对于数据库，我们提供对基于 `Entity Framework Core <https://github.com/IdentityServer/IdentityServer4.EntityFramework>`_ 的数据库的支持。
 
-You can also build your own configuration stores by implementing ``IResourceStore`` and ``IClientStore``.
+您还可以通过实现 ``IResourceStore`` 和 ``IClientStore`` 来构建自己的配置存储。
 
-Key material
+密钥材料
 ^^^^^^^^^^^^
 
-Another important piece of startup configuration is your key material, see :ref:`here <refCrypto>` for more details on key material and cryptography.
+启动配置的另一个重要部分是您的密钥材料，有关密钥材料和密码学的更多详细信息，请参见 :ref:`此处 <refCrypto>`。
 
-Operational data
+操作数据
 ^^^^^^^^^^^^^^^^
-For certain operations, IdentityServer needs a persistence store to keep state, this includes:
+对于某些操作，IdentityServer 需要一个持久化存储来保持状态，这包括:
 
-* issuing authorization codes
-* issuing reference and refresh tokens
-* storing consent
+* 颁发授权码
+* 颁发引用令牌和刷新令牌
+* 存储同意
 
-You can either use a traditional database for storing operational data, or use a cache with persistence features like Redis.
-The EF Core implementation mentioned above has also support for operational data.
+您可以使用传统数据库来存储操作数据，也可以使用具有持久性功能（如 Redis）的缓存。
+上面提到的 EF Core 实现也支持操作数据。
 
-You can also implement support for your own custom storage mechanism by implementing ``IPersistedGrantStore`` - by default IdentityServer injects an in-memory version.
+您还可以通过实现 ``IPersistedGrantStore`` 来实现对您自己的自定义存储机制的支持 —— 默认情况下，IdentityServer 注入内存版本。
 
-ASP.NET Core data protection
+ASP.NET Core 数据保护
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-ASP.NET Core itself needs shared key material for protecting sensitive data like cookies, state strings etc.
-See the official docs `here <https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/>`_.
+ASP.NET Core 本身需要共享密钥材料来保护敏感数据，如 cookie、状态字符串等。
+请参阅官方文档 `这里 <https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/>`_。
 
-You can either re-use one of the above persistence store or use something simple like a shared file if possible.
+如果可能的话，您可以重用上述持久性存储之一，也可以使用一些简单的东西，例如共享文件。
 
-ASP.NET Core distributed caching
+ASP.NET Core 分布式缓存
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Some components rely on ASP.NET Core distributed caching. In order to work in a multi server environment, this needs to be set up correctly. 
-The `official docs <https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed/>`_ describe several options.
+某些组件依赖于 ASP.NET Core 分布式缓存。 为了在多服务器环境中工作，需要正确设置。
+`官方文档 <https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed/>`_ 描述了几个选项。
 
-The following components rely on ``IDistributedCache``:
+以下组件依赖于 ``IDistributedCache``:
 
-* ``services.AddOidcStateDataFormatterCache()`` configures the OpenIdConnect handlers to persist the state parameter into the server-side ``IDistributedCache``.
+* ``services.AddOidcStateDataFormatterCache()`` 配置 OpenIdConnect 处理程序以将状态参数持久化到服务器端 ``IDistributedCache``。
 * ``DefaultReplayCache``
 * ``DistributedDeviceFlowThrottlingService``
 * ``DistributedCacheAuthorizationParametersMessageStore``

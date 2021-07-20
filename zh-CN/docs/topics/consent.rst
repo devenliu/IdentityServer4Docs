@@ -1,51 +1,51 @@
 .. _refConsent:
-Consent
+同意
 =======
 
-During an authorization request, if IdentityServer requires user consent the browser will be redirected to the consent page.
+在授权请求期间，如果 IdentityServer 需要用户同意，浏览器将被重定向到同意页面。
 
-Consent is used to allow an end user to grant a client access to resources (:ref:`identity <refIdentityResource>` or :ref:`API <refApiResource>`).
-This is typically only necessary for third-party clients, and can be enabled/disabled per-client on the :ref:`client settings <refClient>`.
+同意用于允许最终用户授予客户端对资源（:ref:`identity <refIdentityResource>` 或 :ref:`API <refApiResource>`）的访问权限。
+这通常只对第三方客户端是必需的，并且可以在 :ref:`客户端设置 <refClient>` 上为每个客户端启用/禁用。
 
-Consent Page
+同意页面
 ^^^^^^^^^^^^
-In order for the user to grant consent, a consent page must be provided by the hosting application.
-The `quickstart UI <https://github.com/IdentityServer/IdentityServer4.Quickstart.UI>`_ has a basic implementation of a consent page.
+为了让用户同意，托管应用程序必须提供同意页面。
+`快速启动 <https://github.com/IdentityServer/IdentityServer4.Quickstart.UI>`_ 有一个同意页面的基本实现。
 
-A consent page normally renders the display name of the current user, 
-the display name of the client requesting access, 
-the logo of the client, 
-a link for more information about the client, 
-and the list of resources the client is requesting access to.
-It's also common to allow the user to indicate that their consent should be "remembered" so they are not prompted again in the future for the same client.
+同意页面通常会呈现当前用户的显示名称，
+请求访问的客户端的显示名称，
+客户端的 Logo，
+有关客户端的更多信息的链接
+以及客户端请求访问的资源列表。
+允许用户表明他们的同意应该被“记住”也是很常见的，这样以后就不会为同一客户端再次提示他们了。
 
-Once the user has provided consent, the consent page must inform IdentityServer of the consent, and then the browser must be redirected back to the authorization endpoint. 
+一旦用户提供了同意，同意页面必须通知 IdentityServer 同意，然后浏览器必须重定向回授权端点。
 
-Authorization Context
+授权上下文
 ^^^^^^^^^^^^^^^^^^^^^
 
-IdentityServer will pass a `returnUrl` parameter (configurable on the :ref:`user interaction options <refOptions>`) to the consent page which contains the parameters of the authorization request.
-These parameters provide the context for the consent page, and can be read with help from the :ref:`interaction service <refInteractionService>`.
-The ``GetAuthorizationContextAsync`` API will return an instance of ``AuthorizationRequest``.
+IdentityServer 将一个 `returnUrl` 参数（可在 :ref:`用户交互选项 <refOptions>` 上配置）传递到包含授权请求参数的同意页面。
+这些参数提供同意页面的上下文，可以在 :ref:`交互服务 <refInteractionService>` 的帮助下读取。
+``GetAuthorizationContextAsync`` API 将返回一个 ``AuthorizationRequest`` 的实例。
 
-Additional details about the client or resources can be obtained using the ``IClientStore`` and ``IResourceStore`` interfaces. 
+可以使用 ``IClientStore`` 和 ``IResourceStore`` 接口获取有关客户端或资源的其他详细信息。
 
-Informing IdentityServer of the consent result
+将同意结果通知 IdentityServer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The ``GrantConsentAsync`` API on the :ref:`interaction service <refInteractionService>` allows the consent page to inform IdentityServer of the outcome of consent (which might also be to deny the client access).
+:ref:`交互服务 <refInteractionService>` 上的 ``GrantConsentAsync`` API 允许同意页面通知 IdentityServer 同意的结果（也可能是拒绝客户端访问）。
 
-IdentityServer will temporarily persist the outcome of the consent.
-This persistence uses a cookie by default, as it only needs to last long enough to convey the outcome back to the authorization endpoint.
-This temporary persistence is different than the persistence used for the "remember my consent" feature (and it is the authorization endpoint which persists the "remember my consent" for the user).
-If you wish to use some other persistence between the consent page and the authorization redirect, then you can implement ``IMessageStore<ConsentResponse>`` and register the implementation in DI.
+IdentityServer 将暂时保留同意的结果。
+默认情况下，此持久性使用 cookie，因为它只需要持续足够长的时间即可将结果传送回授权端点。
+这种临时持久性不同于用于“记住我的同意”功能的持久性（授权端点为用户维持“记住我的同意”）。
+如果您希望在同意页面和授权重定向之间使用其他持久性，那么您可以实现 ``IMessageStore<ConsentResponse>`` 并在 DI 中注册实现。
 
-Returning the user to the authorization endpoint
+将用户返回到授权端点
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Once the consent page has informed IdentityServer of the outcome, the user can be redirected back to the `returnUrl`. 
-Your consent page should protect against open redirects by verifying that the `returnUrl` is valid.
-This can be done by calling ``IsValidReturnUrl`` on the :ref:`interaction service <refInteractionService>`.
-Also, if ``GetAuthorizationContextAsync`` returns a non-null result, then you can also trust that the `returnUrl` is valid.
+一旦同意页面将结果通知 IdentityServer，用户就可以被重定向回 `returnUrl`。
+您的同意页面应通过验证 `returnUrl` 是否有效来防止打开重定向。
+这可以通过在 :ref:`交互服务 <refInteractionService>` 上调用 ``IsValidReturnUrl`` 来完成。
+此外，如果 ``GetAuthorizationContextAsync`` 返回非空结果，那么您也可以相信 `returnUrl` 是有效的。
 
 
 
