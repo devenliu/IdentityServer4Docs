@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Federation Gateway &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>联合网关 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Consent" href="consent.html" />
-    <link rel="prev" title="Federated Sign-out" href="signout_federated.html" /> 
+    <link rel="next" title="同意" href="consent.html" />
+    <link rel="prev" title="联合注销" href="signout_federated.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -121,18 +121,18 @@
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Federation Gateway</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#implementation">Implementation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">注销外部身份提供商</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">联合注销</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">联合网关</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">执行</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">同意</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
@@ -229,7 +229,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Federation Gateway</li>
+      <li>联合网关</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -248,31 +248,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="federation-gateway">
-<h1>Federation Gateway<a class="headerlink" href="#federation-gateway" title="永久链接至标题">¶</a></h1>
-<p>A common architecture is the so-called federation gateway. In this approach IdentityServer acts as a gateway to one or more external identity providers.</p>
+  <div class="section" id="id1">
+<h1>联合网关<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>一种常见的体系结构是所谓的联合网关。 在这种方法中，IdentityServer 充当一个或多个外部身份提供商的网关。</p>
 <img alt="../_images/federation_gateway.png" src="../_images/federation_gateway.png" />
-<p>This architecture has the following advantages</p>
+<p>这种体系结构有以下优点</p>
 <ul class="simple">
-<li><p>your applications only need to know about the one token service (the gateway) and are shielded from all the details about connecting to the external provider(s). This also means that you can add or change those external providers without needing to update your applications.</p></li>
-<li><p>you control the gateway (as opposed to some external service provider) - this means you can make any changes to it and can protect your applications from changes those external providers might do to their own services.</p></li>
-<li><p>most external providers only support a fixed set of claims and claim types - having a gateway in the middle allows post-processing the response from the providers to transform/add/amend domain specific identity information.</p></li>
-<li><p>some providers don't support access tokens (e.g. social providers) - since the gateway knows about your APIs, it can issue access tokens based on the external identities.</p></li>
-<li><p>some providers charge by the number of applications you connect to them. The gateway acts as a single application to the external provider. Internally you can connect as many applications as you want.</p></li>
-<li><p>some providers use proprietary protocols or made proprietary modifications to standard protocols - with a gateway there is only one place you need to deal with that.</p></li>
-<li><p>forcing every authentication (internal or external) through one single place gives you tremendous flexibility with regards to identity mapping, providing a stable identity to all your applications and dealing with new requirements</p></li>
+<li><p>您的应用程序只需要知道一个令牌服务（网关），并且不需要了解有关连接到外部提供商的所有详细信息。 这也意味着您可以添加或更改这些外部提供商，而无需更新您的应用程序。</p></li>
+<li><p>您可以控制网关（与某些外部服务提供商相反）—— 这意味着您可以对其进行任何更改，并可以保护您的应用程序免受这些外部提供商可能对其自己的服务所做的更改。</p></li>
+<li><p>大多数外部提供商只支持一组固定的声明和声明类型 —— 中间有一个网关允许对来自提供商的响应进行后处理以转换/添加/修改特定于域的身份信息。</p></li>
+<li><p>一些提供商不支持访问令牌（例如社交提供者）—— 因为网关知道你的 API，它可以根据外部身份发布访问令牌。</p></li>
+<li><p>一些提供商根据您连接到他们的应用程序数量收费。 网关充当外部提供商的单个应用程序。 在内部，您可以根据需要连接任意数量的应用程序。</p></li>
+<li><p>一些提供商使用专有协议或对标准协议进行专有修改 —— 使用网关，您只需要处理一个地方。</p></li>
+<li><p>强制每个身份验证（内部或外部）都通过一个地方，这在身份映射方面为您提供了极大的灵活性，为您的所有应用程序提供了稳定的身份，并可以处理新的需求</p></li>
 </ul>
-<p>In other words - owning your federation gateway gives you a lot of control over your identity infrastructure. And since the identity of your users is one of your most important assets, we recommend taking control over the gateway.</p>
-<div class="section" id="implementation">
-<h2>Implementation<a class="headerlink" href="#implementation" title="永久链接至标题">¶</a></h2>
-<p>Our <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.Quickstart.UI">quick start UI</a> utilizes some of the below features. Also check out the <a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html#refexternalauthenticationquickstart"><span class="std std-ref">external authentication quickstart</span></a> and the
-docs about <a class="reference internal" href="signin_external_providers.html#refexternalidentityproviders"><span class="std std-ref">external providers</span></a>.</p>
+<p>换句话说 —— 拥有联合网关可以让您对身份基础设施进行大量控制。 由于您的用户身份是您最重要的资产之一，我们建议您控制网关。</p>
+<div class="section" id="id2">
+<h2>执行<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>我们的 <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.Quickstart.UI">快速启动 UI</a> 利用了以下一些功能。
+另请查看 <a class="reference internal" href="../quickstarts/2_interactive_aspnetcore.html#refexternalauthenticationquickstart"><span class="std std-ref">外部身份验证快速入门</span></a> 和有关 <a class="reference internal" href="signin_external_providers.html#refexternalidentityproviders"><span class="std std-ref">外部提供商</span></a> 的文档。</p>
 <ul class="simple">
-<li><p>You can add support for external identity providers by adding authentication handlers to your IdentityServer application.</p></li>
-<li><p>You can programmatically query those external providers by calling <code class="docutils literal notranslate"><span class="pre">IAuthenticationSchemeProvider</span></code>. This allows to dynamically render your login page based on the registered external providers.</p></li>
-<li><p>Our client configuration model allows restricting the available providers on a per client basis (use the <code class="docutils literal notranslate"><span class="pre">IdentityProviderRestrictions</span></code> property).</p></li>
-<li><p>You can also use the <code class="docutils literal notranslate"><span class="pre">EnableLocalLogin</span></code> property on the client to tell your UI whether the username/password input should be rendered.</p></li>
-<li><p>Our quickstart UI funnels all external authentication calls through a single callback (see <code class="docutils literal notranslate"><span class="pre">ExternalLoginCallback</span></code> on the <code class="docutils literal notranslate"><span class="pre">AccountController</span></code> class). This allows for a single point for post-processing.</p></li>
+<li><p>您可以通过向 IdentityServer 应用程序添加身份验证处理程序来添加对外部身份提供商的支持。</p></li>
+<li><p>您可以通过调用 <code class="docutils literal notranslate"><span class="pre">IAuthenticationSchemeProvider</span></code> 以编程方式查询这些外部提供商。 这允许根据注册的外部提供商动态呈现您的登录页面。</p></li>
+<li><p>我们的客户端配置模型允许在每个客户端的基础上限制可用的提供商（使用 <code class="docutils literal notranslate"><span class="pre">IdentityProviderRestrictions</span></code> 属性）。</p></li>
+<li><p>您还可以使用客户端上的 <code class="docutils literal notranslate"><span class="pre">EnableLocalLogin</span></code> 属性来告诉您的 UI 是否应呈现 用户名/密码 输入。</p></li>
+<li><p>我们的快速入门 UI 通过一次回调（请参阅“AccountController”类中的“ExternalLoginCallback”）来传递所有外部身份验证调用。 这允许单点进行后处理。</p></li>
 </ul>
 </div>
 </div>
@@ -283,8 +283,8 @@ docs about <a class="reference internal" href="signin_external_providers.html#re
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="consent.html" class="btn btn-neutral float-right" title="Consent" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="signout_federated.html" class="btn btn-neutral float-left" title="Federated Sign-out" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="consent.html" class="btn btn-neutral float-right" title="同意" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="signout_federated.html" class="btn btn-neutral float-left" title="联合注销" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Deployment &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>部署 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Logging" href="logging.html" />
-    <link rel="prev" title="Protecting APIs" href="apis.html" /> 
+    <link rel="next" title="日志" href="logging.html" />
+    <link rel="prev" title="保护 API" href="apis.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -121,23 +121,23 @@
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
-<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#typical-architecture">Typical architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#configuration-data">Configuration data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#key-material">Key material</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#operational-data">Operational data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#asp-net-core-data-protection">ASP.NET Core data protection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#asp-net-core-distributed-caching">ASP.NET Core distributed caching</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">注销外部身份提供商</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">联合注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">联合网关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">同意</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">保护 API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">部署</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id4">典型架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">配置数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">密钥材料</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">操作数据</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#asp-net-core">ASP.NET Core 数据保护</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">ASP.NET Core 分布式缓存</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
@@ -234,7 +234,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Deployment</li>
+      <li>部署</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -253,60 +253,60 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="deployment">
-<h1>Deployment<a class="headerlink" href="#deployment" title="永久链接至标题">¶</a></h1>
-<p>Your identity server is <cite>just</cite> a standard ASP.NET Core application including the IdentityServer middleware.
-Read the official Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/publishing">documentation</a> on publishing and deployment first
-(and especially the <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2#scenarios-and-use-cases">section</a> about load balancers and proxies).</p>
-<div class="section" id="typical-architecture">
-<h2>Typical architecture<a class="headerlink" href="#typical-architecture" title="永久链接至标题">¶</a></h2>
-<p>Typically you will design your IdentityServer deployment for high availability:</p>
+  <div class="section" id="id1">
+<h1>部署<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>您的身份服务器 <cite>只是</cite> 一个包含 IdentityServer 中间件的标准 ASP.NET Core 应用程序。
+请先阅读有关发布和部署的 Microsoft 官方 <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/publishing">文档</a>
+（尤其是有关负载平衡器和代理的 <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/proxy-load-balancer?view=aspnetcore-2.2#scenarios-and-use-cases">部分</a>）。</p>
+<div class="section" id="id4">
+<h2>典型架构<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>通常，您将设计 IdentityServer 部署以实现高可用性:</p>
 <img alt="../_images/deployment.png" src="../_images/deployment.png" />
-<p>IdentityServer itself is stateless and does not require server affinity - but there is data that needs to be shared between the instances.</p>
+<p>IdentityServer 本身是无状态的，不需要服务器关联 —— 但需要在实例之间共享数据。</p>
 </div>
-<div class="section" id="configuration-data">
-<h2>Configuration data<a class="headerlink" href="#configuration-data" title="永久链接至标题">¶</a></h2>
-<p>This typically includes:</p>
+<div class="section" id="id5">
+<h2>配置数据<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>这通常包括:</p>
 <ul class="simple">
-<li><p>resources</p></li>
-<li><p>clients</p></li>
-<li><p>startup configuration, e.g. key material, external provider settings etc...</p></li>
+<li><p>资源</p></li>
+<li><p>客户端</p></li>
+<li><p>启动配置，例如 密钥材料、外部供应商设置等...</p></li>
 </ul>
-<p>The way you store that data depends on your environment. In situations where configuration data rarely changes we recommend using the in-memory stores and code or configuration files.</p>
-<p>In highly dynamic environments (e.g. Saas) we recommend using a database or configuration service to load configuration dynamically.</p>
-<p>IdentityServer supports code configuration and configuration files (see <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration">here</a>) out of the box.
-For databases we provide support for <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.EntityFramework">Entity Framework Core</a> based databases.</p>
-<p>You can also build your own configuration stores by implementing <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> and <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code>.</p>
+<p>您存储该数据的方式取决于您的环境。 在配置数据很少更改的情况下，我们建议使用内存存储和代码或配置文件。</p>
+<p>在高度动态的环境（例如 Saas）中，我们建议使用数据库或配置服务来动态加载配置。</p>
+<p>IdentityServer 支持开箱即用的代码配置和配置文件（参见 <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration">此处</a>）。
+对于数据库，我们提供对基于 <a class="reference external" href="https://github.com/IdentityServer/IdentityServer4.EntityFramework">Entity Framework Core</a> 的数据库的支持。</p>
+<p>您还可以通过实现 <code class="docutils literal notranslate"><span class="pre">IResourceStore</span></code> 和 <code class="docutils literal notranslate"><span class="pre">IClientStore</span></code> 来构建自己的配置存储。</p>
 </div>
-<div class="section" id="key-material">
-<h2>Key material<a class="headerlink" href="#key-material" title="永久链接至标题">¶</a></h2>
-<p>Another important piece of startup configuration is your key material, see <a class="reference internal" href="crypto.html#refcrypto"><span class="std std-ref">here</span></a> for more details on key material and cryptography.</p>
+<div class="section" id="id7">
+<h2>密钥材料<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>启动配置的另一个重要部分是您的密钥材料，有关密钥材料和密码学的更多详细信息，请参见 <a class="reference internal" href="crypto.html#refcrypto"><span class="std std-ref">此处</span></a>。</p>
 </div>
-<div class="section" id="operational-data">
-<h2>Operational data<a class="headerlink" href="#operational-data" title="永久链接至标题">¶</a></h2>
-<p>For certain operations, IdentityServer needs a persistence store to keep state, this includes:</p>
+<div class="section" id="id8">
+<h2>操作数据<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>对于某些操作，IdentityServer 需要一个持久化存储来保持状态，这包括:</p>
 <ul class="simple">
-<li><p>issuing authorization codes</p></li>
-<li><p>issuing reference and refresh tokens</p></li>
-<li><p>storing consent</p></li>
+<li><p>颁发授权码</p></li>
+<li><p>颁发引用令牌和刷新令牌</p></li>
+<li><p>存储同意</p></li>
 </ul>
-<p>You can either use a traditional database for storing operational data, or use a cache with persistence features like Redis.
-The EF Core implementation mentioned above has also support for operational data.</p>
-<p>You can also implement support for your own custom storage mechanism by implementing <code class="docutils literal notranslate"><span class="pre">IPersistedGrantStore</span></code> - by default IdentityServer injects an in-memory version.</p>
+<p>您可以使用传统数据库来存储操作数据，也可以使用具有持久性功能（如 Redis）的缓存。
+上面提到的 EF Core 实现也支持操作数据。</p>
+<p>您还可以通过实现 <code class="docutils literal notranslate"><span class="pre">IPersistedGrantStore</span></code> 来实现对您自己的自定义存储机制的支持 —— 默认情况下，IdentityServer 注入内存版本。</p>
 </div>
-<div class="section" id="asp-net-core-data-protection">
-<h2>ASP.NET Core data protection<a class="headerlink" href="#asp-net-core-data-protection" title="永久链接至标题">¶</a></h2>
-<p>ASP.NET Core itself needs shared key material for protecting sensitive data like cookies, state strings etc.
-See the official docs <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/">here</a>.</p>
-<p>You can either re-use one of the above persistence store or use something simple like a shared file if possible.</p>
+<div class="section" id="asp-net-core">
+<h2>ASP.NET Core 数据保护<a class="headerlink" href="#asp-net-core" title="永久链接至标题">¶</a></h2>
+<p>ASP.NET Core 本身需要共享密钥材料来保护敏感数据，如 cookie、状态字符串等。
+请参阅官方文档 <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/">这里</a>。</p>
+<p>如果可能的话，您可以重用上述持久性存储之一，也可以使用一些简单的东西，例如共享文件。</p>
 </div>
-<div class="section" id="asp-net-core-distributed-caching">
-<h2>ASP.NET Core distributed caching<a class="headerlink" href="#asp-net-core-distributed-caching" title="永久链接至标题">¶</a></h2>
-<p>Some components rely on ASP.NET Core distributed caching. In order to work in a multi server environment, this needs to be set up correctly.
-The <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed/">official docs</a> describe several options.</p>
-<p>The following components rely on <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code>:</p>
+<div class="section" id="id10">
+<h2>ASP.NET Core 分布式缓存<a class="headerlink" href="#id10" title="永久链接至标题">¶</a></h2>
+<p>某些组件依赖于 ASP.NET Core 分布式缓存。 为了在多服务器环境中工作，需要正确设置。
+<a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/performance/caching/distributed/">官方文档</a> 描述了几个选项。</p>
+<p>以下组件依赖于 <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code>:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">services.AddOidcStateDataFormatterCache()</span></code> configures the OpenIdConnect handlers to persist the state parameter into the server-side <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">services.AddOidcStateDataFormatterCache()</span></code> 配置 OpenIdConnect 处理程序以将状态参数持久化到服务器端 <code class="docutils literal notranslate"><span class="pre">IDistributedCache</span></code>。</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DefaultReplayCache</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DistributedDeviceFlowThrottlingService</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DistributedCacheAuthorizationParametersMessageStore</span></code></p></li>
@@ -320,8 +320,8 @@ The <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="logging.html" class="btn btn-neutral float-right" title="Logging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="apis.html" class="btn btn-neutral float-left" title="Protecting APIs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logging.html" class="btn btn-neutral float-right" title="日志" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="apis.html" class="btn btn-neutral float-left" title="保护 API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

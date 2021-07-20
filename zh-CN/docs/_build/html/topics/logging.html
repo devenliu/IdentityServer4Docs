@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Logging &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>日志 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Events" href="events.html" />
-    <link rel="prev" title="Deployment" href="deployment.html" /> 
+    <link rel="next" title="事件" href="events.html" />
+    <link rel="prev" title="部署" href="deployment.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -121,18 +121,18 @@
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
-<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#setup-for-serilog">Setup for Serilog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">注销外部身份提供商</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">联合注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">联合网关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">同意</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">日志</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#serilog">Serilog 的设置</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
@@ -229,7 +229,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Logging</li>
+      <li>日志</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -248,22 +248,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="logging">
-<h1>Logging<a class="headerlink" href="#logging" title="永久链接至标题">¶</a></h1>
-<p>IdentityServer uses the standard logging facilities provided by ASP.NET Core.
-The Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging">documentation</a> has a good intro and a description of the built-in logging providers.</p>
-<p>We are roughly following the Microsoft guidelines for usage of log levels:</p>
+  <div class="section" id="id1">
+<h1>日志<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>IdentityServer 使用 ASP.NET Core 提供的标准日志记录工具。
+Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging">文档</a> 有一个很好的介绍和内置日志提供程序的描述。</p>
+<p>我们大致遵循 Microsoft 的日志级别使用指南：</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Trace</span></code> For information that is valuable only to a developer troubleshooting an issue. These messages may contain sensitive application data like tokens and should not be enabled in a production environment.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Debug</span></code> For following the internal flow and understanding why certain decisions are made. Has short-term usefulness during development and debugging.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Information</span></code> For tracking the general flow of the application. These logs typically have some long-term value.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Warning</span></code> For abnormal or unexpected events in the application flow. These may include errors or other conditions that do not cause the application to stop, but which may need to be investigated.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Error</span></code> For errors and exceptions that cannot be handled. Examples: failed validation of a protocol request.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Critical</span></code> For failures that require immediate attention. Examples: missing store implementation, invalid key material...</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Trace</span></code> 用于仅对开发人员解决问题有价值的信息。 这些消息可能包含敏感的应用程序数据，如令牌，不应在生产环境中启用。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Debug</span></code> 用于遵循内部流程并理解做出某些决定的原因。 在开发和调试期间有短期的用处。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Information</span></code> 用于跟踪应用程序的一般流程。 这些日志通常具有一些长期价值。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Warning</span></code> 用于应用程序流中的异常或意外事件。 这些可能包括不会导致应用程序停止但可能需要调查的错误或其他情况。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Error</span></code> 用于无法处理的错误和异常。 示例：协议请求验证失败。</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Critical</span></code> 用于需要立即关注的故障。 示例：缺少存储实现、无效的密钥材料...</p></li>
 </ul>
-<div class="section" id="setup-for-serilog">
-<h2>Setup for Serilog<a class="headerlink" href="#setup-for-serilog" title="永久链接至标题">¶</a></h2>
-<p>We personally like <a class="reference external" href="https://serilog.net/">Serilog</a> and the <code class="docutils literal notranslate"><span class="pre">Serilog.AspNetCore</span></code> package a lot. Give it a try:</p>
+<div class="section" id="serilog">
+<h2>Serilog 的设置<a class="headerlink" href="#serilog" title="永久链接至标题">¶</a></h2>
+<p>我们个人非常喜欢 <a class="reference external" href="https://serilog.net/">Serilog</a> 和 <code class="docutils literal notranslate"><span class="pre">Serilog.AspNetCore</span></code> 包。 试一试:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">Program</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">static</span> <span class="kt">int</span> <span class="nf">Main</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">args</span><span class="p">)</span>
@@ -316,8 +316,8 @@ The Microsoft <a class="reference external" href="https://docs.microsoft.com/en-
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="events.html" class="btn btn-neutral float-right" title="Events" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="deployment.html" class="btn btn-neutral float-left" title="Deployment" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="events.html" class="btn btn-neutral float-right" title="事件" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="deployment.html" class="btn btn-neutral float-left" title="部署" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

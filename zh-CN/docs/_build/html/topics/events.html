@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Events &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>事件 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Cryptography, Keys and HTTPS" href="crypto.html" />
-    <link rel="prev" title="Logging" href="logging.html" /> 
+    <link rel="prev" title="日志" href="logging.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -121,19 +121,19 @@
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
-<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
-<li class="toctree-l1"><a class="reference internal" href="apis.html">Protecting APIs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Events</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#emitting-events">Emitting events</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-sinks">Custom sinks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#built-in-events">Built-in events</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-events">Custom events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">注销外部身份提供商</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">联合注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">联合网关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">同意</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apis.html">保护 API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">事件</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">发出事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sinks">自定义 sinks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">内置事件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">自定义事件</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
@@ -232,7 +232,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Events</li>
+      <li>事件</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -251,15 +251,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="events">
-<h1>Events<a class="headerlink" href="#events" title="永久链接至标题">¶</a></h1>
-<p>While logging is more low level &quot;printf&quot; style - events represent higher level information about certain operations in IdentityServer.
-Events are structured data and include event IDs, success/failure information, categories and details.
-This makes it easy to query and analyze them and extract useful information that can be used for further processing.</p>
-<p>Events work great with event stores like <a class="reference external" href="https://www.elastic.co/webinars/introduction-elk-stack">ELK</a>, <a class="reference external" href="https://getseq.net/">Seq</a> or <a class="reference external" href="https://www.splunk.com/">Splunk</a>.</p>
-<div class="section" id="emitting-events">
-<h2>Emitting events<a class="headerlink" href="#emitting-events" title="永久链接至标题">¶</a></h2>
-<p>Events are not turned on by default - but can be globally configured in the <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> method, e.g.:</p>
+  <div class="section" id="id1">
+<h1>事件<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>虽然日志记录是更低级别的 “printf” 样式 —— 但事件表示有关 IdentityServer 中某些操作的更高级别信息。
+事件是结构化数据，包括事件 ID、成功/失败信息、类别和详细信息。
+这使得查询和分析它们并提取可用于进一步处理的有用信息变得容易。</p>
+<p>事件与诸如 <a class="reference external" href="https://www.elastic.co/webinars/introduction-elk-stack">ELK</a>、 <a class="reference external" href="https://getseq.net/">Seq</a> 或 <a class="reference external" href="https://www.splunk.com/">Splunk</a> 之类的事件存储配合得很好。</p>
+<div class="section" id="id2">
+<h2>发出事件<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>默认情况下没有打开事件 —— 但可以在 <code class="docutils literal notranslate"><span class="pre">ConfigureServices</span></code> 方法中全局配置，例如:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddIdentityServer</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
 <span class="p">{</span>
     <span class="n">options</span><span class="p">.</span><span class="n">Events</span><span class="p">.</span><span class="n">RaiseSuccessEvents</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
@@ -268,12 +268,12 @@ This makes it easy to query and analyze them and extract useful information that
 <span class="p">});</span>
 </pre></div>
 </div>
-<p>To emit an event use the <code class="docutils literal notranslate"><span class="pre">IEventService</span></code> from the DI container and call the <code class="docutils literal notranslate"><span class="pre">RaiseAsync</span></code> method, e.g.:</p>
+<p>要发出事件，请使用 DI 容器中的 <code class="docutils literal notranslate"><span class="pre">IEventService</span></code> 并调用 <code class="docutils literal notranslate"><span class="pre">RaiseAsync</span></code> 方法，例如:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">IActionResult</span><span class="p">&gt;</span> <span class="n">Login</span><span class="p">(</span><span class="n">LoginInputModel</span> <span class="n">model</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">_users</span><span class="p">.</span><span class="n">ValidateCredentials</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">Username</span><span class="p">,</span> <span class="n">model</span><span class="p">.</span><span class="n">Password</span><span class="p">))</span>
     <span class="p">{</span>
-        <span class="c1">// issue authentication cookie with subject ID and username</span>
+        <span class="c1">// 发出带有 subject ID 和 username 的身份验证 cookie</span>
         <span class="kt">var</span> <span class="n">user</span> <span class="p">=</span> <span class="n">_users</span><span class="p">.</span><span class="n">FindByUsername</span><span class="p">(</span><span class="n">model</span><span class="p">.</span><span class="n">Username</span><span class="p">);</span>
         <span class="k">await</span> <span class="n">_events</span><span class="p">.</span><span class="n">RaiseAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">UserLoginSuccessEvent</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">Username</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">SubjectId</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">Username</span><span class="p">));</span>
     <span class="p">}</span>
@@ -285,11 +285,11 @@ This makes it easy to query and analyze them and extract useful information that
 </pre></div>
 </div>
 </div>
-<div class="section" id="custom-sinks">
-<h2>Custom sinks<a class="headerlink" href="#custom-sinks" title="永久链接至标题">¶</a></h2>
-<p>Our default event sink will simply serialize the event class to JSON and forward it to the ASP.NET Core logging system.
-If you want to connect to a custom event store, implement the <code class="docutils literal notranslate"><span class="pre">IEventSink</span></code> interface and register it with DI.</p>
-<p>The following example uses <a class="reference external" href="https://getseq.net/">Seq</a> to emit events:</p>
+<div class="section" id="sinks">
+<h2>自定义 sinks<a class="headerlink" href="#sinks" title="永久链接至标题">¶</a></h2>
+<p>我们的默认事件接收器将简单地将事件类序列化为 JSON，并将其转发到 ASP.NET Core 日志记录系统。
+如果要连接到自定义事件存储，请实现 <code class="docutils literal notranslate"><span class="pre">IEventSink</span></code> 接口并将其注册到 DI。</p>
+<p>以下示例使用 <a class="reference external" href="https://getseq.net/">Seq</a> 来发出事件:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span> <span class="k">public</span> <span class="k">class</span> <span class="nc">SeqEventSink</span> <span class="p">:</span> <span class="n">IEventSink</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="n">Logger</span> <span class="n">_log</span><span class="p">;</span>
@@ -324,39 +324,39 @@ If you want to connect to a custom event store, implement the <code class="docut
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Add the <code class="docutils literal notranslate"><span class="pre">Serilog.Sinks.Seq</span></code> package to your host to make the above code work.</p>
+<p>将 <code class="docutils literal notranslate"><span class="pre">Serilog.Sinks.Seq</span></code> 包添加到您的主机以使上述代码工作。</p>
 </div>
-<div class="section" id="built-in-events">
-<h2>Built-in events<a class="headerlink" href="#built-in-events" title="永久链接至标题">¶</a></h2>
-<p>The following events are defined in IdentityServer:</p>
+<div class="section" id="id4">
+<h2>内置事件<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer 中定义了以下事件:</p>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">ApiAuthenticationFailureEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">ApiAuthenticationSuccessEvent</span></code></dt><dd><p>Gets raised for successful/failed API authentication at the introspection endpoint.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ApiAuthenticationFailureEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">ApiAuthenticationSuccessEvent</span></code></dt><dd><p>在内省端点处为成功/失败的 API 身份验证引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ClientAuthenticationSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">ClientAuthenticationFailureEvent</span></code></dt><dd><p>Gets raised for successful/failed client authentication at the token endpoint.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ClientAuthenticationSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">ClientAuthenticationFailureEvent</span></code></dt><dd><p>在令牌端点处为成功/失败的客户端身份验证引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TokenIssuedSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">TokenIssuedFailureEvent</span></code></dt><dd><p>Gets raised for successful/failed attempts to request identity tokens, access tokens, refresh tokens and authorization codes.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">TokenIssuedSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">TokenIssuedFailureEvent</span></code></dt><dd><p>为尝试请求身份令牌、访问令牌、刷新令牌和授权代码的成功/失败引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TokenIntrospectionSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">TokenIntrospectionFailureEvent</span></code></dt><dd><p>Gets raised for successful token introspection requests.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">TokenIntrospectionSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">TokenIntrospectionFailureEvent</span></code></dt><dd><p>为成功的令牌自省请求引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">TokenRevokedSuccessEvent</span></code></dt><dd><p>Gets raised for successful token revocation requests.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">TokenRevokedSuccessEvent</span></code></dt><dd><p>为成功的令牌吊销请求引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">UserLoginSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">UserLoginFailureEvent</span></code></dt><dd><p>Gets raised by the quickstart UI for successful/failed user logins.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">UserLoginSuccessEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">UserLoginFailureEvent</span></code></dt><dd><p>由成功/失败的用户登录的快速入门 UI 引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">UserLogoutSuccessEvent</span></code></dt><dd><p>Gets raised for successful logout requests.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">UserLogoutSuccessEvent</span></code></dt><dd><p>为成功的注销请求引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">ConsentGrantedEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">ConsentDeniedEvent</span></code></dt><dd><p>Gets raised in the consent UI.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">ConsentGrantedEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">ConsentDeniedEvent</span></code></dt><dd><p>在同意 UI 中引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">UnhandledExceptionEvent</span></code></dt><dd><p>Gets raised for unhandled exceptions.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">UnhandledExceptionEvent</span></code></dt><dd><p>为未处理的异常引发。</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">DeviceAuthorizationFailureEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">DeviceAuthorizationSuccessEvent</span></code></dt><dd><p>Gets raised for successful/failed device authorization requests.</p>
+<dt><code class="docutils literal notranslate"><span class="pre">DeviceAuthorizationFailureEvent</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">DeviceAuthorizationSuccessEvent</span></code></dt><dd><p>为成功/失败的设备授权请求引发。</p>
 </dd>
 </dl>
 </div>
-<div class="section" id="custom-events">
-<h2>Custom events<a class="headerlink" href="#custom-events" title="永久链接至标题">¶</a></h2>
-<p>You can create your own events and emit them via our infrastructure.</p>
-<p>You need to derive from our base <code class="docutils literal notranslate"><span class="pre">Event</span></code> class which injects contextual information like activity ID, timestamp, etc.
-Your derived class can then add arbitrary data fields specific to the event context:</p>
+<div class="section" id="id5">
+<h2>自定义事件<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>您可以创建自己的事件并通过我们的基础设施发出它们。</p>
+<p>您需要从我们的基础 <code class="docutils literal notranslate"><span class="pre">Event</span></code> 类派生，该类注入上下文信息，如 activity ID、timestamp 等。
+然后您的派生类可以添加特定于事件上下文的任意数据字段:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">UserLoginFailureEvent</span> <span class="p">:</span> <span class="n">Event</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="nf">UserLoginFailureEvent</span><span class="p">(</span><span class="kt">string</span> <span class="n">username</span><span class="p">,</span> <span class="kt">string</span> <span class="n">error</span><span class="p">)</span>
@@ -383,7 +383,7 @@ Your derived class can then add arbitrary data fields specific to the event cont
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="crypto.html" class="btn btn-neutral float-right" title="Cryptography, Keys and HTTPS" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="logging.html" class="btn btn-neutral float-left" title="Logging" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logging.html" class="btn btn-neutral float-left" title="日志" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

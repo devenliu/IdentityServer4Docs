@@ -1,15 +1,15 @@
 .. _refEvents:
-Events
+事件
 ======
-While logging is more low level "printf" style - events represent higher level information about certain operations in IdentityServer.
-Events are structured data and include event IDs, success/failure information, categories and details.
-This makes it easy to query and analyze them and extract useful information that can be used for further processing.
+虽然日志记录是更低级别的 “printf” 样式 —— 但事件表示有关 IdentityServer 中某些操作的更高级别信息。
+事件是结构化数据，包括事件 ID、成功/失败信息、类别和详细信息。
+这使得查询和分析它们并提取可用于进一步处理的有用信息变得容易。
 
-Events work great with event stores like `ELK <https://www.elastic.co/webinars/introduction-elk-stack>`_, `Seq <https://getseq.net/>`_ or `Splunk <https://www.splunk.com/>`_.
+事件与诸如 `ELK <https://www.elastic.co/webinars/introduction-elk-stack>`_、 `Seq <https://getseq.net/>`_ 或 `Splunk <https://www.splunk.com/>`_ 之类的事件存储配合得很好。
 
-Emitting events
+发出事件
 ^^^^^^^^^^^^^^^
-Events are not turned on by default - but can be globally configured in the ``ConfigureServices`` method, e.g.::
+默认情况下没有打开事件 —— 但可以在 ``ConfigureServices`` 方法中全局配置，例如::
 
     services.AddIdentityServer(options =>
     {
@@ -18,13 +18,13 @@ Events are not turned on by default - but can be globally configured in the ``Co
         options.Events.RaiseErrorEvents = true;
     });
 
-To emit an event use the ``IEventService`` from the DI container and call the ``RaiseAsync`` method, e.g.::
+要发出事件，请使用 DI 容器中的 ``IEventService`` 并调用 ``RaiseAsync`` 方法，例如::
 
     public async Task<IActionResult> Login(LoginInputModel model)
     {
         if (_users.ValidateCredentials(model.Username, model.Password))
         {
-            // issue authentication cookie with subject ID and username
+            // 发出带有 subject ID 和 username 的身份验证 cookie
             var user = _users.FindByUsername(model.Username);
             await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username));
         }
@@ -34,12 +34,12 @@ To emit an event use the ``IEventService`` from the DI container and call the ``
         }
     }
 
-Custom sinks
+自定义 sinks
 ^^^^^^^^^^^^
-Our default event sink will simply serialize the event class to JSON and forward it to the ASP.NET Core logging system.
-If you want to connect to a custom event store, implement the ``IEventSink`` interface and register it with DI.
+我们的默认事件接收器将简单地将事件类序列化为 JSON，并将其转发到 ASP.NET Core 日志记录系统。
+如果要连接到自定义事件存储，请实现 ``IEventSink`` 接口并将其注册到 DI。
 
-The following example uses `Seq <https://getseq.net/>`_ to emit events::
+以下示例使用 `Seq <https://getseq.net/>`_ 来发出事件::
 
      public class SeqEventSink : IEventSink
     {
@@ -74,39 +74,39 @@ The following example uses `Seq <https://getseq.net/>`_ to emit events::
         }
     }
 
-Add the ``Serilog.Sinks.Seq`` package to your host to make the above code work.
+将 ``Serilog.Sinks.Seq`` 包添加到您的主机以使上述代码工作。
 
-Built-in events
+内置事件
 ^^^^^^^^^^^^^^^
-The following events are defined in IdentityServer:
+IdentityServer 中定义了以下事件:
 
 ``ApiAuthenticationFailureEvent`` & ``ApiAuthenticationSuccessEvent``
-    Gets raised for successful/failed API authentication at the introspection endpoint.
+    在内省端点处为成功/失败的 API 身份验证引发。
 ``ClientAuthenticationSuccessEvent`` & ``ClientAuthenticationFailureEvent``
-    Gets raised for successful/failed client authentication at the token endpoint.
+    在令牌端点处为成功/失败的客户端身份验证引发。
 ``TokenIssuedSuccessEvent`` & ``TokenIssuedFailureEvent``
-    Gets raised for successful/failed attempts to request identity tokens, access tokens, refresh tokens and authorization codes.
+    为尝试请求身份令牌、访问令牌、刷新令牌和授权代码的成功/失败引发。
 ``TokenIntrospectionSuccessEvent`` & ``TokenIntrospectionFailureEvent``
-    Gets raised for successful token introspection requests.
+    为成功的令牌自省请求引发。
 ``TokenRevokedSuccessEvent``
-    Gets raised for successful token revocation requests.
+    为成功的令牌吊销请求引发。
 ``UserLoginSuccessEvent`` & ``UserLoginFailureEvent``
-    Gets raised by the quickstart UI for successful/failed user logins.
+    由成功/失败的用户登录的快速入门 UI 引发。
 ``UserLogoutSuccessEvent``
-    Gets raised for successful logout requests.
+    为成功的注销请求引发。
 ``ConsentGrantedEvent`` & ``ConsentDeniedEvent``
-    Gets raised in the consent UI.
+    在同意 UI 中引发。
 ``UnhandledExceptionEvent``
-    Gets raised for unhandled exceptions.
+    为未处理的异常引发。
 ``DeviceAuthorizationFailureEvent`` & ``DeviceAuthorizationSuccessEvent``
-    Gets raised for successful/failed device authorization requests.
+    为成功/失败的设备授权请求引发。
 
-Custom events
+自定义事件
 ^^^^^^^^^^^^^
-You can create your own events and emit them via our infrastructure.
+您可以创建自己的事件并通过我们的基础设施发出它们。
 
-You need to derive from our base ``Event`` class which injects contextual information like activity ID, timestamp, etc.
-Your derived class can then add arbitrary data fields specific to the event context::
+您需要从我们的基础 ``Event`` 类派生，该类注入上下文信息，如 activity ID、timestamp 等。
+然后您的派生类可以添加特定于事件上下文的任意数据字段::
 
     public class UserLoginFailureEvent : Event
     {

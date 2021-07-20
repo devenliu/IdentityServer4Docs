@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Protecting APIs &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>保护 API &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -43,8 +43,8 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Deployment" href="deployment.html" />
-    <link rel="prev" title="Consent" href="consent.html" /> 
+    <link rel="next" title="部署" href="deployment.html" />
+    <link rel="prev" title="同意" href="consent.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -121,19 +121,19 @@
 <li class="toctree-l1"><a class="reference internal" href="signin.html">登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signin_external_providers.html">使用外部身份提供商登录</a></li>
 <li class="toctree-l1"><a class="reference internal" href="windows.html">Windows 身份验证</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout.html">Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">Sign-out of External Identity Providers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">Federated Sign-out</a></li>
-<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">Federation Gateway</a></li>
-<li class="toctree-l1"><a class="reference internal" href="consent.html">Consent</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Protecting APIs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#validating-reference-tokens">Validating reference tokens</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#supporting-both-jwts-and-reference-tokens">Supporting both JWTs and reference tokens</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout.html">注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_external_providers.html">注销外部身份提供商</a></li>
+<li class="toctree-l1"><a class="reference internal" href="signout_federated.html">联合注销</a></li>
+<li class="toctree-l1"><a class="reference internal" href="federation_gateway.html">联合网关</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consent.html">同意</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">保护 API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id3">验证引用令牌</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">支持 JWT 和引用令牌</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="deployment.html">Deployment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="events.html">Events</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
+<li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
@@ -230,7 +230,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Protecting APIs</li>
+      <li>保护 API</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -249,16 +249,16 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="protecting-apis">
-<h1>Protecting APIs<a class="headerlink" href="#protecting-apis" title="永久链接至标题">¶</a></h1>
-<p>IdentityServer issues access tokens in the <a class="reference external" href="https://tools.ietf.org/html/rfc7519">JWT</a> (JSON Web Token) format by default.</p>
-<p>Every relevant platform today has support for validating JWT tokens, a good list of JWT libraries can be found <a class="reference external" href="https://jwt.io">here</a>.
-Popular libraries are e.g.:</p>
+  <div class="section" id="api">
+<h1>保护 API<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h1>
+<p>IdentityServer 默认以 <a class="reference external" href="https://tools.ietf.org/html/rfc7519">JWT</a> （JSON Web 令牌）格式发布访问令牌。</p>
+<p>现在每个相关平台都支持验证 JWT 令牌，可以在 <a class="reference external" href="https://jwt.io">此处</a> 找到一个很好的 JWT 库列表。
+流行的类库如:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/">JWT bearer authentication handler</a> for ASP.NET Core</p></li>
-<li><p><a class="reference external" href="https://www.nuget.org/packages/Microsoft.Owin.Security.Jwt">JWT bearer authentication middleware</a> for Katana</p></li>
+<li><p>用于 ASP.NET Core 的 <a class="reference external" href="https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/">JWT bearer 身份验证处理程序</a></p></li>
+<li><p>用于 Katana 的 <a class="reference external" href="https://www.nuget.org/packages/Microsoft.Owin.Security.Jwt">JWT bearer 身份验证中间件</a></p></li>
 </ul>
-<p>Protecting an ASP.NET Core-based API is only a matter of adding the JWT bearer authentication handler:</p>
+<p>保护基于 ASP.NET Core 的 API 只是添加 JWT bearer 身份验证处理程序的问题:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">Startup</span>
 <span class="p">{</span>
     <span class="k">public</span> <span class="k">void</span> <span class="nf">ConfigureServices</span><span class="p">(</span><span class="n">IServiceCollection</span> <span class="n">services</span><span class="p">)</span>
@@ -266,13 +266,13 @@ Popular libraries are e.g.:</p>
         <span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="n">JwtBearerDefaults</span><span class="p">.</span><span class="n">AuthenticationScheme</span><span class="p">)</span>
             <span class="p">.</span><span class="n">AddJwtBearer</span><span class="p">(</span><span class="n">options</span> <span class="p">=&gt;</span>
             <span class="p">{</span>
-                <span class="c1">// base-address of your identityserver</span>
+                <span class="c1">// 您的 IdentityServer 的基地址</span>
                 <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="s">&quot;https://demo.identityserver.io&quot;</span><span class="p">;</span>
 
-                <span class="c1">// if you are using API resources, you can specify the name here</span>
+                <span class="c1">// 如果您使用的是 API 资源，可以在此处指定名称</span>
                 <span class="n">options</span><span class="p">.</span><span class="n">Audience</span> <span class="p">=</span> <span class="s">&quot;resource1&quot;</span><span class="p">;</span>
 
-                <span class="c1">// IdentityServer emits a typ header by default, recommended extra check</span>
+                <span class="c1">// 默认情况下 IdentityServer 发出一个 typ 标头，建议额外检查</span>
                 <span class="n">options</span><span class="p">.</span><span class="n">TokenValidationParameters</span><span class="p">.</span><span class="n">ValidTypes</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;at+jwt&quot;</span> <span class="p">};</span>
             <span class="p">});</span>
     <span class="p">}</span>
@@ -281,31 +281,30 @@ Popular libraries are e.g.:</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>If you are not using the audience claim, you can turn off the audience check via <code class="docutils literal notranslate"><span class="pre">options.TokenValidationParameters.ValidateAudience</span> <span class="pre">=</span> <span class="pre">false;</span></code>. See <a class="reference internal" href="resources.html#refapiresources"><span class="std std-ref">here</span></a> for more information on resources, scopes, audiences and authorization.</p>
+<p>如果您没有使用受众声明，您可以通过 <code class="docutils literal notranslate"><span class="pre">options.TokenValidationParameters.ValidateAudience</span> <span class="pre">=</span> <span class="pre">false;</span></code> 关闭受众检查。 有关资源、范围、受众和授权的更多信息，请参见 <a class="reference internal" href="resources.html#refapiresources"><span class="std std-ref">此处</span></a>。</p>
 </div>
-<div class="section" id="validating-reference-tokens">
-<h2>Validating reference tokens<a class="headerlink" href="#validating-reference-tokens" title="永久链接至标题">¶</a></h2>
-<p>If you are using reference tokens, you need an authentication handler that implements <a class="reference external" href="https://tools.ietf.org/html/rfc7662">OAuth 2.0 token introspection</a>,
-e.g. <a class="reference external" href="https://github.com/IdentityModel/IdentityModel.AspNetCore.OAuth2Introspection">this one</a>:</p>
+<div class="section" id="id3">
+<h2>验证引用令牌<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>如果您使用引用令牌，则需要一个实现 <a class="reference external" href="https://tools.ietf.org/html/rfc7662">OAuth 2.0 令牌自省</a> 的身份验证处理程序，例如 <a class="reference external" href="https://github.com/IdentityModel/IdentityModel.AspNetCore.OAuth2Introspection">这样</a>:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">)</span>
     <span class="p">.</span><span class="n">AddOAuth2Introspection</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
         <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="n">Constants</span><span class="p">.</span><span class="n">Authority</span><span class="p">;</span>
 
-        <span class="c1">// this maps to the API resource name and secret</span>
+        <span class="c1">// 这映射到 API 资源名称和密钥</span>
         <span class="n">options</span><span class="p">.</span><span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;resource1&quot;</span><span class="p">;</span>
         <span class="n">options</span><span class="p">.</span><span class="n">ClientSecret</span> <span class="p">=</span> <span class="s">&quot;secret&quot;</span><span class="p">;</span>
     <span class="p">});</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="supporting-both-jwts-and-reference-tokens">
-<h2>Supporting both JWTs and reference tokens<a class="headerlink" href="#supporting-both-jwts-and-reference-tokens" title="永久链接至标题">¶</a></h2>
-<p>You can setup ASP.NET Core to dispatch to the right handler based on the incoming token, see <a class="reference external" href="https://leastprivilege.com/2020/07/06/flexible-access-token-validation-in-asp-net-core/">this</a> blog post for more information.
-In this case you setup one default handler, and some forwarding logic, e.g.:</p>
+<div class="section" id="id5">
+<h2>支持 JWT 和引用令牌<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>您可以设置 ASP.NET Core 以根据传入的令牌分派到正确的处理程序，有关更多信息，请参阅 <a class="reference external" href="https://leastprivilege.com/2020/07/06/flexible-access-token-validation-in-asp-net-core/">这篇</a> 博客文章。
+在这种情况下，您设置一个默认处理程序和一些转发逻辑，例如:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">services</span><span class="p">.</span><span class="n">AddAuthentication</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">)</span>
 
-    <span class="c1">// JWT tokens</span>
+    <span class="c1">// JWT 令牌</span>
     <span class="p">.</span><span class="n">AddJwtBearer</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
         <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="n">Constants</span><span class="p">.</span><span class="n">Authority</span><span class="p">;</span>
@@ -313,11 +312,11 @@ In this case you setup one default handler, and some forwarding logic, e.g.:</p>
 
         <span class="n">options</span><span class="p">.</span><span class="n">TokenValidationParameters</span><span class="p">.</span><span class="n">ValidTypes</span> <span class="p">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="s">&quot;at+jwt&quot;</span> <span class="p">};</span>
 
-        <span class="c1">// if token does not contain a dot, it is a reference token</span>
+        <span class="c1">// 如果令牌不包含点，则为引用令牌</span>
         <span class="n">options</span><span class="p">.</span><span class="n">ForwardDefaultSelector</span> <span class="p">=</span> <span class="n">Selector</span><span class="p">.</span><span class="n">ForwardReferenceToken</span><span class="p">(</span><span class="s">&quot;introspection&quot;</span><span class="p">);</span>
     <span class="p">})</span>
 
-    <span class="c1">// reference tokens</span>
+    <span class="c1">// 引用令牌</span>
     <span class="p">.</span><span class="n">AddOAuth2Introspection</span><span class="p">(</span><span class="s">&quot;introspection&quot;</span><span class="p">,</span> <span class="n">options</span> <span class="p">=&gt;</span>
     <span class="p">{</span>
         <span class="n">options</span><span class="p">.</span><span class="n">Authority</span> <span class="p">=</span> <span class="n">Constants</span><span class="p">.</span><span class="n">Authority</span><span class="p">;</span>
@@ -336,8 +335,8 @@ In this case you setup one default handler, and some forwarding logic, e.g.:</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="deployment.html" class="btn btn-neutral float-right" title="Deployment" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="consent.html" class="btn btn-neutral float-left" title="Consent" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="deployment.html" class="btn btn-neutral float-right" title="部署" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="consent.html" class="btn btn-neutral float-left" title="同意" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
