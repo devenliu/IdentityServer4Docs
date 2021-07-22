@@ -22,20 +22,20 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 作为注销过程的一部分，您需要确保通知客户端应用程序用户已注销。
-IdentityServer 支持服务器测客户端（例如 MVC）的 `前端通道 <https://openid.net/specs/openid-connect-frontchannel-1_0.html>`_ 规范，
-服务器端客户端（例如 MVC）的 `后端通道 <https:/ /openid.net/specs/openid-connect-backchannel-1_0.html>`_ 规范，
+IdentityServer 支持服务器测客户端（例如 MVC）的 `前端渠道 <https://openid.net/specs/openid-connect-frontchannel-1_0.html>`_ 规范，
+服务器端客户端（例如 MVC）的 `后端渠道 <https:/ /openid.net/specs/openid-connect-backchannel-1_0.html>`_ 规范，
 以及基于浏览器的 JavaScript 客户端（例如 SPA、React、Angular 等）的 `会话管理 <https://openid.net/specs/openid-connect-session-1_0.html>`_ 规范。
 
-**前端通道 服务器端客户端**
+**前端渠道 服务器端客户端**
 
-要通过前端通道规范从服务器端客户端应用程序中注销用户，IdentityServer 中的 ``注销`` 页面必须呈现一个 ``<iframe>`` 以通知客户端用户已注销。
+要通过前端渠道规范从服务器端客户端应用程序中注销用户，IdentityServer 中的 ``注销`` 页面必须呈现一个 ``<iframe>`` 以通知客户端用户已注销。
 希望收到通知的客户端必须设置 ``FrontChannelLogoutUri`` 配置值。
 IdentityServer 跟踪用户登录了哪些客户端，并在 ``IIdentityServerInteractionService`` （:ref:`详情 <refInteractionService>`）上提供了一个名为 ``GetLogoutContextAsync`` 的 API。
 此 API 返回一个带有 ``SignOutIFrameUrl`` 属性的 ``LogoutRequest`` 对象，您的注销页面必须将其呈现到 ``<iframe>`` 中。
 
-**后端通道 服务器端客户端**
+**后端渠道 服务器端客户端**
 
-要通过后端通道规范从服务器端客户端应用程序注销用户，可以使用 ``IBackChannelLogoutService`` 服务。 
+要通过后端渠道规范从服务器端客户端应用程序注销用户，可以使用 ``IBackChannelLogoutService`` 服务。 
 当您的注销页面通过调用 ``HttpContext.SignOutAsync`` 删除用户的身份验证 cookie 时，IdentityServer 将自动使用此服务。
 希望收到通知的客户端必须设置 ``BackChannelLogoutUri`` 配置值。
 

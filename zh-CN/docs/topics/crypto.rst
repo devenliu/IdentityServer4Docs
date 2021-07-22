@@ -1,51 +1,51 @@
 .. _refCrypto:
-Cryptography, Keys and HTTPS
+密码学、密钥和 HTTPS
 ============================
 
-IdentityServer relies on a couple of crypto mechanisms to do its job.
+IdentityServer 依靠几种加密机制来完成其工作。
 
-Token signing and validation
+令牌签名和验证
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-IdentityServer needs an asymmetric key pair to sign and validate JWTs. 
-This keymaterial can be either packaged as a certificate or just raw keys.
-Both RSA and ECDSA keys are supported and the supported signing algorithms are: RS256, RS384, RS512, PS256, PS384, PS512, ES256, ES384 and ES512.
+IdentityServer 需要一个非对称密钥对来签名和验证 JWT。
+此密钥材料可以打包为证书，也可以打包为原始密钥。
+支持 RSA 和 ECDSA 密钥，支持的签名算法有：RS256、RS384、RS512、PS256、PS384、PS512、ES256、ES384 和 ES512。
 
-You can use multiple signing keys simultaneously, but only one signing key per algorithm is supported.
-The first signing key you register is considered the default signing key.
+您可以同时使用多个签名密钥，但每种算法仅支持一个签名密钥。
+您注册的第一个签名密钥被视为默认签名密钥。
 
-Both :ref:`clients <refClient>` and :ref:`API resources <refApiResource>` can express preferences on the signing algorithm.
-If you request a single token for multiple API resources, all resources need to agree on at least one allowed signing algorithm.
+:ref:`客户端 <refClient>` 和 :ref:`API 资源 <refApiResource>` 都可以表达对签名算法的偏好。
+如果您为多个 API 资源请求一个令牌，则所有资源都需要就至少一种允许的签名算法达成一致。
 
-Loading of signing key and the corresponding validation part is done by implementations of ``ISigningCredentialStore`` and ``IValidationKeysStore``.
-If you want to customize the loading of the keys, you can implement those interfaces and register them with DI.
+签名密钥和相应的验证部分的加载是通过 ``ISigningCredentialStore`` 和 ``IValidationKeysStore`` 的实现来完成的。
+如果您想自定义密钥的加载，您可以实现这些接口并将它们注册到 DI。
 
-The DI builder extensions has a couple of convenience methods to set signing and validation keys - see :ref:`here <refStartupKeyMaterial>`.
+DI 构建器扩展有几个方便的方法来设置签名和验证密钥 —— 请参阅 :ref:`此处 <refStartupKeyMaterial>`。
 
-Signing key rollover
+签名密钥滚动更新
 ^^^^^^^^^^^^^^^^^^^^
-While you can only use one signing key at a time, you can publish more than one validation key to the discovery document.
-This is useful for key rollover.
+虽然您一次只能使用一个签名密钥，但您可以向发现文档发布多个验证密钥。
+这对于密钥滚动更新很有用。
 
-In a nutshell, a rollover typically works like this:
+简而言之，滚动更新通常是这样工作的：
 
-1. you request/create new key material
-2. you publish the new validation key in addition to the current one. You can use the ``AddValidationKey`` builder extension method for that.
-3. all clients and APIs now have a chance to learn about the new key the next time they update their local copy of the discovery document
-4. after a certain amount of time (e.g. 24h) all clients and APIs should now accept both the old and the new key material
-5. keep the old key material around for as long as you like, maybe you have long-lived tokens that need validation
-6. retire the old key material when it is not used anymore
-7. all clients and APIs will "forget" the old key next time they update their local copy of the discovery document
+1. 您请求/创建新的密钥材料
+2. 除了当前的验证密钥之外，您还可以发布新的验证密钥。 您可以使用 ``AddValidationKey`` 构建器扩展方法进行此操作。
+3. 所有客户端和 API 现在都有机会在下次更新发现文档的本地副本时了解新密钥
+4. 经过一段时间（例如 24 小时）后，所有客户端和 API 现在都应该同时接受旧的和新的密钥材料
+5. 旧的密钥材料您想保留多久就保留多久，也许您有需要验证的长期令牌
+6. 当旧密钥材料不再使用时将其报废
+7. 所有客户端和 API 将在下次更新发现文档的本地副本时“忘记”旧密钥
 
-This requires that clients and APIs use the discovery document, and also have a feature to periodically refresh their configuration.
+这要求客户端和 API 使用发现文档，并且还具有定期刷新其配置的功能。
 
-Brock wrote a more detailed `blog post <https://brockallen.com/2019/08/09/identityserver-and-signing-key-rotation/>`_ about key rotation, and also
-created a `commercial component <https://www.identityserver.com/products/keymanagement>`_, that can automatically take care of all those details.
+Brock 写了一篇关于密钥轮换的更详细的 `博客文章 <https://brockallen.com/2019/08/09/identityserver-and-signing-key-rotation/>`_，
+还创建了一个 `商业组件 <https://www.identityserver.com/products/keymanagement>`_，可以自动处理所有这些细节。
 
-Data protection
+数据保护
 ^^^^^^^^^^^^^^^
-Cookie authentication in ASP.NET Core (or anti-forgery in MVC) use the ASP.NET Core data protection feature.
-Depending on your deployment scenario, this might require additional configuration. See the Microsoft `docs <https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview>`_ for more information.
+ASP.NET Core 中的 Cookie 身份验证（或 MVC 中的 anti-forgery）使用 ASP.NET Core 数据保护功能。
+根据您的部署方案，这可能需要额外的配置。 有关更多信息，请参阅 Microsoft `文档 <https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview>`_。
 
 HTTPS
 ^^^^^
-We don't enforce the use of HTTPS, but for production it is mandatory for every interaction with IdentityServer.
+我们不强制使用 HTTPS，但对于生产环境，与 IdentityServer 的每次交互都是强制性的。
