@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Cryptography, Keys and HTTPS &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>密码学、密钥和 HTTPS &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -43,7 +43,7 @@
     
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="Grant Types" href="grant_types.html" />
+    <link rel="next" title="授权类型" href="grant_types.html" />
     <link rel="prev" title="事件" href="events.html" /> 
 </head>
 
@@ -130,14 +130,14 @@
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Cryptography, Keys and HTTPS</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#token-signing-and-validation">Token signing and validation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#signing-key-rollover">Signing key rollover</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-protection">Data protection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#https">HTTPS</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">密码学、密钥和 HTTPS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">令牌签名和验证</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">签名密钥滚动更新</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">数据保护</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">HTTPS</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">授权类型</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
@@ -232,7 +232,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Cryptography, Keys and HTTPS</li>
+      <li>密码学、密钥和 HTTPS</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -251,48 +251,48 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cryptography-keys-and-https">
-<h1>Cryptography, Keys and HTTPS<a class="headerlink" href="#cryptography-keys-and-https" title="永久链接至标题">¶</a></h1>
-<p>IdentityServer relies on a couple of crypto mechanisms to do its job.</p>
-<div class="section" id="token-signing-and-validation">
-<h2>Token signing and validation<a class="headerlink" href="#token-signing-and-validation" title="永久链接至标题">¶</a></h2>
-<p>IdentityServer needs an asymmetric key pair to sign and validate JWTs.
-This keymaterial can be either packaged as a certificate or just raw keys.
-Both RSA and ECDSA keys are supported and the supported signing algorithms are: RS256, RS384, RS512, PS256, PS384, PS512, ES256, ES384 and ES512.</p>
-<p>You can use multiple signing keys simultaneously, but only one signing key per algorithm is supported.
-The first signing key you register is considered the default signing key.</p>
-<p>Both <a class="reference internal" href="../reference/client.html#refclient"><span class="std std-ref">clients</span></a> and <a class="reference internal" href="../reference/api_resource.html#refapiresource"><span class="std std-ref">API resources</span></a> can express preferences on the signing algorithm.
-If you request a single token for multiple API resources, all resources need to agree on at least one allowed signing algorithm.</p>
-<p>Loading of signing key and the corresponding validation part is done by implementations of <code class="docutils literal notranslate"><span class="pre">ISigningCredentialStore</span></code> and <code class="docutils literal notranslate"><span class="pre">IValidationKeysStore</span></code>.
-If you want to customize the loading of the keys, you can implement those interfaces and register them with DI.</p>
-<p>The DI builder extensions has a couple of convenience methods to set signing and validation keys - see <a class="reference internal" href="startup.html#refstartupkeymaterial"><span class="std std-ref">here</span></a>.</p>
+  <div class="section" id="https">
+<h1>密码学、密钥和 HTTPS<a class="headerlink" href="#https" title="永久链接至标题">¶</a></h1>
+<p>IdentityServer 依靠几种加密机制来完成其工作。</p>
+<div class="section" id="id1">
+<h2>令牌签名和验证<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>IdentityServer 需要一个非对称密钥对来签名和验证 JWT。
+此密钥材料可以打包为证书，也可以打包为原始密钥。
+支持 RSA 和 ECDSA 密钥，支持的签名算法有：RS256、RS384、RS512、PS256、PS384、PS512、ES256、ES384 和 ES512。</p>
+<p>您可以同时使用多个签名密钥，但每种算法仅支持一个签名密钥。
+您注册的第一个签名密钥被视为默认签名密钥。</p>
+<p><a class="reference internal" href="../reference/client.html#refclient"><span class="std std-ref">客户端</span></a> 和 <a class="reference internal" href="../reference/api_resource.html#refapiresource"><span class="std std-ref">API 资源</span></a> 都可以表达对签名算法的偏好。
+如果您为多个 API 资源请求一个令牌，则所有资源都需要就至少一种允许的签名算法达成一致。</p>
+<p>签名密钥和相应的验证部分的加载是通过 <code class="docutils literal notranslate"><span class="pre">ISigningCredentialStore</span></code> 和 <code class="docutils literal notranslate"><span class="pre">IValidationKeysStore</span></code> 的实现来完成的。
+如果您想自定义密钥的加载，您可以实现这些接口并将它们注册到 DI。</p>
+<p>DI 构建器扩展有几个方便的方法来设置签名和验证密钥 —— 请参阅 <a class="reference internal" href="startup.html#refstartupkeymaterial"><span class="std std-ref">此处</span></a>。</p>
 </div>
-<div class="section" id="signing-key-rollover">
-<h2>Signing key rollover<a class="headerlink" href="#signing-key-rollover" title="永久链接至标题">¶</a></h2>
-<p>While you can only use one signing key at a time, you can publish more than one validation key to the discovery document.
-This is useful for key rollover.</p>
-<p>In a nutshell, a rollover typically works like this:</p>
+<div class="section" id="id2">
+<h2>签名密钥滚动更新<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>虽然您一次只能使用一个签名密钥，但您可以向发现文档发布多个验证密钥。
+这对于密钥滚动更新很有用。</p>
+<p>简而言之，滚动更新通常是这样工作的：</p>
 <ol class="arabic simple">
-<li><p>you request/create new key material</p></li>
-<li><p>you publish the new validation key in addition to the current one. You can use the <code class="docutils literal notranslate"><span class="pre">AddValidationKey</span></code> builder extension method for that.</p></li>
-<li><p>all clients and APIs now have a chance to learn about the new key the next time they update their local copy of the discovery document</p></li>
-<li><p>after a certain amount of time (e.g. 24h) all clients and APIs should now accept both the old and the new key material</p></li>
-<li><p>keep the old key material around for as long as you like, maybe you have long-lived tokens that need validation</p></li>
-<li><p>retire the old key material when it is not used anymore</p></li>
-<li><p>all clients and APIs will &quot;forget&quot; the old key next time they update their local copy of the discovery document</p></li>
+<li><p>您请求/创建新的密钥材料</p></li>
+<li><p>除了当前的验证密钥之外，您还可以发布新的验证密钥。 您可以使用 <code class="docutils literal notranslate"><span class="pre">AddValidationKey</span></code> 构建器扩展方法进行此操作。</p></li>
+<li><p>所有客户端和 API 现在都有机会在下次更新发现文档的本地副本时了解新密钥</p></li>
+<li><p>经过一段时间（例如 24 小时）后，所有客户端和 API 现在都应该同时接受旧的和新的密钥材料</p></li>
+<li><p>旧的密钥材料您想保留多久就保留多久，也许您有需要验证的长期令牌</p></li>
+<li><p>当旧密钥材料不再使用时将其报废</p></li>
+<li><p>所有客户端和 API 将在下次更新发现文档的本地副本时“忘记”旧密钥</p></li>
 </ol>
-<p>This requires that clients and APIs use the discovery document, and also have a feature to periodically refresh their configuration.</p>
-<p>Brock wrote a more detailed <a class="reference external" href="https://brockallen.com/2019/08/09/identityserver-and-signing-key-rotation/">blog post</a> about key rotation, and also
-created a <a class="reference external" href="https://www.identityserver.com/products/keymanagement">commercial component</a>, that can automatically take care of all those details.</p>
+<p>这要求客户端和 API 使用发现文档，并且还具有定期刷新其配置的功能。</p>
+<p>Brock 写了一篇关于密钥轮换的更详细的 <a class="reference external" href="https://brockallen.com/2019/08/09/identityserver-and-signing-key-rotation/">博客文章</a>，
+还创建了一个 <a class="reference external" href="https://www.identityserver.com/products/keymanagement">商业组件</a>，可以自动处理所有这些细节。</p>
 </div>
-<div class="section" id="data-protection">
-<h2>Data protection<a class="headerlink" href="#data-protection" title="永久链接至标题">¶</a></h2>
-<p>Cookie authentication in ASP.NET Core (or anti-forgery in MVC) use the ASP.NET Core data protection feature.
-Depending on your deployment scenario, this might require additional configuration. See the Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview">docs</a> for more information.</p>
+<div class="section" id="id5">
+<h2>数据保护<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>ASP.NET Core 中的 Cookie 身份验证（或 MVC 中的 anti-forgery）使用 ASP.NET Core 数据保护功能。
+根据您的部署方案，这可能需要额外的配置。 有关更多信息，请参阅 Microsoft <a class="reference external" href="https://docs.microsoft.com/en-us/aspnet/core/security/data-protection/configuration/overview">文档</a>。</p>
 </div>
-<div class="section" id="https">
-<h2>HTTPS<a class="headerlink" href="#https" title="永久链接至标题">¶</a></h2>
-<p>We don't enforce the use of HTTPS, but for production it is mandatory for every interaction with IdentityServer.</p>
+<div class="section" id="id7">
+<h2>HTTPS<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>我们不强制使用 HTTPS，但对于生产环境，与 IdentityServer 的每次交互都是强制性的。</p>
 </div>
 </div>
 
@@ -302,7 +302,7 @@ Depending on your deployment scenario, this might require additional configurati
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="grant_types.html" class="btn btn-neutral float-right" title="Grant Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="grant_types.html" class="btn btn-neutral float-right" title="授权类型" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="events.html" class="btn btn-neutral float-left" title="事件" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

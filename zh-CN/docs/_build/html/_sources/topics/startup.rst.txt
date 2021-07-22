@@ -77,7 +77,7 @@ IdentityServer 支持 X.509 证书（原始文件和对 Windows 证书存储的�
     添加 ``ISecretValidator`` 实现，用于根据凭证存储验证客户端或 API 资源凭证。
 
 * ``AddResourceOwnerValidator``
-    添加 ``IResourceOwnerPasswordValidator`` 实现，用于验证资源所有者密码凭据授予类型的用户凭据。
+    添加 ``IResourceOwnerPasswordValidator`` 实现，用于验证资源所有者密码凭据授权类型的用户凭据。
 
 * ``AddProfileService``
     添加 ``IProfileService`` 实现以连接到您的 :ref:`自定义用户配置文件存储 <refProfileService>`。

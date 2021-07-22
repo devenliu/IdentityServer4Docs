@@ -135,8 +135,8 @@
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">密码学、密钥和 HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">授权类型</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
@@ -291,7 +291,7 @@
 <div class="section" id="api">
 <h2>定义用于使用身份验证和委托 API 访问的交互式应用程序<a class="headerlink" href="#api" title="永久链接至标题">¶</a></h2>
 <p>交互式应用程序（例如 Web 应用程序或原生桌面/移动）应用程序使用授权码流程。
-此流程为您提供最佳安全性，因为访问令牌仅通过反向通道调用传输（并允许您访问刷新令牌）:</p>
+此流程为您提供最佳安全性，因为访问令牌仅通过后端渠道调用传输（并允许您访问刷新令牌）:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">interactiveClient</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Client</span>
 <span class="p">{</span>
     <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;interactive&quot;</span><span class="p">,</span>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Grant Types &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>授权类型 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Client Authentication" href="client_authentication.html" />
-    <link rel="prev" title="Cryptography, Keys and HTTPS" href="crypto.html" /> 
+    <link rel="prev" title="密码学、密钥和 HTTPS" href="crypto.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -130,12 +130,12 @@
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Grant Types</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#machine-to-machine-communication">Machine to Machine Communication</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#interactive-clients">Interactive Clients</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#interactive-clients-without-browsers-or-with-constrained-input-devices">Interactive clients without browsers or with constrained input devices</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#custom-scenarios">Custom scenarios</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">密码学、密钥和 HTTPS</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">授权类型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">机器到机器通信</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">交互式客户端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">没有浏览器或输入设备受限的交互式客户端</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">自定义场景</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
@@ -232,7 +232,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Grant Types</li>
+      <li>授权类型</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -251,18 +251,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="grant-types">
-<h1>Grant Types<a class="headerlink" href="#grant-types" title="永久链接至标题">¶</a></h1>
-<p>The OpenID Connect and OAuth 2.0 specifications define so-called grant types (often also called flows - or protocol flows).
-Grant types specify how a client can interact with the token service.</p>
-<p>You need to specify which grant types a client can use via the <code class="docutils literal notranslate"><span class="pre">AllowedGrantTypes</span></code> property on the <code class="docutils literal notranslate"><span class="pre">Client</span></code> configuration.
-This allows locking down the protocol interactions that are allowed for a given client.</p>
-<p>A client can be configured to use more than a single grant type (e.g. Authorization Code flow for user centric operations and client credentials for server to server communication).
-The <code class="docutils literal notranslate"><span class="pre">GrantTypes</span></code> class can be used to pick from typical grant type combinations:</p>
+  <div class="section" id="id1">
+<h1>授权类型<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>OpenID Connect 和 OAuth 2.0 规范定义了所谓的授权类型（通常也称为流程 —— 或协议流程）。
+授权类型指定客户端如何与令牌服务交互。</p>
+<p>您需要通过 <code class="docutils literal notranslate"><span class="pre">Client</span></code> 配置上的 <code class="docutils literal notranslate"><span class="pre">AllowedGrantTypes</span></code> 属性指定客户端可以使用哪些授权类型。
+这允许锁定 给定客户端所允许的 协议交互。</p>
+<p>客户端可以配置为使用多种授权类型（例如，用于以用户为中心的操作的授权码流程 和 用于服务器到服务器通信的客户端凭据）。
+<code class="docutils literal notranslate"><span class="pre">GrantTypes</span></code> 类可用于从典型的授权类型组合中进行选择:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">Client</span><span class="p">.</span><span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">CodeAndClientCredentials</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>You can also specify the grant types list manually:</p>
+<p>您还可以手动指定授权类型列表:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">Client</span><span class="p">.</span><span class="n">AllowedGrantTypes</span> <span class="p">=</span>
 <span class="p">{</span>
     <span class="n">GrantType</span><span class="p">.</span><span class="n">Code</span><span class="p">,</span>
@@ -271,65 +271,66 @@ The <code class="docutils literal notranslate"><span class="pre">GrantTypes</spa
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>While IdentityServer supports all standard grant types, you really only need to know two of them for common application scenarios.</p>
-<div class="section" id="machine-to-machine-communication">
-<h2>Machine to Machine Communication<a class="headerlink" href="#machine-to-machine-communication" title="永久链接至标题">¶</a></h2>
-<p>This is the simplest type of communication. Tokens are always requested on behalf of a client, no interactive user is present.</p>
-<p>In this scenario, you send a token request to the token endpoint using the <code class="docutils literal notranslate"><span class="pre">client</span> <span class="pre">credentials</span></code> grant type.
-The client typically has to authenticate with the token endpoint using its client ID and secret.</p>
-<p>See the <a class="reference internal" href="../quickstarts/1_client_credentials.html#refclientcredentialsquickstart"><span class="std std-ref">Client Credentials Quick Start</span></a> for a sample how to use it.</p>
+<p>虽然 IdentityServer 支持所有标准授权类型，但对于常见的应用场景，您实际上只需要了解其中的两种。</p>
+<div class="section" id="id2">
+<h2>机器到机器通信<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>这是最简单的通信类型。 始终代表客户端请求令牌，不存在交互式用户。</p>
+<p>在这种情况下，您使用 <code class="docutils literal notranslate"><span class="pre">client</span> <span class="pre">credentials</span></code> 授权类型向令牌端点发送令牌请求。
+客户端通常必须使用其客户端 ID 和密钥对令牌端点进行身份验证。</p>
+<p>有关如何使用它的示例，请参阅 <a class="reference internal" href="../quickstarts/1_client_credentials.html#refclientcredentialsquickstart"><span class="std std-ref">客户端凭据快速入门</span></a>。</p>
 </div>
-<div class="section" id="interactive-clients">
-<h2>Interactive Clients<a class="headerlink" href="#interactive-clients" title="永久链接至标题">¶</a></h2>
-<p>This is the most common type of client scenario: web applications, SPAs or native/mobile apps with interactive users.</p>
+<div class="section" id="id3">
+<h2>交互式客户端<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>这是最常见的客户端场景类型：具有交互式用户的 Web 应用程序、SPA 或原生/移动应用程序。</p>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>Feel free to skip to the summary, if you don't care about all the technical details.</p>
+<p>如果您不关心所有技术细节，请随意跳至摘要。</p>
 </div>
-<p>For this type of clients, the <code class="docutils literal notranslate"><span class="pre">authorization</span> <span class="pre">code</span></code> flow was designed. That flow consists of two physical operations:</p>
+<p>针对此类客户端，设计了 <code class="docutils literal notranslate"><span class="pre">authorization</span> <span class="pre">code</span></code> 流程。 该流程包含两个物理操作：</p>
 <ul class="simple">
-<li><p>a front-channel step via the browser where all &quot;interactive&quot; things happen, e.g. login page, consent etc. This step results in an authorization code that represents the outcome of the front-channel operation.</p></li>
-<li><p>a back-channel step where the authorization code from step 1 gets exchanged with the requested tokens. Confidential clients need to authenticate at this point.</p></li>
+<li><p>通过浏览器的前端渠道步骤，所有”交互式“事情都会发生，例如 登录页面、同意等。此步骤产生一个代表前端渠道操作结果的授权码。</p></li>
+<li><p>一个后端渠道步骤，其中步骤 1 中的授权码与请求的令牌交换。 机密客户端此时需要进行身份验证。</p></li>
 </ul>
-<p>This flow has the following security properties:</p>
+<p>此流程具有以下安全属性：</p>
 <ul class="simple">
-<li><p>no data (besides the authorization code which is basically a random string) gets leaked over the browser channel</p></li>
-<li><p>authorization codes can only be used once</p></li>
-<li><p>the authorization code can only be turned into tokens when (for confidential clients - more on that later) the client secret is known</p></li>
+<li><p>没有数据（除了基本上是随机字符串的授权码）通过浏览器渠道泄露</p></li>
+<li><p>授权码只能使用一次</p></li>
+<li><p>只有在（对于机密客户端 —— 稍后会详细介绍）客户端密钥已知时，授权码才能转换为令牌</p></li>
 </ul>
-<p>This sounds all very good - still there is one problem called <a class="reference external" href="https://nat.sakimura.org/2016/01/25/cut-and-pasted-code-attack-in-oauth-2-0-rfc6749/">code substitution attack</a>.
-There are two modern mitigation techniques for this:</p>
-<p><strong>OpenID Connect Hybrid Flow</strong></p>
-<p>This uses a response type of <code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">id_token</span></code> to add an additional identity token to the response. This token is signed and protected against substitution.
-In addition it contains the hash of the code via the <code class="docutils literal notranslate"><span class="pre">c_hash</span></code> claim. This allows checking that you indeed got the right code (experts call this a detached signature).</p>
-<p>This solves the problem but has the following down-sides:</p>
+<p>这听起来很不错 —— 仍然有一个叫做 <a class="reference external" href="https://nat.sakimura.org/2016/01/25/cut-and-pasted-code-attack-in-oauth-2-0-rfc6749/">代码替换攻击</a> 的问题。
+对此，有两种现代缓解技术：</p>
+<p><strong>OpenID Connect 混合流程</strong></p>
+<p>此流程使用 <code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">id_token</span></code> 的响应类型来向响应添加额外的身份标识。 此令牌已签名并受到保护以防止替换。
+此外，它还通过 <code class="docutils literal notranslate"><span class="pre">c_hash</span></code> 声明包含代码的哈希值。 这允许检查您是否确实获得了正确的代码（专家称之为分离签名）。</p>
+<p>这解决了问题，但有以下缺点：</p>
 <ul class="simple">
-<li><p>the <code class="docutils literal notranslate"><span class="pre">id_token</span></code> gets transmitted over the front-channel and might leak additional (personal identifiable) data</p></li>
-<li><p>all the mitigation steps (e.g. crypto) need to be implemented by the client. This results in more complicated client library implementations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">id_token</span></code> 通过前端渠道传输，可能会泄露额外的（个人身份）数据</p></li>
+<li><p>所有缓解步骤（例如加密）都需要由客户端实施。 这导致更复杂的客户端库实现。</p></li>
 </ul>
 <p><strong>RFC 7636 - Proof Key for Code Exchange (PKCE)</strong></p>
-<p>This essentially introduces a per-request secret for code flow (please read up on the details <a class="reference external" href="https://tools.ietf.org/html/rfc7636">here</a>).
-All the client has to implement for this, is creating a random string and hashing it using SHA256.</p>
-<p>This also solves the substitution problem, because the client can prove that it is the same client on front and back-channel, and has the following additional advantages:</p>
+<p>这实质上为授权码流程引入了每个请求的密钥（请阅读 <a class="reference external" href="https://tools.ietf.org/html/rfc7636">此处</a> 的详细信息）。
+为此，客户端所必须要实现的就是创建一个随机字符串并使用 SHA256 对其进行哈希。</p>
+<p>这也解决了替换问题，因为客户端可以证明它是前后渠道上的同一个客户端，并且具有以下附加优势：</p>
 <ul class="simple">
-<li><p>the client implementation is very simple compared to hybrid flow</p></li>
-<li><p>it also solves the problem of the absence of a static secret for public clients</p></li>
-<li><p>no additional front-channel response artifacts are needed</p></li>
+<li><p>与混合流程相比，客户端实现非常简单</p></li>
+<li><p>它还解决了公共客户端没有静态密钥的问题</p></li>
+<li><p>不需要额外的前端渠道响应伪像</p></li>
 </ul>
-<p><strong>Summary</strong></p>
-<p>Interactive clients should use an authorization code-based flow. To protect against code substitution, either hybrid flow or PKCE should be used.
-If PKCE is available, this is the simpler solution to the problem.</p>
-<p>PKCE is already the official recommendation for <a class="reference external" href="https://tools.ietf.org/html/rfc8252#section-6">native</a> applications
-and <a class="reference external" href="https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps-03#section-4">SPAs</a> - and with the release of ASP.NET Core 3 also by default supported in the OpenID Connect handler as well.</p>
-<p>This is how you would configure an interactive client:</p>
+<p><strong>总结</strong></p>
+<p>交互式客户端应使用基于授权码的流程。 为了防止代码替换，应该使用混合流程或 PKCE。
+如果 PKCE 可用，这是解决问题的更简单的方法。</p>
+<p>PKCE 已经是对 <a class="reference external" href="https://tools.ietf.org/html/rfc8252#section-6">原生</a> 应用程序
+和 <a class="reference external" href="https://tools.ietf.org/html/draft-ietf-oauth-browser-based-apps-03#section-4">SPAs</a> 的官方推荐
+—— 随着 ASP.NET Core 3 的发布，OpenID Connect 处理程序也默认支持。</p>
+<p>以下是如何配置交互式客户端:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Client</span>
 <span class="p">{</span>
     <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;...&quot;</span><span class="p">,</span>
 
-    <span class="c1">// set client secret for confidential clients</span>
+    <span class="c1">// 为机密客户端设置客户端密钥</span>
     <span class="n">ClientSecret</span> <span class="p">=</span> <span class="p">{</span> <span class="p">...</span> <span class="p">},</span>
 
-    <span class="c1">// ...or turn off for public clients</span>
+    <span class="c1">// ...或为公共客户端关闭</span>
     <span class="n">RequireClientSecret</span> <span class="p">=</span> <span class="k">false</span><span class="p">,</span>
 
     <span class="n">AllowedGrantTypes</span> <span class="p">=</span> <span class="n">GrantTypes</span><span class="p">.</span><span class="n">Code</span><span class="p">,</span>
@@ -338,15 +339,15 @@ and <a class="reference external" href="https://tools.ietf.org/html/draft-ietf-o
 </pre></div>
 </div>
 </div>
-<div class="section" id="interactive-clients-without-browsers-or-with-constrained-input-devices">
-<h2>Interactive clients without browsers or with constrained input devices<a class="headerlink" href="#interactive-clients-without-browsers-or-with-constrained-input-devices" title="永久链接至标题">¶</a></h2>
-<p>This grant type is detailed <a class="reference external" href="https://tools.ietf.org/html/rfc8628">RFC 8628</a>.</p>
-<p>This flow outsources user authentication and consent to an external device (e.g. a smart phone).
-It is typically used by devices that don't have proper keyboards (e.g. TVs, gaming consoles...) and can request both identity and API resources.</p>
+<div class="section" id="id7">
+<h2>没有浏览器或输入设备受限的交互式客户端<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>此授权类型在 <a class="reference external" href="https://tools.ietf.org/html/rfc8628">RFC 8628</a> 中有详细说明。</p>
+<p>此流程将用户身份验证和同意外包给外部设备（例如智能手机）。
+它通常由没有真正的键盘（如电视、游戏机...）并且可以请求身份和 API 资源的设备使用。</p>
 </div>
-<div class="section" id="custom-scenarios">
-<h2>Custom scenarios<a class="headerlink" href="#custom-scenarios" title="永久链接至标题">¶</a></h2>
-<p>Extension grants allow extending the token endpoint with new grant types. See <a class="reference internal" href="extension_grants.html#refextensiongrants"><span class="std std-ref">this</span></a> for more details.</p>
+<div class="section" id="id8">
+<h2>自定义场景<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h2>
+<p>扩展授权允许使用新的授权类型扩展令牌端点。 有关更多详细信息，请参阅 <a class="reference internal" href="extension_grants.html#refextensiongrants"><span class="std std-ref">此内容</span></a>。</p>
 </div>
 </div>
 
@@ -357,7 +358,7 @@ It is typically used by devices that don't have proper keyboards (e.g. TVs, gami
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="client_authentication.html" class="btn btn-neutral float-right" title="Client Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="crypto.html" class="btn btn-neutral float-left" title="Cryptography, Keys and HTTPS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="crypto.html" class="btn btn-neutral float-left" title="密码学、密钥和 HTTPS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

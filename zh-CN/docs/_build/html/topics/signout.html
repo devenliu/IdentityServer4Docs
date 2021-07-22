@@ -135,8 +135,8 @@
 <li class="toctree-l1"><a class="reference internal" href="deployment.html">部署</a></li>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">日志</a></li>
 <li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
-<li class="toctree-l1"><a class="reference internal" href="crypto.html">Cryptography, Keys and HTTPS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="grant_types.html">Grant Types</a></li>
+<li class="toctree-l1"><a class="reference internal" href="crypto.html">密码学、密钥和 HTTPS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="grant_types.html">授权类型</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
 <li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
@@ -272,16 +272,16 @@
 <div class="section" id="id2">
 <h2>通知客户端用户已注销<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
 <p>作为注销过程的一部分，您需要确保通知客户端应用程序用户已注销。
-IdentityServer 支持服务器测客户端（例如 MVC）的 <a class="reference external" href="https://openid.net/specs/openid-connect-frontchannel-1_0.html">前端通道</a> 规范，
-服务器端客户端（例如 MVC）的 <a class="reference external" href="https://openid.net/specs/openid-connect-backchannel-1_0.html">后端通道</a> 规范，
+IdentityServer 支持服务器测客户端（例如 MVC）的 <a class="reference external" href="https://openid.net/specs/openid-connect-frontchannel-1_0.html">前端渠道</a> 规范，
+服务器端客户端（例如 MVC）的 <a class="reference external" href="https://openid.net/specs/openid-connect-backchannel-1_0.html">后端渠道</a> 规范，
 以及基于浏览器的 JavaScript 客户端（例如 SPA、React、Angular 等）的 <a class="reference external" href="https://openid.net/specs/openid-connect-session-1_0.html">会话管理</a> 规范。</p>
-<p><strong>前端通道 服务器端客户端</strong></p>
-<p>要通过前端通道规范从服务器端客户端应用程序中注销用户，IdentityServer 中的 <code class="docutils literal notranslate"><span class="pre">注销</span></code> 页面必须呈现一个 <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> 以通知客户端用户已注销。
+<p><strong>前端渠道 服务器端客户端</strong></p>
+<p>要通过前端渠道规范从服务器端客户端应用程序中注销用户，IdentityServer 中的 <code class="docutils literal notranslate"><span class="pre">注销</span></code> 页面必须呈现一个 <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> 以通知客户端用户已注销。
 希望收到通知的客户端必须设置 <code class="docutils literal notranslate"><span class="pre">FrontChannelLogoutUri</span></code> 配置值。
 IdentityServer 跟踪用户登录了哪些客户端，并在 <code class="docutils literal notranslate"><span class="pre">IIdentityServerInteractionService</span></code> （<a class="reference internal" href="../reference/interactionservice.html#refinteractionservice"><span class="std std-ref">详情</span></a>）上提供了一个名为 <code class="docutils literal notranslate"><span class="pre">GetLogoutContextAsync</span></code> 的 API。
 此 API 返回一个带有 <code class="docutils literal notranslate"><span class="pre">SignOutIFrameUrl</span></code> 属性的 <code class="docutils literal notranslate"><span class="pre">LogoutRequest</span></code> 对象，您的注销页面必须将其呈现到 <code class="docutils literal notranslate"><span class="pre">&lt;iframe&gt;</span></code> 中。</p>
-<p><strong>后端通道 服务器端客户端</strong></p>
-<p>要通过后端通道规范从服务器端客户端应用程序注销用户，可以使用 <code class="docutils literal notranslate"><span class="pre">IBackChannelLogoutService</span></code> 服务。
+<p><strong>后端渠道 服务器端客户端</strong></p>
+<p>要通过后端渠道规范从服务器端客户端应用程序注销用户，可以使用 <code class="docutils literal notranslate"><span class="pre">IBackChannelLogoutService</span></code> 服务。
 当您的注销页面通过调用 <code class="docutils literal notranslate"><span class="pre">HttpContext.SignOutAsync</span></code> 删除用户的身份验证 cookie 时，IdentityServer 将自动使用此服务。
 希望收到通知的客户端必须设置 <code class="docutils literal notranslate"><span class="pre">BackChannelLogoutUri</span></code> 配置值。</p>
 <p><strong>基于浏览器的 JavaScript 客户端</strong></p>
