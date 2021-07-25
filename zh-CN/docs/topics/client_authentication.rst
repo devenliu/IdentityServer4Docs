@@ -1,22 +1,22 @@
-Client Authentication
+客户端认证
 =====================
-In certain situations, clients need to authenticate with IdentityServer, e.g.
+在某些情况下，客户端需要使用 IdentityServer 进行身份验证，例如
 
-* confidential applications (aka clients) requesting tokens at the token endpoint
-* APIs validating reference tokens at the introspection endpoint
+* 机密应用程序（又名客户端）在令牌端点请求令牌
+* 在内省端点验证参考令牌的 API
 
-For that purpose you can assign a list of secrets to a client or an API resource.
+为此，您可以将密钥列表分配给客户端或 API 资源。
 
-Secret parsing and validation is an extensibility point in identityserver, out of the box it supports shared secrets
-as well as transmitting the shared secret via a basic authentication header or the POST body.
+密钥解析和验证是身份服务器中的一个扩展点，开箱即用，
+它支持共享秘密以及通过基本身份验证标头或 POST 正文传输共享秘密。
 
-Creating a shared secret
+创建共享密钥
 ^^^^^^^^^^^^^^^^^^^^^^^^
-The following code sets up a hashed shared secret::
+以下代码设置哈希共享密钥::
 
     var secret = new Secret("secret".Sha256());
 
-This secret can now be assigned to either a ``Client`` or an ``ApiResource``. 
+这个密钥现在可以分配给 ``客户端`` 或 ``ApiResource``。
 Notice that both do not only support a single secret, but multiple. This is useful for secret rollover and rotation::
 
     var client = new Client
@@ -31,17 +31,17 @@ Notice that both do not only support a single secret, but multiple. This is usef
         }
     };
 
-In fact you can also assign a description and an expiration date to a secret. The description will be used for logging, and 
-the expiration date for enforcing a secret lifetime::
+事实上，您还可以为密钥分配描述和到期日期。 
+描述将用于日志记录，以及强制执行密钥生命周期的到期日期::
 
     var secret = new Secret(
         "secret".Sha256(), 
         "2016 secret", 
         new DateTime(2016, 12, 31));  
 
-Authentication using a shared secret
+使用共享密钥进行身份验证
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-You can either send the client id/secret combination as part of the POST body::
+您可以将客户端 ID/密钥组合作为 POST 正文的一部分发送::
 
     POST /connect/token
     
@@ -49,7 +49,7 @@ You can either send the client id/secret combination as part of the POST body::
     client_secret=secret&
     ...
 
-..or as a basic authentication header::
+..或者作为一个基本的认证头::
 
     POST /connect/token
     
@@ -57,7 +57,7 @@ You can either send the client id/secret combination as part of the POST body::
 
     ...
 
-You can manually create a basic authentication header using the following C# code::
+您可以使用以下 C# 代码手动创建基本身份验证标头::
 
     var credentials = string.Format("{0}:{1}", clientId, clientSecret);
     var headerValue = Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials));
@@ -65,10 +65,9 @@ You can manually create a basic authentication header using the following C# cod
     var client = new HttpClient();
     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", headerValue);
 
-The `IdentityModel <https://github.com/IdentityModel/IdentityModel>`_ library has helper classes called ``TokenClient`` and ``IntrospectionClient`` that encapsulate
-both authentication and protocol messages.
+`IdentityModel <https://github.com/IdentityModel/IdentityModel>`_ 库有名为 ``TokenClient`` 和 ``IntrospectionClient`` 的辅助类，它们封装了身份验证和协议消息。
 
-Authentication using an asymmetric Key
+使用非对称密钥进行身份验证
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There are other techniques to authenticate clients, e.g. based on public/private key cryptography.
 IdentityServer includes support for private key JWT client secrets (see `RFC 7523 <https://tools.ietf.org/html/rfc7523>`_

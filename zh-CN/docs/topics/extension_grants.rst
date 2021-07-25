@@ -1,55 +1,55 @@
 .. _refExtensionGrants:
-Extension Grants
+扩展授权
 ================
 
-OAuth 2.0 defines standard grant types for the token endpoint, such as ``password``, ``authorization_code`` and ``refresh_token``. Extension grants are a way to add support for non-standard token issuance scenarios like token translation, delegation, or custom credentials.
+OAuth 2.0 定义了令牌端点的标准授权类型，例如 ``password``、``authorization_code`` 和 ``refresh_token``。 扩展授权是一种添加对非标准令牌发行方案（如令牌转换、委派或自定义凭据）的支持的方法。
 
-You can add support for additional grant types by implementing the ``IExtensionGrantValidator`` interface::
+您可以通过实现 ``IExtensionGrantValidator`` 接口来添加对其他授权类型的支持::
 
     public interface IExtensionGrantValidator
     {
         /// <summary>
-        /// Handles the custom grant request.
+        /// 处理自定义授权请求。
         /// </summary>
-        /// <param name="request">The validation context.</param>
+        /// <param name="request">验证上下文。</param>
         Task ValidateAsync(ExtensionGrantValidationContext context);
 
         /// <summary>
-        /// Returns the grant type this validator can deal with
+        /// 返回此验证器可以处理的授权类型
         /// </summary>
         /// <value>
-        /// The type of the grant.
+        /// 授权类型。
         /// </value>
         string GrantType { get; }
     }
 
-The ``ExtensionGrantValidationContext`` object gives you access to:
+``ExtensionGrantValidationContext`` 对象使您可以访问：
 
-* the incoming token request - both the well-known validated values, as well as any custom values (via the ``Raw`` collection)
-* the result - either error or success
-* custom response parameters
+* 传入的令牌请求 —— 众所周知的验证值，以及任何自定义值（通过 ``Raw`` 集合）
+* 结果 —— 错误或成功
+* 自定义响应参数
 
-To register the extension grant, add it to DI::
+要注册扩展授权，请将其添加到 DI::
 
     builder.AddExtensionGrantValidator<MyExtensionsGrantValidator>();
 
 
-Example: Simple delegation using an extension grant
+示例：使用扩展授权的简单委托
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Imagine the following scenario - a front end client calls a middle tier API using a token acquired via an interactive flow (e.g. hybrid flow).
-This middle tier API (API 1) now wants to call a back end API (API 2) on behalf of the interactive user:
+想象以下场景 —— 前端客户端使用通过交互流程（例如混合流程）获取的令牌调用中间层 API。
+这个中间层 API (API 1) 现在想要代表交互式用户调用后端 API (API 2)：
 
 .. image:: images/delegation.png
 
-In other words, the middle tier API (API 1) needs an access token containing the user's identity, but with the scope of the back end API (API 2).
+换句话说，中间层 API (API 1) 需要一个包含用户身份的访问令牌，但具有后端 API (API 2) 的范围。
 
-.. note:: You might have heard of the term *poor man's delegation* where the access token from the front end is simply forwarded to the back end. This has some shortcomings, e.g. *API 2* must now accept the *API 1* scope which would allow the user to call *API 2* directly. Also - you might want to add some delegation specific claims into the token, e.g. the fact that the call path is via *API 1*.
+.. note:: 您可能听说过 *穷人的委托* 一词，其中来自前端的访问令牌只是简单地转发到后端。 这有一些缺点，例如 *API 2* 现在必须接受 *API 1* 范围，这将允许用户直接调用 *API 2*。 此外 —— 您可能希望在令牌中添加一些特定于委托的声明，例如 调用路径是通过 *API 1* 的事实。
 
-**Implementing the extension grant**
+**实现扩展授权**
 
-The front end would send the token to API 1, and now this token needs to be exchanged at IdentityServer with a new token for API 2.
+前端会将令牌发送到 API 1，现在这个令牌需要在 IdentityServer 上与 API 2 的新令牌交换。
 
-On the wire the call to token service for the exchange could look like this::
+在网络上，对交换令牌服务的调用可能如下所示::
 
     POST /connect/token
 
@@ -59,7 +59,7 @@ On the wire the call to token service for the exchange could look like this::
     client_id=api1.client
     client_secret=secret
 
-It's the job of the extension grant validator to handle that request by validating the incoming token, and returning a result that represents the new token::
+扩展授权验证器的工作是通过验证传入的令牌来处理该请求，并返回代表新令牌的结果::
 
     public class DelegationGrantValidator : IExtensionGrantValidator
     {
@@ -89,7 +89,7 @@ It's the job of the extension grant validator to handle that request by validati
                 return;
             }
 
-            // get user's identity
+            // 获取用户身份
             var sub = result.Claims.FirstOrDefault(c => c.Type == "sub").Value;
 
             context.Result = new GrantValidationResult(sub, GrantType);
@@ -97,11 +97,11 @@ It's the job of the extension grant validator to handle that request by validati
         }
     }
 
-Don't forget to register the validator with DI.
+不要忘记向 DI 注册验证器。
 
-**Registering the delegation client**
+**注册委托客户端**
 
-You need a client registration in IdentityServer that allows a client to use this new extension grant, e.g.::
+您需要在 IdentityServer 中进行客户端注册，以允许客户端使用此新扩展授权，例如::
 
     var client = new Client
     {
@@ -119,18 +119,18 @@ You need a client registration in IdentityServer that allows a client to use thi
         }
     }
 
-**Calling the token endpoint**
+**调用令牌端点**
 
-In API 1 you can now construct the HTTP payload yourself, or use the *IdentityModel* helper library::
+在 API 1 中，您现在可以自己构建 HTTP 负载，或使用 *IdentityModel* 帮助程序库::
 
 
     public async Task<TokenResponse> DelegateAsync(string userToken)
     {
         var client = _httpClientFactory.CreateClient();
-        // or 
+        // 或者 
         // var client = new HttpClient();
 
-        // send custom grant to token endpoint, return response
+        // 向令牌端点发送自定义授权，返回响应
         return await client.RequestTokenAsync(new TokenRequest
         {
             Address = disco.TokenEndpoint,
@@ -147,4 +147,4 @@ In API 1 you can now construct the HTTP payload yourself, or use the *IdentityMo
         });
     }
 
-The ``TokenResponse.AccessToken`` will now contain the delegation access token.
+``TokenResponse.AccessToken`` 现在将包含委托访问令牌。
