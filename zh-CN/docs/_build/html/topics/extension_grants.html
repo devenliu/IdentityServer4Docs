@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Extension Grants &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>扩展授权 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -44,7 +44,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
     <link rel="next" title="Resource Owner Password Validation" href="resource_owner.html" />
-    <link rel="prev" title="Client Authentication" href="client_authentication.html" /> 
+    <link rel="prev" title="客户端认证" href="client_authentication.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -132,9 +132,9 @@
 <li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">密码学、密钥和 HTTPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grant_types.html">授权类型</a></li>
-<li class="toctree-l1"><a class="reference internal" href="client_authentication.html">Client Authentication</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Extension Grants</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#example-simple-delegation-using-an-extension-grant">Example: Simple delegation using an extension grant</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_authentication.html">客户端认证</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">扩展授权</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">示例：使用扩展授权的简单委托</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="resource_owner.html">Resource Owner Password Validation</a></li>
@@ -229,7 +229,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Extension Grants</li>
+      <li>扩展授权</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -248,51 +248,51 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="extension-grants">
-<h1>Extension Grants<a class="headerlink" href="#extension-grants" title="永久链接至标题">¶</a></h1>
-<p>OAuth 2.0 defines standard grant types for the token endpoint, such as <code class="docutils literal notranslate"><span class="pre">password</span></code>, <code class="docutils literal notranslate"><span class="pre">authorization_code</span></code> and <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>. Extension grants are a way to add support for non-standard token issuance scenarios like token translation, delegation, or custom credentials.</p>
-<p>You can add support for additional grant types by implementing the <code class="docutils literal notranslate"><span class="pre">IExtensionGrantValidator</span></code> interface:</p>
+  <div class="section" id="id1">
+<h1>扩展授权<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>OAuth 2.0 定义了令牌端点的标准授权类型，例如 <code class="docutils literal notranslate"><span class="pre">password</span></code>、<code class="docutils literal notranslate"><span class="pre">authorization_code</span></code> 和 <code class="docutils literal notranslate"><span class="pre">refresh_token</span></code>。 扩展授权是一种添加对非标准令牌发行方案（如令牌转换、委派或自定义凭据）的支持的方法。</p>
+<p>您可以通过实现 <code class="docutils literal notranslate"><span class="pre">IExtensionGrantValidator</span></code> 接口来添加对其他授权类型的支持:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">interface</span> <span class="n">IExtensionGrantValidator</span>
 <span class="p">{</span>
     <span class="c1">/// &lt;summary&gt;</span>
-    <span class="c1">/// Handles the custom grant request.</span>
+    <span class="c1">/// 处理自定义授权请求。</span>
     <span class="c1">/// &lt;/summary&gt;</span>
-    <span class="c1">/// &lt;param name=&quot;request&quot;&gt;The validation context.&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;request&quot;&gt;验证上下文。&lt;/param&gt;</span>
     <span class="n">Task</span> <span class="nf">ValidateAsync</span><span class="p">(</span><span class="n">ExtensionGrantValidationContext</span> <span class="n">context</span><span class="p">);</span>
 
     <span class="c1">/// &lt;summary&gt;</span>
-    <span class="c1">/// Returns the grant type this validator can deal with</span>
+    <span class="c1">/// 返回此验证器可以处理的授权类型</span>
     <span class="c1">/// &lt;/summary&gt;</span>
     <span class="c1">/// &lt;value&gt;</span>
-    <span class="c1">/// The type of the grant.</span>
+    <span class="c1">/// 授权类型。</span>
     <span class="c1">/// &lt;/value&gt;</span>
     <span class="kt">string</span> <span class="n">GrantType</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">ExtensionGrantValidationContext</span></code> object gives you access to:</p>
+<p><code class="docutils literal notranslate"><span class="pre">ExtensionGrantValidationContext</span></code> 对象使您可以访问：</p>
 <ul class="simple">
-<li><p>the incoming token request - both the well-known validated values, as well as any custom values (via the <code class="docutils literal notranslate"><span class="pre">Raw</span></code> collection)</p></li>
-<li><p>the result - either error or success</p></li>
-<li><p>custom response parameters</p></li>
+<li><p>传入的令牌请求 —— 众所周知的验证值，以及任何自定义值（通过 <code class="docutils literal notranslate"><span class="pre">Raw</span></code> 集合）</p></li>
+<li><p>结果 —— 错误或成功</p></li>
+<li><p>自定义响应参数</p></li>
 </ul>
-<p>To register the extension grant, add it to DI:</p>
+<p>要注册扩展授权，请将其添加到 DI:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">builder</span><span class="p">.</span><span class="n">AddExtensionGrantValidator</span><span class="p">&lt;</span><span class="n">MyExtensionsGrantValidator</span><span class="p">&gt;();</span>
 </pre></div>
 </div>
-<div class="section" id="example-simple-delegation-using-an-extension-grant">
-<h2>Example: Simple delegation using an extension grant<a class="headerlink" href="#example-simple-delegation-using-an-extension-grant" title="永久链接至标题">¶</a></h2>
-<p>Imagine the following scenario - a front end client calls a middle tier API using a token acquired via an interactive flow (e.g. hybrid flow).
-This middle tier API (API 1) now wants to call a back end API (API 2) on behalf of the interactive user:</p>
+<div class="section" id="id2">
+<h2>示例：使用扩展授权的简单委托<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>想象以下场景 —— 前端客户端使用通过交互流程（例如混合流程）获取的令牌调用中间层 API。
+这个中间层 API (API 1) 现在想要代表交互式用户调用后端 API (API 2)：</p>
 <img alt="../_images/delegation.png" src="../_images/delegation.png" />
-<p>In other words, the middle tier API (API 1) needs an access token containing the user's identity, but with the scope of the back end API (API 2).</p>
+<p>换句话说，中间层 API (API 1) 需要一个包含用户身份的访问令牌，但具有后端 API (API 2) 的范围。</p>
 <div class="admonition note">
 <p class="admonition-title">注解</p>
-<p>You might have heard of the term <em>poor man's delegation</em> where the access token from the front end is simply forwarded to the back end. This has some shortcomings, e.g. <em>API 2</em> must now accept the <em>API 1</em> scope which would allow the user to call <em>API 2</em> directly. Also - you might want to add some delegation specific claims into the token, e.g. the fact that the call path is via <em>API 1</em>.</p>
+<p>您可能听说过 <em>穷人的委托</em> 一词，其中来自前端的访问令牌只是简单地转发到后端。 这有一些缺点，例如 <em>API 2</em> 现在必须接受 <em>API 1</em> 范围，这将允许用户直接调用 <em>API 2</em>。 此外 —— 您可能希望在令牌中添加一些特定于委托的声明，例如 调用路径是通过 <em>API 1</em> 的事实。</p>
 </div>
-<p><strong>Implementing the extension grant</strong></p>
-<p>The front end would send the token to API 1, and now this token needs to be exchanged at IdentityServer with a new token for API 2.</p>
-<p>On the wire the call to token service for the exchange could look like this:</p>
+<p><strong>实现扩展授权</strong></p>
+<p>前端会将令牌发送到 API 1，现在这个令牌需要在 IdentityServer 上与 API 2 的新令牌交换。</p>
+<p>在网络上，对交换令牌服务的调用可能如下所示:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="p">/</span><span class="n">connect</span><span class="p">/</span><span class="n">token</span>
 
 <span class="n">grant_type</span><span class="p">=</span><span class="n">delegation</span><span class="p">&amp;</span>
@@ -302,7 +302,7 @@ This middle tier API (API 1) now wants to call a back end API (API 2) on behalf 
 <span class="n">client_secret</span><span class="p">=</span><span class="n">secret</span>
 </pre></div>
 </div>
-<p>It's the job of the extension grant validator to handle that request by validating the incoming token, and returning a result that represents the new token:</p>
+<p>扩展授权验证器的工作是通过验证传入的令牌来处理该请求，并返回代表新令牌的结果:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">class</span> <span class="nc">DelegationGrantValidator</span> <span class="p">:</span> <span class="n">IExtensionGrantValidator</span>
 <span class="p">{</span>
     <span class="k">private</span> <span class="k">readonly</span> <span class="n">ITokenValidator</span> <span class="n">_validator</span><span class="p">;</span>
@@ -331,7 +331,7 @@ This middle tier API (API 1) now wants to call a back end API (API 2) on behalf 
             <span class="k">return</span><span class="p">;</span>
         <span class="p">}</span>
 
-        <span class="c1">// get user&#39;s identity</span>
+        <span class="c1">// 获取用户身份</span>
         <span class="kt">var</span> <span class="n">sub</span> <span class="p">=</span> <span class="n">result</span><span class="p">.</span><span class="n">Claims</span><span class="p">.</span><span class="n">FirstOrDefault</span><span class="p">(</span><span class="n">c</span> <span class="p">=&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">Type</span> <span class="p">==</span> <span class="s">&quot;sub&quot;</span><span class="p">).</span><span class="n">Value</span><span class="p">;</span>
 
         <span class="n">context</span><span class="p">.</span><span class="n">Result</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GrantValidationResult</span><span class="p">(</span><span class="n">sub</span><span class="p">,</span> <span class="n">GrantType</span><span class="p">);</span>
@@ -340,9 +340,9 @@ This middle tier API (API 1) now wants to call a back end API (API 2) on behalf 
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Don't forget to register the validator with DI.</p>
-<p><strong>Registering the delegation client</strong></p>
-<p>You need a client registration in IdentityServer that allows a client to use this new extension grant, e.g.:</p>
+<p>不要忘记向 DI 注册验证器。</p>
+<p><strong>注册委托客户端</strong></p>
+<p>您需要在 IdentityServer 中进行客户端注册，以允许客户端使用此新扩展授权，例如:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Client</span>
 <span class="p">{</span>
     <span class="n">ClientId</span> <span class="p">=</span> <span class="s">&quot;api1.client&quot;</span><span class="p">,</span>
@@ -360,15 +360,15 @@ This middle tier API (API 1) now wants to call a back end API (API 2) on behalf 
 <span class="p">}</span>
 </pre></div>
 </div>
-<p><strong>Calling the token endpoint</strong></p>
-<p>In API 1 you can now construct the HTTP payload yourself, or use the <em>IdentityModel</em> helper library:</p>
+<p><strong>调用令牌端点</strong></p>
+<p>在 API 1 中，您现在可以自己构建 HTTP 负载，或使用 <em>IdentityModel</em> 帮助程序库:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="k">public</span> <span class="k">async</span> <span class="n">Task</span><span class="p">&lt;</span><span class="n">TokenResponse</span><span class="p">&gt;</span> <span class="n">DelegateAsync</span><span class="p">(</span><span class="kt">string</span> <span class="n">userToken</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="n">_httpClientFactory</span><span class="p">.</span><span class="n">CreateClient</span><span class="p">();</span>
-    <span class="c1">// or</span>
+    <span class="c1">// 或者</span>
     <span class="c1">// var client = new HttpClient();</span>
 
-    <span class="c1">// send custom grant to token endpoint, return response</span>
+    <span class="c1">// 向令牌端点发送自定义授权，返回响应</span>
     <span class="k">return</span> <span class="k">await</span> <span class="n">client</span><span class="p">.</span><span class="n">RequestTokenAsync</span><span class="p">(</span><span class="k">new</span> <span class="n">TokenRequest</span>
     <span class="p">{</span>
         <span class="n">Address</span> <span class="p">=</span> <span class="n">disco</span><span class="p">.</span><span class="n">TokenEndpoint</span><span class="p">,</span>
@@ -386,7 +386,7 @@ This middle tier API (API 1) now wants to call a back end API (API 2) on behalf 
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">TokenResponse.AccessToken</span></code> will now contain the delegation access token.</p>
+<p><code class="docutils literal notranslate"><span class="pre">TokenResponse.AccessToken</span></code> 现在将包含委托访问令牌。</p>
 </div>
 </div>
 
@@ -397,7 +397,7 @@ This middle tier API (API 1) now wants to call a back end API (API 2) on behalf 
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="resource_owner.html" class="btn btn-neutral float-right" title="Resource Owner Password Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="client_authentication.html" class="btn btn-neutral float-left" title="Client Authentication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="client_authentication.html" class="btn btn-neutral float-left" title="客户端认证" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

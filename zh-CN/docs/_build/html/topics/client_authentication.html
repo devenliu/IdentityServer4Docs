@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Client Authentication &mdash; IdentityServer4 1.0.0 文档</title>
+  <title>客户端认证 &mdash; IdentityServer4 1.0.0 文档</title>
   
 
   
@@ -132,10 +132,10 @@
 <li class="toctree-l1"><a class="reference internal" href="events.html">事件</a></li>
 <li class="toctree-l1"><a class="reference internal" href="crypto.html">密码学、密钥和 HTTPS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="grant_types.html">授权类型</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Client Authentication</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#creating-a-shared-secret">Creating a shared secret</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authentication-using-a-shared-secret">Authentication using a shared secret</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#authentication-using-an-asymmetric-key">Authentication using an asymmetric Key</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">客户端认证</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">创建共享密钥</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">使用共享密钥进行身份验证</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">使用非对称密钥进行身份验证</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="extension_grants.html">Extension Grants</a></li>
@@ -231,7 +231,7 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Client Authentication</li>
+      <li>客户端认证</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -250,23 +250,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="client-authentication">
-<h1>Client Authentication<a class="headerlink" href="#client-authentication" title="永久链接至标题">¶</a></h1>
-<p>In certain situations, clients need to authenticate with IdentityServer, e.g.</p>
+  <div class="section" id="id1">
+<h1>客户端认证<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>在某些情况下，客户端需要使用 IdentityServer 进行身份验证，例如</p>
 <ul class="simple">
-<li><p>confidential applications (aka clients) requesting tokens at the token endpoint</p></li>
-<li><p>APIs validating reference tokens at the introspection endpoint</p></li>
+<li><p>机密应用程序（又名客户端）在令牌端点请求令牌</p></li>
+<li><p>在内省端点验证参考令牌的 API</p></li>
 </ul>
-<p>For that purpose you can assign a list of secrets to a client or an API resource.</p>
-<p>Secret parsing and validation is an extensibility point in identityserver, out of the box it supports shared secrets
-as well as transmitting the shared secret via a basic authentication header or the POST body.</p>
-<div class="section" id="creating-a-shared-secret">
-<h2>Creating a shared secret<a class="headerlink" href="#creating-a-shared-secret" title="永久链接至标题">¶</a></h2>
-<p>The following code sets up a hashed shared secret:</p>
+<p>为此，您可以将密钥列表分配给客户端或 API 资源。</p>
+<p>密钥解析和验证是身份服务器中的一个扩展点，开箱即用，
+它支持共享秘密以及通过基本身份验证标头或 POST 正文传输共享秘密。</p>
+<div class="section" id="id2">
+<h2>创建共享密钥<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>以下代码设置哈希共享密钥:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">secret</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span><span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">());</span>
 </pre></div>
 </div>
-<p>This secret can now be assigned to either a <code class="docutils literal notranslate"><span class="pre">Client</span></code> or an <code class="docutils literal notranslate"><span class="pre">ApiResource</span></code>.
+<p>这个密钥现在可以分配给 <code class="docutils literal notranslate"><span class="pre">客户端</span></code> 或 <code class="docutils literal notranslate"><span class="pre">ApiResource</span></code>。
 Notice that both do not only support a single secret, but multiple. This is useful for secret rollover and rotation:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">client</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Client</span>
 <span class="p">{</span>
@@ -281,8 +281,8 @@ Notice that both do not only support a single secret, but multiple. This is usef
 <span class="p">};</span>
 </pre></div>
 </div>
-<p>In fact you can also assign a description and an expiration date to a secret. The description will be used for logging, and
-the expiration date for enforcing a secret lifetime:</p>
+<p>事实上，您还可以为密钥分配描述和到期日期。
+描述将用于日志记录，以及强制执行密钥生命周期的到期日期:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">secret</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Secret</span><span class="p">(</span>
     <span class="s">&quot;secret&quot;</span><span class="p">.</span><span class="n">Sha256</span><span class="p">(),</span>
     <span class="s">&quot;2016 secret&quot;</span><span class="p">,</span>
@@ -290,9 +290,9 @@ the expiration date for enforcing a secret lifetime:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="authentication-using-a-shared-secret">
-<h2>Authentication using a shared secret<a class="headerlink" href="#authentication-using-a-shared-secret" title="永久链接至标题">¶</a></h2>
-<p>You can either send the client id/secret combination as part of the POST body:</p>
+<div class="section" id="id3">
+<h2>使用共享密钥进行身份验证<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>您可以将客户端 ID/密钥组合作为 POST 正文的一部分发送:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="p">/</span><span class="n">connect</span><span class="p">/</span><span class="n">token</span>
 
 <span class="n">client_id</span><span class="p">=</span><span class="n">client1</span><span class="p">&amp;</span>
@@ -300,7 +300,7 @@ the expiration date for enforcing a secret lifetime:</p>
 <span class="p">...</span>
 </pre></div>
 </div>
-<p>..or as a basic authentication header:</p>
+<p>..或者作为一个基本的认证头:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="n">POST</span> <span class="p">/</span><span class="n">connect</span><span class="p">/</span><span class="n">token</span>
 
 <span class="n">Authorization</span><span class="p">:</span> <span class="n">Basic</span> <span class="n">xxxxx</span>
@@ -308,7 +308,7 @@ the expiration date for enforcing a secret lifetime:</p>
 <span class="p">...</span>
 </pre></div>
 </div>
-<p>You can manually create a basic authentication header using the following C# code:</p>
+<p>您可以使用以下 C# 代码手动创建基本身份验证标头:</p>
 <div class="highlight-csharp notranslate"><div class="highlight"><pre><span></span><span class="kt">var</span> <span class="n">credentials</span> <span class="p">=</span> <span class="kt">string</span><span class="p">.</span><span class="n">Format</span><span class="p">(</span><span class="s">&quot;{0}:{1}&quot;</span><span class="p">,</span> <span class="n">clientId</span><span class="p">,</span> <span class="n">clientSecret</span><span class="p">);</span>
 <span class="kt">var</span> <span class="n">headerValue</span> <span class="p">=</span> <span class="n">Convert</span><span class="p">.</span><span class="n">ToBase64String</span><span class="p">(</span><span class="n">Encoding</span><span class="p">.</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="n">credentials</span><span class="p">));</span>
 
@@ -316,11 +316,10 @@ the expiration date for enforcing a secret lifetime:</p>
 <span class="n">client</span><span class="p">.</span><span class="n">DefaultRequestHeaders</span><span class="p">.</span><span class="n">Authorization</span> <span class="p">=</span> <span class="k">new</span> <span class="n">AuthenticationHeaderValue</span><span class="p">(</span><span class="s">&quot;Basic&quot;</span><span class="p">,</span> <span class="n">headerValue</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The <a class="reference external" href="https://github.com/IdentityModel/IdentityModel">IdentityModel</a> library has helper classes called <code class="docutils literal notranslate"><span class="pre">TokenClient</span></code> and <code class="docutils literal notranslate"><span class="pre">IntrospectionClient</span></code> that encapsulate
-both authentication and protocol messages.</p>
+<p><a class="reference external" href="https://github.com/IdentityModel/IdentityModel">IdentityModel</a> 库有名为 <code class="docutils literal notranslate"><span class="pre">TokenClient</span></code> 和 <code class="docutils literal notranslate"><span class="pre">IntrospectionClient</span></code> 的辅助类，它们封装了身份验证和协议消息。</p>
 </div>
-<div class="section" id="authentication-using-an-asymmetric-key">
-<h2>Authentication using an asymmetric Key<a class="headerlink" href="#authentication-using-an-asymmetric-key" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h2>使用非对称密钥进行身份验证<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
 <p>There are other techniques to authenticate clients, e.g. based on public/private key cryptography.
 IdentityServer includes support for private key JWT client secrets (see <a class="reference external" href="https://tools.ietf.org/html/rfc7523">RFC 7523</a>
 and <a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html#ClientAuthentication">here</a>).</p>
