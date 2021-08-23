@@ -43,7 +43,7 @@ ProfileDataRequestContext
 
 ``RequestedClaimTypes`` 集合是根据 :ref:`资源 <refResources>` 上定义的用户声明填充的，该用户声明对范围进行建模。
 如果请求身份令牌并且请求的范围是 :ref:`身份资源 <refIdentityResource>`，则 ``RequestedClaimTypes`` 中的声明将根据 ``IdentityResource`` 中定义的用户声明类型填充。
-如果请求访问令牌并且请求的范围是 :ref:`API 资源 <refApiResource>`，则 ``RequestedClaimTypes`` 中的声明将根据 ``ApiResource`` 和（或）``Scope``。
+如果请求访问令牌并且请求的范围是 :ref:`API 资源 <refApiResource>`，则 ``RequestedClaimTypes`` 中的声明将根据 ``ApiResource`` 和（或） ``Scope``。
 
 IsActiveContext
 ^^^^^^^^^^^^^^^
