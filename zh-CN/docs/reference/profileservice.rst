@@ -2,59 +2,59 @@
 Profile Service
 ===============
 
-Often IdentityServer requires identity information about users when creating tokens or when handling requests to the userinfo or introspection endpoints.
-By default, IdentityServer only has the claims in the authentication cookie to draw upon for this identity data.
+在创建令牌或处理对 userinfo 或自省端点的请求时，IdentityServer 通常需要有关用户的身份信息。
+默认情况下，IdentityServer 只有身份验证 cookie 中的声明可用于此身份数据。
 
-It is impractical to put all of the possible claims needed for users into the cookie, so IdentityServer defines an extensibility point for allowing claims to be dynamically loaded as needed for a user.
-This extensibility point is the ``IProfileService`` and it is common for a developer to implement this interface to access a custom database or API that contains the identity data for users.
+将用户所需的所有可能声明都放入 cookie 是不切实际的，因此 IdentityServer 定义了一个扩展点，允许根据用户需要动态加载声明。
+此扩展点是 ``IProfileService``，开发人员通常会实现此接口以访问包含用户身份数据的自定义数据库或 API。
 
 IProfileService APIs
 ^^^^^^^^^^^^^^^^^^^^
 
 ``GetProfileDataAsync``
-    The API that is expected to load claims for a user. It is passed an instance of ``ProfileDataRequestContext``.
+    预期为用户加载声明的 API。 它传递了一个 ``ProfileDataRequestContext`` 的实例。
 
 ``IsActiveAsync``
-    The API that is expected to indicate if a user is currently allowed to obtain tokens. It is passed an instance of ``IsActiveContext``.
+    预期指示当前是否允许用户获取令牌的 API。 它传递了一个 ``IsActiveContext`` 的实例。
 
 ProfileDataRequestContext
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Models the request for user claims and is the vehicle to return those claims. It contains these properties:
+为用户声明的请求建模，并且是返回这些声明的工具。 它包含以下属性：
 
 ``Subject``
-    The ``ClaimsPrincipal`` modeling the user.
+    对用户建模的 ``ClaimsPrincipal``。
 ``Client``
-    The ``Client`` for which the claims are being requested.
+    正在为其请求声明的 ``客户端``。
 ``RequestedClaimTypes``
-    The collection of claim types being requested.
+    正在请求的声明类型的集合。
 ``Caller``
-    An identifier for the context in which the claims are being requested (e.g. an identity token, an access token, or the user info endpoint). The constant ``IdentityServerConstants.ProfileDataCallers`` contains the different constant values.
+    请求声明的上下文的标识符（例如身份令牌、访问令牌或用户信息端点）。 常量 ``IdentityServerConstants.ProfileDataCallers`` 包含不同的常量值。
 ``IssuedClaims``
-    The list of ``Claim`` s that will be returned. This is expected to be populated by the custom ``IProfileService`` implementation.
+    将返回的 ``Claim`` 列表。 这预计将由自定义 ``IProfileService`` 实现填充。
 ``AddRequestedClaims``
-    Extension method on the ``ProfileDataRequestContext`` to populate the ``IssuedClaims``, but first filters the claims based on ``RequestedClaimTypes``.
+    ``ProfileDataRequestContext`` 上的扩展方法来填充 ``IssuedClaims``，但首先根据 ``RequestedClaimTypes`` 过滤声明。
 
-Requested scopes and claims mapping
+请求的范围和声明映射
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The scopes requested by the client control what user claims are returned in the tokens to the client. 
-The ``GetProfileDataAsync`` method is responsible for dynamically obtaining those claims based on the ``RequestedClaimTypes`` collection on the ``ProfileDataRequestContext``.
+客户端请求的范围控制用户声明在令牌中返回给客户端的内容。 
+``GetProfileDataAsync`` 方法负责根据 ``ProfileDataRequestContext`` 上的 ``RequestedClaimTypes`` 集合动态获取这些声明。
 
-The ``RequestedClaimTypes`` collection is populated based on the user claims defined on the :ref:`resources <refResources>` that model the scopes.
-If requesting an identity token and the scopes requested are an :ref:`identity resources <refIdentityResource>`, then the claims in the ``RequestedClaimTypes`` will be populated based on the user claim types defined in the ``IdentityResource``.
-If requesting an access token and the scopes requested are an :ref:`API resources <refApiResource>`, then the claims in the ``RequestedClaimTypes`` will be populated based on the user claim types defined in the ``ApiResource`` and/or the ``Scope``.
+``RequestedClaimTypes`` 集合是根据 :ref:`资源 <refResources>` 上定义的用户声明填充的，该用户声明对范围进行建模。
+如果请求身份令牌并且请求的范围是 :ref:`身份资源 <refIdentityResource>`，则 ``RequestedClaimTypes`` 中的声明将根据 ``IdentityResource`` 中定义的用户声明类型填充。
+如果请求访问令牌并且请求的范围是 :ref:`API 资源 <refApiResource>`，则 ``RequestedClaimTypes`` 中的声明将根据 ``ApiResource`` 和（或）``Scope``。
 
 IsActiveContext
 ^^^^^^^^^^^^^^^
 
-Models the request to determine if the user is currently allowed to obtain tokens. It contains these properties:
+对请求建模以确定当前是否允许用户获取令牌。 它包含以下属性：
 
 ``Subject``
-    The ``ClaimsPrincipal`` modeling the user.
+    对用户建模的 ``ClaimsPrincipal``。
 ``Client``
-    The ``Client`` for which the claims are being requested.
+    正在为其请求声明的 ``客户端``。
 ``Caller``
-    An identifier for the context in which the claims are being requested (e.g. an identity token, an access token, or the user info endpoint). The constant ``IdentityServerConstants.ProfileDataCallers`` contains the different constant values.
+   请求声明的上下文的标识符（例如身份令牌、访问令牌或用户信息端点）。 常量 ``IdentityServerConstants.ProfileDataCallers`` 包含不同的常量值。
 ``IsActive``
-    The flag indicating if the user is allowed to obtain tokens. This is expected to be assigned by the custom ``IProfileService`` implementation.
+    指示是否允许用户获取令牌的标志。 这预计由自定义 ``IProfileService`` 实现分配。
