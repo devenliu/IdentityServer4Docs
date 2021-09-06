@@ -2,35 +2,35 @@
 CORS
 ====
 
-Many endpoints in IdentityServer will be accessed via Ajax calls from JavaScript-based clients.
-Given that IdentityServer will most likely be hosted on a different origin than these clients, this implies that `Cross-Origin Resource Sharing <http://www.html5rocks.com/en/tutorials/cors/>`_ (CORS) will need to be configured.
+IdentityServer 中的许多端点将通过基于 JavaScript 的客户端的 Ajax 调用进行访问。
+鉴于 IdentityServer 很可能托管在与这些客户端不同的源上，这意味着 `跨源资源共享 <http://www.html5rocks.com/en/tutorials/cors/>`_ (CORS) 将需要进行配置。
 
-Client-based CORS Configuration
+基于客户端的 CORS 配置
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-One approach to configuring CORS is to use the ``AllowedCorsOrigins`` collection on the :ref:`client configuration <refClient>`.
-Simply add the origin of the client to the collection and the default configuration in IdentityServer will consult these values to allow cross-origin calls from the origins.
+配置 CORS 的一种方法是在 :ref:`客户端配置 <refClient>` 上使用 ``AllowedCorsOrigins`` 集合。
+只需将客户端的源添加到集合中，IdentityServer 中的默认配置将参考这些值以允许来自源的跨源调用。
 
-.. Note:: Be sure to use an origin (not a URL) when configuring CORS. For example: ``https://foo:123/`` is a URL, whereas ``https://foo:123`` is an origin.
+.. Note:: 确保在配置 CORS 时使用源（而不是 URL）。 例如： ``https://foo:123/`` 是一个 URL，而 ``https://foo:123`` 是一个来源。
 
-This default CORS implementation will be in use if you are using either the "in-memory" or EF-based client configuration that we provide.
-If you define your own ``IClientStore``, then you will need to implement your own custom CORS policy service (see below).
+如果您使用我们提供的“内存中”或基于 EF 的客户端配置，则将使用此默认 CORS 实现。
+如果您定义自己的 ``IClientStore``，那么您将需要实现您自己的自定义 CORS 策略服务（见下文）。
 
-Custom Cors Policy Service
+自定义 Cors 策略服务
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-IdentityServer allows the hosting application to implement the ``ICorsPolicyService`` to completely control the CORS policy.
+IdentityServer 允许托管应用程序实现 ``ICorsPolicyService`` 以完全控制 CORS 策略。
 
-The single method to implement is: ``Task<bool> IsOriginAllowedAsync(string origin)``. 
-Return ``true`` if the `origin` is allowed, ``false`` otherwise.
+要实现的单一方法是： ``Task<bool> IsOriginAllowedAsync(string origin)``。
+如果允许 `origin`，则返回 `true`，否则返回 `false`。
 
-Once implemented, simply register the implementation in DI and IdentityServer will then use your custom implementation.
+实现后，只需在 DI 中注册实现，IdentityServer 就会使用您的自定义实现。
 
 **DefaultCorsPolicyService**
 
-If you simply wish to hard-code a set of allowed origins, then there is a pre-built ``ICorsPolicyService`` implementation you can use called ``DefaultCorsPolicyService``.
-This would be configured as a singleton in DI, and hard-coded with its ``AllowedOrigins`` collection, or setting the flag ``AllowAll`` to ``true`` to allow all origins.
-For example, in ``ConfigureServices``::
+如果您只是希望对一组允许的来源进行硬编码，那么您可以使用一个名为 ``DefaultCorsPolicyService`` 的预构建 ``ICorsPolicyService`` 实现。
+这将在 DI 中配置为单例，并使用其 ``AllowedOrigins`` 集合进行硬编码，或将标志 ``AllowAll`` 设置为 ``true`` 以允许所有来源。
+例如，在 ``ConfigureServices`` 中::
 
     services.AddSingleton<ICorsPolicyService>((container) => {
         var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
@@ -39,22 +39,22 @@ For example, in ``ConfigureServices``::
         };
     });
 
-.. Note:: Use ``AllowAll`` with caution.
+.. Note:: 谨慎使用 ``AllowAll``。
 
 
-Mixing IdentityServer's CORS policy with ASP.NET Core's CORS policies
+将 IdentityServer CORS 策略与 ASP.NET Cores CORS 策略混合使用
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-IdentityServer uses the CORS middleware from ASP.NET Core to provide its CORS implementation.
-It is possible that your application that hosts IdentityServer might also require CORS for its own custom endpoints.
-In general, both should work together in the same application.
+IdentityServer 使用来自 ASP.NET Core 的 CORS 中间件来提供其 CORS 实现。
+托管 IdentityServer 的应用程序可能也需要 CORS 用于其自己的自定义端点。
+一般来说，两者应该在同一个应用程序中一起工作。
 
-Your code should use the documented CORS features from ASP.NET Core without regard to IdentityServer.
-This means you should define policies and register the middleware as normal.
-If your application defines policies in ``ConfigureServices``, then those should continue to work in the same places you are using them (either where you configure the CORS middleware or where you use the MVC ``EnableCors`` attributes in your controller code).
-If instead you define an inline policy in the use of the CORS middleware (via the policy builder callback), then that too should continue to work normally.
+您的代码应使用 ASP.NET Core 中记录的 CORS 功能，而不考虑 IdentityServer。
+这意味着您应该像往常一样定义策略并注册中间件。
+如果您的应用程序在 ``ConfigureServices`` 中定义了策略，那么这些策略应该在您使用它们的相同位置继续工作（在您配置 CORS 中间件的位置或在您的控制器代码中使用 MVC ``EnableCors`` 属性的位置） ）。
+相反，如果您在使用 CORS 中间件时定义内联策略（通过策略构建器回调），那么它也应该继续正常工作。
 
-The one scenario where there might be a conflict between your use of the ASP.NET Core CORS services and IdentityServer is if you decide to create a custom ``ICorsPolicyProvider``.
-Given the design of the ASP.NET Core's CORS services and middleware, IdentityServer implements its own custom ``ICorsPolicyProvider`` and registers it in the DI system.
-Fortunately, the IdentityServer implementation is designed to use the decorator pattern to wrap any existing  ``ICorsPolicyProvider`` that is already registered in DI.
-What this means is that you can also implement the ``ICorsPolicyProvider``, but it simply needs to be registered prior to IdentityServer in DI (e.g. in ``ConfigureServices``).
+使用 ASP.NET Core CORS 服务和 IdentityServer 之间可能存在冲突的一种情况是，如果您决定创建自定义 ``ICorsPolicyProvider``。
+鉴于 ASP.NET Core 的 CORS 服务和中间件的设计，IdentityServer 实现了自己的自定义 ``ICorsPolicyProvider`` 并将其注册到 DI 系统中。
+幸运的是，IdentityServer 实现旨在使用装饰器模式来包装任何已在 DI 中注册的现有 ``ICorsPolicyProvider``。
+这意味着您还可以实现 ``ICorsPolicyProvider``，但它只需要在 DI 中的 IdentityServer 之前注册（例如在 ``ConfigureServices`` 中）。
