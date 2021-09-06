@@ -1,11 +1,10 @@
-Discovery
+发现
 =========
 
-The discovery document can be found at *https://baseaddress/.well-known/openid-configuration*. 
-It contains information about the endpoints, key material and features of your IdentityServer.
+发现文档可以在 *https://baseaddress/.well-known/openid-configuration* 找到。
+它包含有关 IdentityServer 的端点、密钥材料和功能的信息。
 
-By default all information is included in the discovery document, but by using configuration options, you can hide
-individual sections, e.g.::
+默认情况下，所有信息都包含在发现文档中，但通过使用配置选项，您可以隐藏个别部分，例如::
 
     services.AddIdentityServer(options =>
     {
@@ -15,9 +14,9 @@ individual sections, e.g.::
         options.Discovery.ShowExtensionGrantTypes = false;
     });
 
-Extending discovery
+扩展发现
 ^^^^^^^^^^^^^^^^^^^
-You can add custom entries to the discovery document, e.g::
+您可以向发现文档添加自定义条目，例如::
 
     services.AddIdentityServer(options =>
     {
@@ -30,9 +29,8 @@ You can add custom entries to the discovery document, e.g::
             });
     });
 
-When you add a custom value that starts with ~/ it will be expanded to an absolute path below the IdentityServer base address, e.g.::
+当您添加以 ~/ 开头的自定义值时，它将扩展为 IdentityServer 基地址下方的绝对路径，例如::
 
     options.Discovery.CustomEntries.Add("my_custom_endpoint", "~/custom");
 
-If you want to take full control over the rendering of the discovery (and jwks) document, you can implement the ``IDiscoveryResponseGenerator``
-interface (or derive from our default implementation).
+如果您想完全控制发现（和 jwks）文档的呈现，您可以实现 ``IDiscoveryResponseGenerator`` 接口（或派生自我们的默认实现）。
