@@ -1,18 +1,18 @@
 .. _refResourceOwnerPasswordValidator:
-Resource Owner Password Validation
+资源所有者密码验证
 ===================================
 
-If you want to use the OAuth 2.0 resource owner password credential grant (aka ``password``), you need to implement and register the ``IResourceOwnerPasswordValidator`` interface::
+如果要使用 OAuth 2.0 资源所有者密码凭据授予（又名 ``password``），则需要实现并注册 ``IResourceOwnerPasswordValidator`` 接口::
 
     public interface IResourceOwnerPasswordValidator
     {
         /// <summary>
-        /// Validates the resource owner password credential
+        /// 验证资源所有者密码凭据
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="context">上下文。</param>
         Task ValidateAsync(ResourceOwnerPasswordValidationContext context);
     }
 
-On the context you will find already parsed protocol parameters like ``UserName`` and ``Password``, but also the raw request if you want to look at other input data.
+在上下文中，您会发现已经解析的协议参数，如 ``UserName`` 和 ``Password``，如果您想查看其他输入数据，还会找到原始请求。
 
-Your job is then to implement the password validation and set the ``Result`` on the context accordingly. See the :ref:`GrantValidationResult <refGrantValidationResult>` documentation.
+然后你的工作是实现密码验证并相应地在上下文中设置 ``Result``。 请参阅 :ref:`GrantValidationResult <refGrantValidationResult>` 文档。
