@@ -1,56 +1,56 @@
 .. _refPersistedGrants:
-Persisted Grants
+持久授权
 ================
-Many grant types require persistence in IdentityServer.
-These include authorization codes, refresh tokens, reference tokens, and remembered user consents.
-Internally in IdentityServer, the default storage for these grants is in a common store called the persisted grants store.
+许多授权类型需要在 IdentityServer 中持久化。
+其中包括授权代码、刷新令牌、参考令牌和记住的用户同意。
+在 IdentityServer 内部，这些授权的默认存储位于称为持久授权存储的公共存储中。
 
-Persisted Grant
+持久授权
 ^^^^^^^^^^^^^^^
-The persisted grant is the data type that maintains the values for a grant. 
-It has these properties:
+持久授权是维护授权值的数据类型。
+它具有以下属性：
 
 ``Key``
-    The unique identifier for the persisted grant in the store.
+    存储中持久授权的唯一标识符。
 ``Type``
-    The type of the grant.
+    授权的类型。
 ``SubjectId``
-    The subject id to which the grant belongs.
+    授予所属的主体 ID。
 ``ClientId``
-    The client identifier for which the grant was created.
+    为其创建授权的客户端标识符。
 ``Description``
-    The description the user assigned to the grant or device being authorized.
+    用户分配给授权或被授权设备的描述。
 ``CreationTime``
-    The date/time the grant was created.
+    创建授权的日期/时间。
 ``Expiration``
-    The expiration of the grant.
+    授权到期。
 ``ConsumedTime``
-    The date/time the grant was "consumed" (see below).
+    授权 ``已消耗`` 的日期/时间（见下文）。
 ``Data``
-    The grant specific serialized data.
+    授权特定的序列化数据。
 
-.. note:: The ``Data`` property contains a copy of all of the values (and more) and is considered authoritative by IdentityServer, thus the above values, by default, are considered informational and read-only.
+.. note:: ``Data`` 属性包含所有值（以及更多）的副本，并且被 IdentityServer 认为是权威的，因此默认情况下，上述值被认为是信息性的只读值。
 
-The presence of the record in the store without a ``ConsumedTime`` and while still within the ``Expiration`` represents the validity of the grant.
-Setting either of these two values, or removing the record from the store effectively revokes the grant.
+存在于存储中，没有 ``ConsumedTime`` 且仍在 ``Expiration`` 内的记录，表示授权的有效性。
+设置这两个值中的任何一个，或者从存储中删除记录，都可以有效地撤销授权。
 
-Grant Consumption
+授权消费
 ^^^^^^^^^^^^^^^^^
-Some grant types are one-time use only (either by definition or configuration).
-Once they are "used", rather than deleting the record, the ``ConsumedTime`` value is set in the database marking them as having been used.
-This "soft delete" allows for custom implementations to either have flexibility in allowing a grant to be re-used (typically within a short window of time),
-or to be used in risk assessment and threat mitigation scenarios (where suspicious activity is detected) to revoke access.
-For refresh tokens, this sort of custom logic would be performed in the ``IRefreshTokenService``.
+某些授权类型只能一次性使用（根据定义或配置）。
+一旦它们被 ``使用``，而不是删除记录，``ConsumedTime`` 值被设置在数据库中，将它们标记为已被使用。
+这种 ``软删除`` 允许自定义实现 在允许重新使用授权方面 具有灵活性（通常在很短的时间内），
+或用于风险评估和威胁缓解方案（检测到可疑活动）以撤销访问。
+对于刷新令牌，此类自定义逻辑将在 ``IRefreshTokenService`` 中执行。
 
-Persisted Grant Service
+持久授权服务
 ^^^^^^^^^^^^^^^^^^^^^^^
-Working with the grants store directly might be too low level. 
-As such, a higher level service called ``IPersistedGrantService`` is provided.
-It abstracts and aggregates the different grant types into one concept, and allows querying and revoking the persisted grants for a user.
+直接使用授权存储可能级别太低。
+因此，提供了一个名为 ``IPersistedGrantService`` 的更高级别的服务。
+它将不同的授权类型抽象并聚合到一个概念中，并允许查询和撤销用户的持久授权。
 
-It contains these APIs:
+它包含以下 API：
 
 ``GetAllGrantsAsync``
-    Gets all the grants for a user based upon subject id. 
+    根据主体 ID 获取用户的所有授权。
 ``RemoveAllGrantsAsync``
-    Removes grants from the store based on the subject id and optionally a client id and/or a session id.
+    根据主体 id 和可选的客户端 id 和/或会话 id 从存储中删除授权。
