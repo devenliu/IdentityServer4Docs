@@ -1,40 +1,40 @@
 .. _refMutualTLS:
 Mutual TLS
 ==========
-Mutual TLS support in IdentityServer allows for two features:
+IdentityServer 中的双向 TLS 支持允许两个功能：
 
-* Client authentication to IdentityServer endpoints using a TLS X.509 client certificate
-* Binding of access tokens to clients using a TLS X.509 client certificate
+* 使用 TLS X.509 客户端证书对 IdentityServer 端点进行客户端身份验证
+* 使用 TLS X.509 客户端证书将访问令牌绑定到客户端
 
-.. Note:: See the `"OAuth 2.0 Mutual-TLS Client Authentication and Certificate-Bound Access Tokens" <https://tools.ietf.org/html/rfc8705>`_ spec for more information
+.. Note:: 有关更多信息，请参阅 `“OAuth 2.0 Mutual-TLS 客户端身份验证和证书绑定访问令牌” <https://tools.ietf.org/html/rfc8705>`_ 规范
 
-Setting up MTLS involves a couple of steps.
+设置 MTLS 涉及几个步骤。
 
-Server setup
+服务器设置
 ^^^^^^^^^^^^
-It's the hosting layer's responsibility to do the actual validation of the client certificate.
-IdentityServer will then use that information to associate the certificate with a client and embed the certificate information in the access tokens.
+托管层有责任对客户端证书进行实际验证。
+IdentityServer 然后将使用该信息将证书与客户端相关联，并将证书信息嵌入到访问令牌中。
 
-Depending which server you are using, those steps are different. See `this <https://leastprivilege.com/2020/02/07/mutual-tls-and-proof-of-possession-access-tokens-part-1-setup/>`_ blog post for more information.
+根据您使用的服务器，这些步骤是不同的。 有关更多信息，请参阅 `此 <https://leastprivilege.com/2020/02/07/mutual-tls-and-proof-of-possession-access-tokens-part-1-setup/>`_ 博客文章。
 
-.. Note:: `mkcert <https://github.com/FiloSottile/mkcert>`_ is a nice utility for creating certificates for development purposes.
+.. Note:: `mkcert <https://github.com/FiloSottile/mkcert>`_ 是一个很好的工具，用于为开发目的创建证书。
 
-ASP.NET Core setup
+ASP.NET Core 设置
 ^^^^^^^^^^^^^^^^^^
-Depending on the server setup, there are different ways how the ASP.NET Core host will receive the client certificate. While for IIS and pure Kestrel hosting, there are no additional steps, 
-typically you have a reverse proxy in front of the application server. 
+根据服务器设置，ASP.NET Core 主机接收客户端证书的方式不同。 而对于 IIS 和纯 Kestrel 托管，没有额外的步骤，
+通常，您在应用程序服务器前面有一个反向代理。
 
-This means that in addition to the typical forwarded headers handling, you also need to process the header that contains the client certificate.
-Add a call to ``app.UseCertificateForwarding();`` in the beginning of your middleware pipeline for that.
+这意味着除了典型的转发头处理之外，您还需要处理包含客户端证书的头。
+为此，在中间件管道的开头添加对 ``app.UseCertificateForwarding();`` 的调用。
 
-The exact format how proxies transmit the certificates is not standardized, that's why you need to register a callback to do the actual header parsing.
-The Microsoft `docs <https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth?view=aspnetcore-3.1>`_ show how that would work for Azure Web Apps.
+代理传输证书的确切格式没有标准化，这就是为什么您需要注册一个回调来进行实际的标头解析。
+Microsoft `文档 <https://docs.microsoft.com/en-us/aspnet/core/security/authentication/certauth?view=aspnetcore-3.1>`_ 展示了 Azure Web 应用程序如何工作。
 
-If you are using Nginx (which we found is the most flexible hosting option), you need to register the following service in ``ConfigureServices``::
+如果您使用的是 Nginx（我们发现它是最灵活的托管选项），您需要在 ``ConfigureServices`` 中注册以下服务
 
     services.AddCertificateForwarding(options =>
     {
-        // header name might be different, based on your nginx config
+        // 标头名称可能会有所不同，具体取决于您的 nginx 配置
         options.CertificateHeader = "X-SSL-CERT";
 
         options.HeaderConverter = (headerValue) =>
@@ -51,9 +51,9 @@ If you are using Nginx (which we found is the most flexible hosting option), you
         };
     });
 
-Once, the certificate has been loaded, you also need to setup the authentication handler.
-In this scenario we want to support self-signed certificates, hence the ``CertificateType.All`` and no revocation checking.
-These settings might be different in your environment:: 
+一旦加载了证书，您还需要设置身份验证处理程序。
+在这种情况下，我们希望支持自签名证书，因此是 ``CertificateType.All`` 并且没有吊销检查。
+这些设置在您的环境中可能会有所不同:: 
 
     services.AddAuthentication()
         .AddCertificate(options =>
@@ -64,44 +64,44 @@ These settings might be different in your environment::
 
 IdentityServer setup
 ^^^^^^^^^^^^^^^^^^^^
-Next step is to enable MTLS in IdentityServer. For that you need to specify the name of the certificate authentication handler you set-up in the last step (defaults to ``Certificate``),
-and the MTLS hosting strategy.
+下一步是在 IdentityServer 中启用 MTLS。 为此，您需要指定您在最后一步中设置的证书身份验证处理程序的名称（默认为 ``Certificate``），
+和 MTLS 托管策略。
 
-In IdentityServer, the mutual TLS endpoints, can be configured in three ways (assuming IdentityServer is running on ``https://identityserver.io``:
+在 IdentityServer 中，双向 TLS 端点可以通过三种方式配置（假设 IdentityServer 在 ``https://identityserver.io`` 上运行：
 
-* path-based - endpoints located beneath the path ``~/connect/mtls``, e.g. ``https://identityserver.io/connect/mtls/token``.
-* sub-domain based - endpoints are on a sub-domain of the main server, e.g. ``https://mtls.identityserver.io/connect/token``.
-* domain-based - endpoints are on a different domain, e.g. ``https://identityserver-mtls.io``.  
+* 基于路径 - 位于路径 ``~/connect/mtls`` 下的端点，例如 ``https://identityserver.io/connect/mtls/token``。
+* 基于子域名 - 端点位于主服务器的子域名上，例如 ``https://mtls.identityserver.io/connect/token``。
+* 基于域名 - 端点位于不同的域名中，例如 ``https://identityserver-mtls.io``。  
 
-For example::
+例如::
 
     var builder = services.AddIdentityServer(options =>
     {
         options.MutualTls.Enabled = true;
         options.MutualTls.ClientCertificateAuthenticationScheme = "Certificate";
         
-        // uses sub-domain hosting
+        // 使用子域名托管
         options.MutualTls.DomainName = "mtls";
     });
 
-IdentityServer's discovery document reflects those endpoints:
+IdentityServer 的发现文档反映了这些端点：
 
 .. image:: images/mtls_endpoints.png
 
 
-Client authentication
+客户端认证
 ^^^^^^^^^^^^^^^^^^^^^
-Clients can use a X.509 client certificate as an authentication mechanism to endpoints in IdentityServer.
+客户端可以使用 X.509 客户端证书作为 IdentityServer 中端点的身份验证机制。
 
-For this you need to associate a client certificate with a client in IdentityServer.
-Use the :ref:`IdentityServer builder <refStartup>` to add the services to DI which contain a default implementation to do that either thumbprint or common-name based::
+为此，您需要将客户端证书与 IdentityServer 中的客户端相关联。
+使用 :ref:`IdentityServer builder <refStartup>` 将服务添加到 DI，其中包含一个默认实现来执行基于指纹或通用名称的操作::
 
     builder.AddMutualTlsSecretValidators();
 
-Finally, for the :ref:`client configuration <refClient>` add to the ``ClientSecrets`` collection a secret type of either ``SecretTypes.X509CertificateName`` 
-if you wish to authenticate the client from the certificate distinguished name or ``SecretTypes.X509CertificateThumbprint`` if you wish to authenticate the client by certificate thumbprint.
+最后，对于 :ref:`client 配置 <refClient>` 添加到 ``ClientSecrets`` 集合的机密类型为 ``SecretTypes.X509CertificateName``。
+如果您希望通过证书识别名验证客户端，或者 ``SecretTypes.X509CertificateThumbprint`` 如果您希望通过证书指纹验证客户端。
 
-For example::
+例如::
 
     new Client
     {
@@ -110,12 +110,12 @@ For example::
         AllowedScopes = { "api1" }
         ClientSecrets = 
         {
-            // name based
+            // 基于名称
             new Secret(@"CN=mtls.test, OU=ROO\ballen@roo, O=mkcert development certificate", "mtls.test")
             {
                 Type = SecretTypes.X509CertificateName
             },
-            // or thumbprint based
+            // 或基于指纹
             //new Secret("bca0d040847f843c5ee0fa6eb494837470155868", "mtls.test")
             //{
             //    Type = SecretTypes.X509CertificateThumbprint
@@ -123,15 +123,15 @@ For example::
         },
     }
 
-Using a client certificate to authenticate to IdentityServer
+使用客户端证书对 IdentityServer 进行身份验证
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-When writing a client to connect to IdentityServer, the ``SocketsHttpHandler`` (or ``HttpClientHandler`` if you are on older .NET Framework versions) 
-class provides a convenient mechanism to add a client certificate to outgoing requests.
+编写客户端以连接到 IdentityServer 时，``SocketsHttpHandler``（或 ``HttpClientHandler`` 如果您使用的是较旧的 .NET Framework 版本）
+类提供了一种方便的机制来将客户端证书添加到传出请求中。
 
-And then HTTP calls (including using the various `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ extension methods) with the ``HttpClient`` 
-will perform client certificate authentication at the TLS channel.
+然后使用 HttpClient 进行 HTTP 调用（包括使用各种 `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ 扩展方法）
+将在 TLS 通道上执行客户端证书认证。
 
-For example::
+例如::
 
     static async Task<TokenResponse> RequestTokenAsync()
     {
@@ -160,30 +160,30 @@ For example::
     }
 
 
-Sender-constrained access tokens
+发送方受限访问令牌
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Whenever a client authenticates to IdentityServer using a client certificate, the thumbprint of that certificate will be embedded in the access token.
+每当客户端使用客户端证书向 IdentityServer 进行身份验证时，该证书的指纹将嵌入访问令牌中。
 
-Clients can use a X.509 client certificate as a mechanism for sender-constrained access tokens when authenticating to APIs.
-The use of these sender-constrained access tokens requires the client to use the same X.509 client certificate to authenticate to the API as the one used for IdentityServer.
+在对 API 进行身份验证时，客户端可以使用 X.509 客户端证书作为发送方受限访问令牌的机制。
+使用这些受发送方约束的访问令牌要求客户端使用与 IdentityServer 相同的 X.509 客户端证书对 API 进行身份验证。
 
-Confirmation claim
+确认声明
 ~~~~~~~~~~~~~~~~~~
-When a client obtains an access token and has authenticated with mutual TLS, IdentityServer issues a confirmation claim (or ``cnf``) in the access token.
-This value is a hash of the thumbprint of the client certificate used to authenticate with IdentityServer.
+当客户端获得访问令牌并通过双向 TLS 进行身份验证时，IdentityServer 在访问令牌中发出确认声明（或 ``cnf``）。
+此值是用于向 IdentityServer 进行身份验证的客户端证书指纹的哈希值。
 
-This value can be seen in this screen shot of a decoded access token:
+可以在解码访问令牌的屏幕截图中看到此值：
 
 .. image:: images/mtls_access_token_with_cnf.png
 
-The API will then use this value to ensure the client certificate being used at the API matches the confirmation value in the access token.
+然后，API 将使用此值来确保 API 中使用的客户端证书与访问令牌中的确认值匹配。
 
-Validating and accepting a client certificate in APIs
+在 API 中验证和接受客户端证书
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-As mentioned above for client authentication in IdentityServer, in the API the web server is expected to perform the client certificate validation at the TLS layer.
+如上所述，对于 IdentityServer 中的客户端身份验证，在 API 中，Web 服务器应在 TLS 层执行客户端证书验证。
 
-Additionally, the API hosting application will need a mechanism to accept the client certificate in order to obtain the thumbprint to perform the confirmation claim validation.
-Below is an example how an API in ASP.NET Core might be configured for both access tokens and client certificates::
+此外，API 托管应用程序将需要一种机制来接受客户端证书，以便获取指纹以执行确认声明验证。
+下面是如何为访问令牌和客户端证书配置 ASP.NET Core 中的 API 的示例::
 
     services.AddAuthentication("token")
         .AddIdentityServerAuthentication("token", options =>
@@ -197,9 +197,9 @@ Below is an example how an API in ASP.NET Core might be configured for both acce
             options.AllowedCertificateTypes = CertificateTypes.All;
         });
 
-Finally, a mechanism is needed that runs after the authentication middleware to authenticate the client certificate and compare the thumbprint to the ``cnf`` from the access token.
+最后，需要一种在身份验证中间件之后运行的机制来验证客户端证书并将指纹与访问令牌中的 ``cnf`` 进行比较。
 
-Below is a simple middleware that checks the claims::
+下面是一个检查声明的简单中间件::
 
     public class ConfirmationValidationMiddlewareOptions
     {
@@ -207,7 +207,7 @@ Below is a simple middleware that checks the claims::
         public string JwtBearerSchemeName { get; set; } = JwtBearerDefaults.AuthenticationScheme;
     }
     
-    // this middleware validate the cnf claim (if present) against the thumbprint of the X.509 client certificate for the current client
+    // 此中间件根据当前客户端的 X.509 客户端证书的指纹验证 cnf 声明（如果存在）
     public class ConfirmationValidationMiddleware
     {
         private readonly RequestDelegate _next;
@@ -251,7 +251,7 @@ Below is a simple middleware that checks the claims::
             await _next(ctx);
         }
 
-Below is an example pipeline for an API::
+以下是 API 的示例管道::
 
     app.UseForwardedHeaders(new ForwardedHeadersOptions
         {
@@ -275,35 +275,35 @@ Below is an example pipeline for an API::
         endpoints.MapControllers();
     });
 
-Once the above middleware succeeds, then the caller has been authenticated with a sender-constrained access token.
+一旦上述中间件成功，那么调用者就已经通过发送者约束的访问令牌进行了身份验证。
 
-Introspection and the confirmation claim
+自省和确认声明
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-When the access token is a JWT, then the confirmation claim is contained in the token as a claim.
-When using reference tokens, the claims that the access token represents must be obtained via introspection.
-The introspection endpoint in IdentityServer will return a ``cnf`` claim for reference tokens obtained via mutual TLS.
+当访问令牌是 JWT 时，确认声明作为声明包含在令牌中。
+使用引用令牌时，访问令牌所代表的声明必须通过自省获得。
+IdentityServer 中的自省端点将为通过双向 TLS 获得的引用令牌返回一个 ``cnf`` 声明。
 
-Ephemeral client certificates
+临时客户端证书
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-You can use the IdentityServer MTLS support also to create sender-constrained access tokens without using the client certificate for client authentication.
-This is useful for situations where you already have client secrets in place that you don't want to change, e.g. shared secrets, or better private key JWTs. 
+您还可以使用 IdentityServer MTLS 支持来创建受发送方约束的访问令牌，而无需使用客户端证书进行客户端身份验证。
+这对于您已经拥有不想更改的客户端机密的情况非常有用，例如 共享秘密，或更好的私钥 JWT。
 
-Still, if a client certificate is present, the confirmation claim can be embedded in outgoing access tokens. And as long as the client is using the same client certificate to 
-request the token and calling the API, this will give you the desired proof-of-possession properties.
+尽管如此，如果存在客户端证书，则可以将确认声明嵌入到传出访问令牌中。 并且只要客户端使用相同的客户端证书
+请求令牌并调用 API，这将为您提供所需的所有权证明属性。
 
-For this enable the following setting in the options::
+为此，在选项中启用以下设置::
 
     var builder = services.AddIdentityServer(options =>
     {
-        // other settings
+        // 其他设置
         
         options.MutualTls.AlwaysEmitConfirmationClaim = true;
     });
 
-Using an ephemeral certificate to request a token
+使用临时证书请求令牌
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-In this scenario, the client uses *some* client secret (a shared secret in the below sample), but attaches an additional client certificate to the token request.
-Since this certificate does not need to be associated with the client at the token services, it can be created on the fly::
+在这种情况下，客户端使用 *某些* 客户端机密（以下示例中的共享机密），但将附加客户端证书附加到令牌请求。
+由于此证书不需要在令牌服务处与客户端相关联，因此可以即时创建::
 
     static X509Certificate2 CreateClientCertificate(string name)
     {
@@ -324,7 +324,7 @@ Since this certificate does not need to be associated with the client at the tok
         }
     }
 
-Then use this client certificate in addition to the already setup-up client secret::
+然后除了已经设置的客户端密钥之外，还使用此客户端证书::
 
     static async Task<TokenResponse> RequestTokenAsync()
     {
