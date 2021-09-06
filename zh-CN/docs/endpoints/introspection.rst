@@ -1,12 +1,12 @@
-Introspection Endpoint
+自省端点
 ======================
 
-The introspection endpoint is an implementation of `RFC 7662 <https://tools.ietf.org/html/rfc7662>`_.
+自省端点是 `RFC 7662 <https://tools.ietf.org/html/rfc7662>`_ 的实现。
 
-It can be used to validate reference tokens (or JWTs if the consumer does not have support for appropriate JWT or cryptographic libraries).
-The introspection endpoint requires authentication - since the client of an introspection endpoint is an API, you configure the secret on the ``ApiResource``.
+它可用于验证参考令牌（或 JWT，如果消费者不支持适当的 JWT 或加密库）。
+自省端点需要身份验证 - 由于自省端点的客户端是一个 API，您可以在 ``ApiResource`` 上配置密钥。
 
-Example
+例子
 ^^^^^^^
 
 ::
@@ -18,7 +18,7 @@ Example
     token=<token>
 
 
-A successful response will return a status code of 200 and either an active or inactive token::
+成功的响应将返回状态代码 200 以及活动或非活动令牌::
 
 
     {
@@ -27,7 +27,7 @@ A successful response will return a status code of 200 and either an active or i
     }
 
 
-Unknown or expired tokens will be marked as inactive::
+未知或过期的令牌将被标记为不活动::
 
 
     {
@@ -35,6 +35,6 @@ Unknown or expired tokens will be marked as inactive::
     }
 
 
-An invalid request will return a 400, an unauthorized request 401.
+无效请求将返回 400，未经授权的请求将返回 401。
 
-.. Note:: You can use the `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ client library to programmatically access the introspection endpoint from .NET code. For more information check the IdentityModel `docs <https://identitymodel.readthedocs.io/en/latest/client/introspection.html>`_.
+.. Note:: 您可以使用 `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ 客户端库从 .NET 代码以编程方式访问自省端点。 有关更多信息，请查看 IdentityModel `文档 <https://identitymodel.readthedocs.io/en/latest/client/introspection.html>`_。

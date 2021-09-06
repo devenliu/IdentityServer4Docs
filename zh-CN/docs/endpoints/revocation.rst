@@ -1,15 +1,15 @@
-Revocation Endpoint
+撤销端点
 ===================
 
-This endpoint allows revoking access tokens (reference tokens only) and refresh token. 
-It implements the token revocation specification `(RFC 7009) <https://tools.ietf.org/html/rfc7009>`_.
+此端点允许撤销访问令牌（仅限参考令牌）和刷新令牌。
+它实现了令牌撤销规范 `（RFC 7009）<https://tools.ietf.org/html/rfc7009>`_。
 
 ``token``
-    the token to revoke (required)
+    要撤销的令牌（必需）
 ``token_type_hint``
-    either ``access_token`` or ``refresh_token`` (optional)
+    ``access_token`` 或 ``refresh_token`` （可选）
 
-Example
+例子
 ^^^^^^^
 
 ::
@@ -21,4 +21,4 @@ Example
 
     token=45ghiukldjahdnhzdauz&token_type_hint=refresh_token
 
-.. Note:: You can use the `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ client library to programmatically access the revocation endpoint from .NET code. For more information check the IdentityModel `docs <https://identitymodel.readthedocs.io/en/latest/client/revocation.html>`_.
+.. Note:: 您可以使用 `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ 客户端库从 .NET 代码以编程方式访问吊销端点。 有关更多信息，请查看 IdentityModel `文档 <https://identitymodel.readthedocs.io/en/latest/client/revocation.html>`_。

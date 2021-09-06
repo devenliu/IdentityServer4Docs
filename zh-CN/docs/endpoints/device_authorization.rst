@@ -1,19 +1,19 @@
-Device Authorization Endpoint
+设备授权端点
 =============================
 
-The device authorization endpoint can be used to request device and user codes.
-This endpoint is used to start the device flow authorization process.
+设备授权端点可用于请求设备和用户代码。
+该端点用于启动设备流授权过程。
 
-.. Note:: The URL for the end session endpoint is available via the :ref:`discovery endpoint <refDiscovery>`.
+.. Note:: 结束会话端点的 URL 可通过 :ref:`发现文档 <refDiscovery>` 获得。
 
 ``client_id``
-    client identifier (required)
+    客户端标识符（必需）
 ``client_secret``
-    client secret either in the post body, or as a basic authentication header. Optional.
+    客户端密钥在 POST body 中，或作为基本身份验证标头。 可选的。
 ``scope``
-    one or more registered scopes. If not specified, a token for all explicitly allowed scopes will be issued.
+    一个或多个已注册的范围。 如果未指定，则将发布所有明确允许的范围的令牌。
 
-Example
+例子
 ^^^^^^^
 
 ::
@@ -24,6 +24,6 @@ Example
         client_secret=secret&
         scope=openid api1
 
-(Form-encoding removed and line breaks added for readability)
+（删除了表单编码并添加了换行符以提高可读性）
 
-.. Note:: You can use the `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ client library to programmatically access the device authorization endpoint from .NET code. For more information check the IdentityModel `docs <https://identitymodel.readthedocs.io/en/latest/client/device_authorize.html>`_.
+.. Note:: 您可以使用 `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ 客户端库从 .NET 代码以编程方式访问设备授权端点。 有关更多信息，请查看 IdentityModel `文档 <https://identitymodel.readthedocs.io/en/latest/client/device_authorize.html>`_。

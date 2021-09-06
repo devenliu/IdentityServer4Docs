@@ -1,66 +1,65 @@
-Authorize Endpoint
+授权端点
 ==================
 
-The authorize endpoint can be used to request tokens or authorization codes via the browser.
-This process typically involves authentication of the end-user and optionally consent.
+授权端点可用于通过浏览器请求令牌或授权码。
+此过程通常涉及最终用户的身份验证和可选的同意。
 
-.. Note:: IdentityServer supports a subset of the OpenID Connect and OAuth 2.0 authorize request parameters. For a full list, see `here <https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest>`_.
+.. Note:: IdentityServer 支持 OpenID Connect 和 OAuth 2.0 授权请求参数的子集。 有关完整列表，请参阅 `此处<https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest>`_。
 
 ``client_id``
-    identifier of the client (required).
+    客户端的标识符（必需）。
 ``request``
-    instead of providing all parameters as individual query string parameters, you can provide a subset or all of them as a JWT
+    您可以提供一个子集或全部作为 JWT，而不是将所有参数作为单独的查询字符串参数提供
 ``request_uri``
-    URL of a pre-packaged JWT containing request parameters
+    包含请求参数的预打包 JWT 的 URL
 ``scope``
-    one or more registered scopes (required)
+    一个或多个已注册的范围（必需）
 ``redirect_uri`` 
-    must exactly match one of the allowed redirect URIs for that client (required)
+    必须与该客户端允许的重定向 URI 之一完全匹配（必需）
 ``response_type`` 
-    ``id_token`` requests an identity token (only identity scopes are allowed)
+    ``id_token`` 请求身份令牌（仅允许身份范围）
 
-    ``token`` requests an access token (only resource scopes are allowed)
+    ``token`` 请求访问令牌（仅允许资源范围）
 
-    ``id_token token`` requests an identity token and an access token
+    ``id_token token`` 请求身份令牌和访问令牌
 
-    ``code`` requests an authorization code
+    ``code`` 请求授权码
 
-    ``code id_token`` requests an authorization code and identity token
+    ``code id_token`` 请求授权码和身份令牌
 
-    ``code id_token token`` requests an authorization code, identity token and access token
+    ``code id_token token`` 请求授权码、身份令牌和访问令牌
     
 ``response_mode``
-    ``form_post`` sends the token response as a form post instead of a fragment encoded redirect (optional)
+    ``form_post`` 将令牌响应作为表单发布而不是片段编码重定向发送（可选）
 ``state`` 
-    identityserver will echo back the state value on the token response, 
-    this is for round tripping state between client and provider, correlating request and response and CSRF/replay protection. (recommended)
+    identityserver 将在令牌响应上回显状态值，这是用于客户端和提供者之间的往返状态，关联请求和响应以及 CSRF/重放保护。 （推荐的）
 ``nonce`` 
-    identityserver will echo back the nonce value in the identity token, this is for replay protection)
+    identityserver 将回显身份令牌中的 nonce 值，这是为了重放保护）
 
-    *Required for identity tokens via implicit grant.*
+    *对于通过隐式授权的身份令牌是必需的。*
 ``prompt``
-    ``none`` no UI will be shown during the request. If this is not possible (e.g. because the user has to sign in or consent) an error is returned
+    ``none`` 请求期间不会显示 UI。 如果这是不可能的（例如，因为用户必须登录或同意），则返回错误
     
-    ``login`` the login UI will be shown, even if the user is already signed-in and has a valid session
+    ``login`` 即使用户已经登录并且有一个有效的会话，也会显示登录 UI
 ``code_challenge``
-    sends the code challenge for PKCE
+    发送 PKCE 的代码质询
 ``code_challenge_method``
-    ``plain`` indicates that the challenge is using plain text (not recommended)
-    ``S256`` indicates the challenge is hashed with SHA256
+    ``plain`` 表示 challenge 使用纯文本（不推荐）
+    ``S256`` 表示 challenge 是用 SHA256 散列的
 ``login_hint``
-    can be used to pre-fill the username field on the login page
+    可用于在登录页面预填用户名字段
 ``ui_locales``
-    gives a hint about the desired display language of the login UI
+    提供有关登录 UI 所需显示语言的提示
 ``max_age``
-    if the user's logon session exceeds the max age (in seconds), the login UI will be shown
+    如果用户的登录会话超过最大期限（以秒为单位），将显示登录 UI
 ``acr_values``
-    allows passing in additional authentication related information - identityserver special cases the following proprietary acr_values:
+    允许传入额外的身份验证相关信息 - identityserver 特殊情况下以下专有 acr_values：
         
-        ``idp:name_of_idp`` bypasses the login/home realm screen and forwards the user directly to the selected identity provider (if allowed per client configuration)
+        ``idp:name_of_idp`` 绕过登录/主域屏幕并将用户直接转发到选定的身份提供者（如果每个客户端配置允许）
         
-        ``tenant:name_of_tenant`` can be used to pass a tenant name to the login UI
+        ``tenant:name_of_tenant`` 可用于将租户名称传递给登录 UI
 
-**Example**
+**例子**
 
 ::
 
@@ -72,6 +71,6 @@ This process typically involves authentication of the end-user and optionally co
         state=abc&
         nonce=xyz 
 
-(URL encoding removed, and line breaks added for readability)
+（删除了 URL 编码，并添加了换行符以提高可读性）
 
-.. Note:: You can use the `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ client library to programmatically create authorize requests .NET code. For more information check the IdentityModel `docs <https://identitymodel.readthedocs.io/en/latest/client/authorize.html>`_.
+.. Note:: 您可以使用 `IdentityModel <https://github.com/IdentityModel/IdentityModel2>`_ 客户端库以编程方式创建授权请求 .NET 代码。 有关更多信息，请查看 IdentityModel `文档 <https://identitymodel.readthedocs.io/en/latest/client/authorize.html>`_。
